@@ -1,0 +1,43 @@
+{% extends "layout.html" %}
+{% block content %}
+    <div class="card m-5">
+    </div>
+    <div class="card m-5">
+        <a href="{{ url_for('add_todo') }}" class="btn btn-outline-info btn-sm">+New Project</a>
+    </div>
+    {% for todo in todos %}
+    <div class="card p-1 m-3">
+        <!-- {{ todo.fileName}} -->
+        <img src="../static/area-streamgraph.png" style="width:fit-content;height: 15rem;" class="card-img-top " alt="">
+        <div class="card-body">
+            <!-- 顯示出資料庫中的資料, CRUD -->
+            {% if todo.completed == "True" %}
+                <h5 class="card-title"><del>{{ todo.name }}</del></h5>
+            {% else %}
+                <h5 class="card-title">{{ todo.name }}</h5>
+            {% endif %}
+
+            <p class="card-text text-muted">{{ todo.date_created }}</p>
+            <p class="card-text">{{ todo.description }}</p>
+
+            <a href = "{{ url_for('update_todo', id = todo._id) }}" 
+            class = "btn btn-outline-info btn-sm">Update</a>
+            <a href="{{ url_for('delete_todo', id = todo._id) }}"
+            class = "btn btn-outline-danger btn-sm">Delete</a>
+            <a href="{{ url_for('restore_todo' , id = todo._id) }}"
+            class = "btn btn-outline-success btn-sm">Restore</a>
+            <a href="{{ url_for('download_todo' , id = todo._id) }}"
+            class = "btn btn-outline-secondary btn-sm">Download</a>
+        </div>
+    </div>
+    {% endfor %}
+    <footer class="text-center text-lg-start bg-white text-muted">
+        <small className="text-center mt-5 footer-copyright">
+            <!-- &copy; Alles, 2023. All rights reserved.
+          </small> -->
+        <div class="text-center p-4">
+            © 2023 Copyright:
+            <a class="text-reset fw-bold" href="https://github.com/Alles1212/-projectIM">Alles-Project</a>
+          </div>
+    </footer>
+{% endblock %}

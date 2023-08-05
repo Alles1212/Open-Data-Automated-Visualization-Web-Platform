@@ -1,0 +1,259 @@
+* {
+  -webkit-tap-highlight-color: transparent;
+}
+@import url("https://fonts.googleapis.com/earlyaccess/cwtexyen.css");
+/*稱為「前綴(Prefix)」，是瀏覽器供應商為了實驗性質而制定的，在新屬性出現時，作為實驗性開發而使用的前綴字，
+這樣可以防止在實驗過程中破壞標準語法，待實驗沒問題後，通常會移除轉而使用標準語法*/
+
+
+
+  body{
+    overflow-x: hidden;
+    /* overflow-y: hidden; */
+    width: 100%;
+    background: #FFE1AB;
+    margin: 0;
+    font-family: '標楷體';
+  }
+
+  /* 3個標題的區塊 */
+  .title{ 
+    display: flex;
+    justify-content:space-around;
+    border-bottom-style:solid;
+  }
+
+  /* 地圖選擇 */
+  .title_Map{
+    font-size: 20px;
+  }
+
+  /* 檔案上傳 */
+  .title_File{
+    position: relative;
+    left: 200px;
+    font-size: 20px;
+  }
+
+  /* 摘要統計 */
+  .title_statistic{
+    position: relative;
+    left: 80px;
+    font-size: 20px;
+  }
+
+  /* 呈現地圖、圖表、摘要統計 */
+  .default { 
+    display: flex;
+    justify-content:space-around
+  }
+
+  #colorBtn{
+    position: relative;
+    left: 350px;
+    top: 20px;
+    visibility: hidden;
+  }
+
+  /* 呈現地圖區塊 */
+  .chooseMap{
+    top:10px;
+    font-size: 17px;
+    position: relative; left: 50px
+  }
+
+  /* 地圖格式區塊 */
+  #svgDiv{
+    width: 600px;
+    height: 600px;
+    /* border-left: thick solid #000; */
+  }
+
+  #suBox{
+    display: none;
+    width: 120px;
+    height: 90px;
+    position: absolute;
+    color: red;
+    background-image: linear-gradient(to top, #9890e3 0%, #b1f4cf 100%);
+  }
+
+  /* 地圖邊界大小 */
+  .TaiwanMap{
+    fill: #ccddff;
+    stroke: #333333;
+    stroke-width: 10;
+  }
+  .New_Taipei_town{
+    fill: #ccddff;
+    stroke: #333333;
+    stroke-width: 15;
+  }
+  .Taichung_town{
+    fill: #ccddff;
+    stroke: #333333;
+    stroke-width: 8;
+  }
+  .Chiayi_City_town{
+    fill: #ccddff;
+    stroke: #333333;
+    stroke-width: 30;
+  }
+  .Nantou_town{
+    fill: #ccddff;
+    stroke: #333333;
+    stroke-width: 2;
+  }
+  /* hover */
+  .TaiwanMap:hover{
+    fill: #4F4FFF;
+    transform: translate(10px);
+    stroke: #333333;
+    stroke-width: 15;
+  }
+  .New_Taipei_town:hover{
+    fill: #4F4FFF;
+    transform: translate(20px);
+    stroke: #333333;
+    stroke-width: 25;
+  }
+  .Taichung_town:hover{
+    fill: #4F4FFF;
+    transform: translate(5px);
+    stroke: #333333;
+    stroke-width: 10;
+  }
+  .Chiayi_City_town:hover{
+    fill: #4F4FFF;
+    transform: translate(5px);
+    stroke: #333333;
+    stroke-width: 30;
+  }
+  .Nantou_town:hover{
+    fill: #4F4FFF;
+    transform: translate(2px);
+    stroke: #333333;
+    stroke-width: 4;
+  }
+
+  /* 顏色範圍區塊 */
+  #rangeDiv{
+    width: 130px;
+    height: 178px;
+    background-color: #ffffff;
+
+    position: relative;
+    bottom: 230px;
+    left: 450px;
+    
+    visibility: hidden;
+    display: flex;
+    flex-direction: column;
+    line-height: 30px;
+    text-align: center;
+    
+  }
+  #colorDiv{
+   
+    visibility: hidden;
+    position: relative;
+    top:-750px;
+    left: 500px;
+    width: 70px;
+    height: 50px;
+    background-color: #DDDDDD;
+    line-height: 20px;
+    
+
+  }
+
+  /* 整個圖表區塊 */
+  .container__up {
+    text-align: center;
+  }
+
+  /* 檔案上傳、API上傳按鈕 */
+  .method{
+    margin: 20px;
+    width: 70px;
+    height: 30px;
+  }
+
+  /* 摘要統計區塊 */
+  .statistic{
+    top:10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
+    position: relative;
+    width: 200px;
+  }
+
+  /* 圖表配置 */
+  :root {
+    --header-height: 3rem;
+    --nav-width: 324px;
+    /*font weight*/
+    --font-medium: 500;
+    --font-semi-bold: 600;
+    --font-bold: 700;
+
+    /*color*/
+    --first-color: #026fbc;
+    --first-color-dark: #01489a;
+    --first-color-darken: #002077;
+    --text-color: #002261;
+    --first-color-light: #bce4e7;
+    --first-color-lighten: #ffffff;
+
+    /*font and typography*/
+    --body-font: 'cwTeXYen', sans-serif;
+    --h1-font-size: 1.5rem;
+    --h2-font-size: 1.25rem;
+    --h3-font-size: 1rem;
+    --normal-font-size: .938rem;
+    --small-font-size: .813rem;
+    --smaller-font-size: .75rem;
+
+    /*目錄*/
+    --mb-1: .5rem;
+    --mb-2: 1rem;
+    --mb-3: 1.5rem;
+    --mb-4: 2rem;
+    --mb-5: 2.5rem;
+
+    /*z index*/
+    --z-fixed: 100;
+  }
+
+#chartContainer {
+    width: 450px;
+    height: 350px;
+    margin-top: 50px;
+}
+/* .container {
+    text-align: center;
+    background-color: var(--first-color-light);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    
+} */
+#chart{
+  margin-top: 50px;
+}
+
+.link {
+    font-size: 1rem;
+    text-transform: uppercase;
+    color: var(--first-color);
+    font-weight: var(--font-bold);
+    transform: .3s;
+}
+
+.link:hover {
+    color: var(--text-color);
+}
+
+
+  

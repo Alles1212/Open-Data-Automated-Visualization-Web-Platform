@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <!-- bootstrap 5 -->
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+        <link rel="stylesheet" href="../static/CSS/style.css" />
+    </head>
+    <div class="card m-5">
+    </div>
+    <body>
+        <header>
+            <nav class="navbar navbar-expand-lg navbar-dark bg-dark navbar-static-top fixed-top">
+                <a class="navbar-brand" href="{{ url_for('get_todos') }}">臺灣開放資料資訊圖表應用平台</a>
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                  <span class="navbar-toggler-icon"></span>
+                </button>
+              
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                  <ul class="navbar-nav mr-auto">
+                    <li class="nav-item active">
+                      <a class="nav-link" href="{{ url_for('get_todos') }}">HomePage</a>
+                    </li>
+                    <li class="nav-item">
+                      <a class="nav-link" href="{{ url_for('add_todo') }}">New Project</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('gen_graph') }}">Generate Graph</a>
+                      </li>
+                  </ul>
+                </div>
+              </nav>
+        </header>
+            <div class="title"> <!--標題-->
+                <p class="title_Map">地圖選擇</p>
+                <p class="title_File">檔案上傳</p>
+                <p class="title_statistic">摘要統計</p>
+            </div>
+            
+            <div class="default"> <!--所有區塊-->
+                <div class = "chooseMap"> <!--地圖區塊-->
+                    <label for = "selectMap">選擇縣市：</label>
+                    <select id = "selectMap">
+                        <option value = "0" >台灣地圖</option>
+                        <option value = "1" >新北市</option>
+                        <option value = "2" >台北市</option>
+                        <option value = "3" >基隆市</option>
+                        <option value = "4" >桃園市</option>
+                        <option value = "5" >新竹縣</option>
+                        <option value = "6" >新竹市</option>
+                        <option value = "7" >苗栗縣</option>
+                        <option value = "8" >台中市</option>
+                        <option value = "9" >彰化縣</option>
+                        <option value = "10">雲林縣</option>
+                        <option value = "11">嘉義縣</option>
+                        <option value = "12">嘉義市</option>
+                        <option value = "13">台南市</option>
+                        <option value = "14">高雄市</option>
+                        <option value = "15">屏東縣</option>
+                        <option value = "16">台東縣</option>
+                        <option value = "17">花蓮縣</option>
+                        <option value = "18">宜蘭縣</option>
+                        <option value = "19">南投縣</option>
+                    </select>
+                    <span id = "map_Selected"></span><br>
+                    <span id = "townName">鄉鎮名稱：</span><br>
+                    <span id = "townData">鄉鎮資料：</span>
+                    <button id = 'colorBtn'>選擇顏色</button>
+    
+                    <div id="suBox"> <!--懸浮框-->
+                    </div>
+                    
+                    <div id="svgDiv"> <!--初始地圖與放svg的區塊-->
+                        <svg width = "600px" height = "550px" viewBox = "300 70 1400 1400">
+                            <g style = cursor:pointer>
+                                <polygon id="新北市" class="TaiwanMap" points="668.5,178 716.5,198.5 716.9,230.6 694,248 708.6,289.9 736.8,290.9 757.9,354.7 811.2,330.1 815.4,307.1 881,253.5 896.1,257 939,230.8 968.9,223.9 968.5,202.1 944.9,202.3 932.2,177.3 899.5,170.4 846.4,154.6 805.1,102.4 783.8,100.9 730.8,138.8 726.4,159"/>
+                                <polygon id="台北市" class="TaiwanMap" points="790.1,139.2 813,162 820,201.4 831.13,211.1 811.9,217.2 813,238.9 779.9,222.4 765.8,223.3 771.1,187.3 753,181.3 762,154.6 779,154"/>
+                                <polygon id="基隆市" class="TaiwanMap" points="899.5,170.4 882,183 896,202 881,216.1 847.5,201.5 829.1,167.2 846.4,154.6"/>
+                                <polygon id="桃園市" class="TaiwanMap" points="668.5,178 716.5,198.5 716.9,230.6 694,248 708.6,289.9 736.8,290.9 757.9,354.7 747,401.1 691.4,360.2 697.2,325.7 681.2,309.7 636.1,299.1 599,256.9 568.9,249.9"/>
+                                <polygon id="新竹縣" class="TaiwanMap" points="527.1,345 655.5,408 683.5,458.1 713,440.4 747,401.1 691.4,360.2 697.2,325.7 681.2,309.7 636.1,299.1 599,256.9 568.9,249.9 541,288"/>
+                                <polygon id="新竹市" class="TaiwanMap" points="527.1,345 541,288 575,303.9 578.1,327.2 560,319"/>
+                                <polygon id="苗栗縣" class="TaiwanMap" points="527.1,345 655.5,408 683.5,458.1 600.3,512.5 542.8,504.1 520.9,485.6 484.2,502.2 429,469 481.1,379.2"/>
+                                <polygon id="台中市" class="TaiwanMap" points="713,440.4 723.2,467.8 755.3,465.8 722.7,515 732.8,562.2 673.1,563 652,537.7 520.8,590.6 498.8,630.8 433.9,619.9 382,561.2 429,469 484.2,502.2 520.9,485.6 542.8,504.1 600.3,512.5 683.5,458.1"/>
+                                <polygon id="彰化縣" class="TaiwanMap" points="433.9,619.9 434.4,697.6 466.2,708.8 465.5,726 295.9,709.1 382,561.2"/>
+                                <polygon id="雲林縣" class="TaiwanMap" points="454,725 451.9,782.9 490,783.2 490,800.1 410.1,802.1 392.1,781.9 361.5,782.5 273.5,845.5 245.4,839.6 247.7,779.7 295.9,709.1"/>
+                                <polygon id="嘉義縣" class="TaiwanMap" points="490,783.2 490,800.1 410.1,802.1 392.1,781.9 361.5,782.5 273.5,845.5 245.4,839.6 245.1,924 277.1,936.2 336.9,875.1 382.4,872.1 420.3,903.2 409.9,914.9 427.1,955.1 447,942 466.6,946 575,849 558.7,847.7 529.1,817.1 533,797"/>
+                                <polygon id="嘉義市" class="TaiwanMap" points="382.4,872.1 393,858 402.2,866.2 413.4,854.4 396.8,836.8 365,843.1"/>
+                                <polygon id="台南市" class="TaiwanMap" points="285.9,1080.5 363.1,1087.5 371.9,1073 386,1078.3 386.8,1055.1 411.8,1041 411,1027.4 463.6,973.9 466.6,946 447,942 427.1,955.1 409.9,914.9 420.3,903.2 382.4,872.1 336.9,875.1 277.1,936.2 245.1,924 233.3,991.9 242.9,996.7 239.4,1029.6"/>
+                                <polygon id="高雄市" class="TaiwanMap" points="620,848 602.2,865 607.7,881 627,880 625,898.2 574.1,934.1 570,1016 549,1041 558,1074 531,1093 521,1078 503,1085.2 493,1074 449,1078 449,1095.5 397,1114 396.8,1196 407.5,1209 389.8,1249 323,1183 336.7,1172 285.9,1080.5 363.1,1087.5 371.9,1073 386,1078.3 386.8,1055.1 411.8,1041 411,1027.4 463.6,973.9 466.6,946 575,849"/>
+                                <polygon id="屏東縣" class="TaiwanMap" points="558,1074 531,1093 521,1078 503,1085.2 493,1074 449,1078 449,1095.5 397,1114 396.8,1196 407.5,1209 389.8,1249 425,1258 546,1382 538.2,1420 567,1464 575.2,1446 606,1470.5 611,1334 564,1317 570,1293 552.2,1293 529,1209 546.1,1155.3 590,1134 593,1104.4"/>
+                                <polygon id="台東縣" class="TaiwanMap" points="611,1334 564,1317 570,1293 552.2,1293 529,1209 546.1,1155.3 590,1134 593,1104.4 558,1074 549,1041 570,1016 574.1,934.1 625,898.2 747,956.9 773.4,840 815.2,825.3 786.3,956.3 801.2,969.2 744.3,1066 719.8,1066.2 718.2,1092.1 637.3,1190.2"/>
+                                <polygon id="花蓮縣" class="TaiwanMap" points="625,898.2 627,880 607.7,881 602.2,865 620,848 642.2,815.2 666.3,811 669,789 686.3,786.1 700.5,722.9 683,708.9 713.2,637.8 701,626.9 726.8,562.5 732.8,562.2 722.7,515 755.3,465.8 821.1,487.2 846.3,473.1 895.1,485.3 898.1,509 860.4,534 815.2,825.3 773.4,840 747,956.9"/>
+                                <polygon id="宜蘭縣" class="TaiwanMap" points="755.3,465.8 821.1,487.2 846.3,473.1 895.1,485.3 935.7,374.9 916.1,361 906.2,283.4 939,230.8 896.1,257 881,253.1 815.4,307.1 811.2,330.1 757.9,354.7 747,401.1 713,440.4 723.2,467.8"/>
+                                <polygon id="南投縣" class="TaiwanMap" points="642.2,815.2 666.3,811 669,789 686.3,786.1 700.5,722.9 683,708.9 713.2,637.8 701,626.9 726.8,562.5 673.1,563 651.4,537.3 520.8,590.6 498.8,630.8 433.9,619.9 434.4,697.6 466.2,708.8 465.5,726 454,725 451.9,782.9 490,783.2 533,797 529.1,817.1 558.7,847.7 620,848"/>
+                            </g>
+                        </svg>
+                        
+                    </div>
+    
+                    <div id = "rangeDiv"> <!--範圍框-->
+                    </div>
+    
+                    <div id = "colorDiv"> <!--顏色選擇框-->
+                    
+                    </div>
+    
+                </div>
+    
+                <div class="container__up"> <!--圖表區塊-->
+                    <section class="up" id="up">
+                        <div >
+                            <div id = "chooseMethod"> <!--選擇上傳模式-->
+                                <button class="method" id="snetFile">傳送檔案</button>
+                                <button class="method" id="sentAPI">傳送API</button>
+                            </div>
+                            
+                            <div id="appearDiv"> <!--出現兩種上傳模式-->
+                            </div>
+                            
+                            <div id="appearSelect"> <!--選擇欄位清單-->
+                            </div>
+    
+                            <div> <!--出現圖表-->
+                                <nav>
+                                    <div id="chartContainer"></div>
+                                </nav>
+                            </div>
+                        </div>
+                    </section>
+    
+                </div>
+                    
+                <div class="statistic"> <!--統計區塊-->
+                    <span id = "Max"></span><br>
+                    <span id = "min"></span><br>
+                    <span id = "avg"></span><br>
+                    <span id = "stD"></span><br>
+                    <span id = "sum"></span><br>
+                    <span id = "num"></span>
+                </div>
+            </div>
+    </body>
+    <script defer src="https://cdnjs.cloudflare.com/ajax/libs/canvg/1.5/canvg.min.js"></script>
+    
+    <script defer src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/1.3.8/FileSaver.min.js"></script>
+    <script src="https://www.gstatic.com/charts/loader.js"></script>
+    <script src="https://d3js.org/d3.v6.min.js"></script>
+    <script src = "../static/js/traffic.js"></script>
+    <script src = "../static/js/analyzeData.js"></script>
+    <script src = "../static/js/Charts.js"></script>
+    <script src = "../static/js/coordinate.js"></script>
+    <script src = "../static/js/StatisAndColor.js"></script>
+    <script src = "../static/js/svgMap.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js" integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js" integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF" crossorigin="anonymous"></script>
+</html>
