@@ -1,82 +1,964 @@
 * {
-  -webkit-tap-highlight-color: transparent;
+  /* -webkit-tap-highlight-color: transparent; */
+  user-select: none; /* 禁止反白 */
 }
-@import url("https://fonts.googleapis.com/earlyaccess/cwtexyen.css");
-/*稱為「前綴(Prefix)」，是瀏覽器供應商為了實驗性質而制定的，在新屬性出現時，作為實驗性開發而使用的前綴字，
-這樣可以防止在實驗過程中破壞標準語法，待實驗沒問題後，通常會移除轉而使用標準語法*/
-
-
 
   body{
-    overflow-x: hidden;
+    /* overflow-x: hidden; */
     /* overflow-y: hidden; */
     width: 100%;
-    background: #FFE1AB;
+    height: 100%;
     margin: 0;
     font-family: '標楷體';
-  }
+}
 
-  /* 3個標題的區塊 */
-  .title{ 
+  /* 畫面最上面 */
+  .main{
     display: flex;
-    justify-content:space-around;
-    border-bottom-style:solid;
-  }
+    align-items: center;
+    justify-content: space-between;
+}
 
-  /* 地圖選擇 */
-  .title_Map{
-    font-size: 20px;
-  }
+  /* 顯示選擇欄位區塊的按鈕 */
+  #selectColumnBtn{
+    background-image: url("../image/arrow.png");
+    background-repeat: no-repeat;
+    background-color: transparent;
+    border: none;
+    background-size: 30px;
 
-  /* 檔案上傳 */
-  .title_File{
+    width: 30px;
+    height: 30px;
+    
     position: relative;
-    left: 200px;
-    font-size: 20px;
-  }
 
-  /* 摘要統計 */
-  .title_statistic{
+}
+  #selectColumnBtn:hover{
+    cursor: pointer;
+    transform: scale(1.1);
+    background-color: rgba(255,255,255, 0.7);
+    
+}
+
+  /* 鄉鎮名稱區塊 */
+  #townNameDiv{
+    border-radius: 20px;
+
+    width: 350px;
+    height: 45px;
+
+    background : radial-gradient(circle farthest-side at center,#F5FFE8,	#D1E9E9);
+    
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    overflow: hidden;
     position: relative;
-    left: 80px;
-    font-size: 20px;
+    
+    transition: .3s linear ;
+}
+  #townNameDiv:hover{
+    cursor: pointer;
+    transform: scale(1.1);
+}
+  /* 鄉鎮名稱 */
+  #townNameDiv span{
+    position: absolute;
+    width: 100%;
+    height: 100%;
+
+    background:radial-gradient(circle farthest-side at center,#FFFCEC,	#F5FFE8);
+    color: #1b1111;
+    text-align: center;
+    
+    line-height: 50px;
+    transition: .6s linear;
+
+    font-size: 22px;
+    font-weight: bold;
+
+    z-index: 1;
+}
+  #townNameDiv:hover span{
+    transform:translateX(-100%);
+} 
+  /* 區塊裡所有按鈕 */
+  #townNameDiv button{
+    flex: 0.5; /* 按鈕間距 */
+    text-align: center;
+
+    transform:translateX(-100%);
+    transition: 0.3s linear;
+
+}
+  #townNameDiv:hover button{
+    transform: translateX(0);
+  
+}
+
+  #townNameDiv button:nth-of-type(1){ /* 下載按鈕出現時間 */
+    transition-delay: 1.0s;
+}
+  #townNameDiv button:nth-of-type(2){ /* 存檔按鈕出現時間 */
+    transition-delay: 0.8s;
+}
+  #townNameDiv button:nth-of-type(3){ /* 步驟按鈕出現時間 */
+    transition-delay: 0.6s;
+}
+  #townNameDiv button:nth-of-type(4){ /* 敘述按鈕出現時間 */
+    transition-delay: 0.4s;
+}
+
+  /* 下載按鈕 */
+  .download{
+    background-image: url("../image/downloadAll.png");
+    background-repeat: no-repeat;
+    background-color: transparent;
+    border: none;
+    background-size: 45px;
+    
+    width: 45px;
+    height: 45px;
+
+    position: relative;
+    
+    margin-left: 20px;
+}
+  .download:hover{
+    transform: scale(1.2);
+    cursor: pointer;
+}
+
+  /* 匯出按鈕 */
+  #remitBtn{
+    background-image: url("../image/remit.png");
+    background-repeat: no-repeat;
+    background-color: transparent;
+    border: none;
+    background-size: 35px;
+    width: 35px;
+    height: 35px;
+
+    position: relative;
+}
+  #remitBtn:hover{
+    transform: scale(1.2);
+    cursor: pointer;
+
+}
+
+  /* 步驟框按鈕 */
+  #step{
+    background-image: url("../image/step.png");
+    background-repeat: no-repeat;
+    background-size: 45px;
+    background-color: transparent;
+    border: none;
+
+    width: 43px;
+    height: 43px;
+
+    position: relative;
+}
+  #step:hover{
+    cursor: pointer;
+    transform: scale(1.2);
+}
+
+  /* 敘述按鈕 */
+  #description{
+    background-image: url("../image/description.png");
+    background-repeat: no-repeat;
+    background-size: 45px;
+    background-color: transparent;
+    border: none;
+
+    width: 43px;
+    height: 43px;
+
+    position: relative;
+}
+  #description:hover{
+    cursor: pointer;
+    transform: scale(1.2);
+}
+
+  /* 摘要統計按鈕 */
+  #statBtn{
+    background-image: url("../image/statBtn.png");
+    background-repeat: no-repeat;
+    background-color: transparent;
+    border: none;
+    background-size: 45px;
+
+    width: 43px;
+    height: 43px;
+
+    position: relative;
+    top:-50px;
+    left: 97.3%;
+    
+}
+  #statBtn:hover{
+    transform: scale(1.2);
+    cursor: pointer;
+}
+
+  /* 步驟框 */
+  #stepBox{
+    border: none; /* 外框 */
+    box-shadow: 0 2px 6px #ccc;
+    border-radius: 10px; /* 4角落 */
+
+    /* background-image: url("../image/stepBox.png");
+    background-position: -120px -110px;
+    background-size: 910px 550px;
+    background-repeat: no-repeat; */
+    
+    width: 650px;
+    height: 550px;
+    background-color: azure;
+
+    position: absolute;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    
+    line-height: 70px;
+
+    font-size: 18px;
+}
+  /* 項目區塊 */
+  #itemsDiv{
+    width: 650px;
+    height: 70px;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+  /* 項目名稱區塊 */
+  .itemsNameDiv{
+    width: 200px;
+    height: 70px;
+
+    display: flex;
+    justify-content: center;
+    border-radius: 30px;
+
+    background-color: #FFECEC;
+
+    position: relative;
+    left: 30px;
+}
+  .itemsNameDiv:hover{
+    background-color: #ccc;
   }
+  /* 內容區塊 */
+  #contentForStep{
+    height: 400px;
+    width: 650px;
+
+    display: flex;
+    justify-content: space-around;
+}
+  /* 關閉按鈕 */
+  #closeStep{
+    background-image: url("../image/closeButtonForselfFile.png");
+    background-repeat: no-repeat;
+    background-color: transparent;
+    border: none;
+    background-size: 45px;
+
+    width: 50px;
+    height: 50px;
+
+    position: relative;
+    top: -35px;
+    left: 10px;
+    
+}
+  #closeStep:hover{
+    cursor: pointer;
+    transform: scale(1.2);
+}
 
   /* 呈現地圖、圖表、摘要統計 */
-  .default { 
+  .default{ 
     display: flex;
-    justify-content:space-around
-  }
+    align-items: center;
+    justify-content: space-around;
 
-  #colorBtn{
     position: relative;
-    left: 350px;
-    top: 20px;
-    visibility: hidden;
-  }
+    bottom: 85px;
+}
 
-  /* 呈現地圖區塊 */
+  /* 地圖區塊 */
   .chooseMap{
-    top:10px;
-    font-size: 17px;
-    position: relative; left: 50px
-  }
+    font-size: 20px;
+    position: relative;
+    left: 100px;
+}
 
-  /* 地圖格式區塊 */
-  #svgDiv{
-    width: 600px;
-    height: 600px;
-    /* border-left: thick solid #000; */
-  }
+  /* 欄位名稱區塊 */
+  #columnNameDiv{
+    border-radius: 30px;
+    
+    width: 150px;
+    height: 50px;
 
+    position: relative;
+    top: 50px;
+    left: 10px;
+
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+
+    visibility: hidden;
+}
+  #changeBtnForRight{
+    background-image: url("../image/change_right.png");
+    background-color: transparent;
+    background-position: -7px;
+    background-repeat: no-repeat;
+    background-size: 30px;
+    border: none;
+
+    width: 30px;
+    height: 30px;
+
+    position: relative;
+    z-index: 1;
+
+}
+  #changeBtnForRight:hover{
+    cursor: pointer;
+    transform: scale(1.2);
+}
+
+  #changeBtnForLeft{
+    background-image: url("../image/change_left.png");
+    background-color: transparent;
+    background-position: 5px;
+    background-repeat: no-repeat;
+    background-size: 30px;
+    border: none;
+
+    width: 30px;
+    height: 30px;
+
+    position: relative;
+    
+    z-index: 1;
+}
+  #changeBtnForLeft:hover{
+    cursor: pointer;
+    transform: scale(1.2);
+}
+
+  /* 整個svg區塊*/
+  #showSvg{
+    position: relative;
+    top: -55px;
+    left: 100px;
+
+    display: flex;
+    justify-content: space-around;
+}
+
+  /* 懸浮框 */
   #suBox{
-    display: none;
+    box-shadow: 0 2px 6px #ccc;
+    border-radius: 10px; /* 4角落 */
+
+    visibility: hidden;
     width: 120px;
     height: 90px;
     position: absolute;
     color: red;
-    background-image: linear-gradient(to top, #9890e3 0%, #b1f4cf 100%);
+    background-image: linear-gradient(-20deg, #e9defa 30%, #fbfcdb 100%);
+    z-index: 1;
+}
+
+  /* 選擇顏色按鈕 */
+  #colorBtn{
+    background-image: url("../image/art_palette.png");
+    background-color: transparent;
+    background-position: -7px;
+    background-repeat: no-repeat;
+    background-size: 60px;
+    border: none;
+
+    width: 50px;
+    height: 50px;
+
+    position: relative;
+    left: -100px;
+    top: 140px;
+    visibility: hidden;
+
+    z-index: 1;
+}
+  #colorBtn:hover{
+    transform: scale(1.2); /* 放大 */
+    cursor: pointer;
+}
+
+  /* 顏色選擇框 */
+  #colorDiv{
+    position: relative;
+    top: 190px;
+    left: -80px;
+
+    width: 70px;
+    height: 50px;
+    background-color: transparent;
+    line-height: 20px;
+
+    z-index: 2;
+}
+
+  /* svg區塊 */
+  #svgDiv{
+    width: 600px;
+    height: 600px;
+}
+
+  #groupInputDiv{
+    position: relative;
+    visibility: hidden;
+}
+
+/* 顏色分組下拉式清單 */
+  #selectForGroup{
+    position: relative;
+    left: -850px;
+    top: 275px;
+
+    width: 100px;
+    font-size: 20px;
+
+}
+  /* 顏色範圍框 */
+  #rangeDiv{
+    width: 150px;
+    height: 178px;
+
+    position: relative;
+
+    left: -950px;
+    top: 300px;
+    
+    visibility: hidden;
+    display: flex;
+    flex-direction: column;
+    line-height: 30px;
+    text-align: center;
+}
+
+  /* 離島區塊框 */
+  #Outlying_islands{
+    border-radius: 30px;
+
+    width: 130px;
+    height: 260px;
+    border-style: solid;
+
+    position: relative;
+    left: -880px;
+    top: -5px;
+
+    z-index: -1;
+}
+
+  /* 整個圖表區塊 */
+  .container__up {
+    text-align: center;
+
+    position: relative;
+    bottom: 70px;
+    left: -150px;
+}
+
+  /* 三按鈕區塊 */
+  #chooseMethod{
+    display: flex;
+    justify-content:center;
+}
+  /* 檔案上傳、API上傳、自製表格按鈕 */
+  .method{
+    margin: 20px;
+    width: 50px;
+    height: 50px;
+    position: relative;
+
+}
+  .method:hover{
+    cursor: pointer;
+    transform: scale(1.2);
+}
+
+  /* 檔案上傳 */
+  #sentFile{
+    background-image: url("../image/sentFile.png");
+    background-color: transparent;
+    background-position: 5px;
+    background-repeat: no-repeat;
+    background-size: 50px;
+    border: none;   
+}
+
+  /* API上傳 */
+  #sentAPI{
+    background-image: url("../image/sentAPI.png");
+    background-color: transparent;
+    background-position: 4px;
+    background-repeat: no-repeat;
+    background-size: 50px;
+    border: none;
+}
+
+  /* 自製表格上傳 */
+  #sentSelfFile{
+    background-image: url("../image/sentSelfFile.png");
+    background-color: transparent;
+    background-position: 3px;
+    background-repeat: no-repeat;
+    background-size: 50px;
+    border: none;
+}
+
+  /* 兩種模式上傳區 */
+  #appearDiv{
+    position: relative;
+    height: 50px;
+}
+  /* 選擇檔案按鈕 */
+  #divForCsvFile{
+    background-image: url("../image/uploadFile.png");
+    /* background-color: transparent; */
+    /* background-position: -5px; */
+    background-repeat: no-repeat;
+    background-size: 50px;
+
+    width: 50px;
+    height: 50px;
+
+    position: relative;
+    top: 10px;
+    left: 130px;
+
+}
+  /* 上傳按鈕 */
+  #submit{
+    background-image: url("../image/submitButton.png");
+    background-color: transparent;
+    background-position: -5px;
+    background-repeat: no-repeat;
+    background-size: 50px;
+    border: none;
+
+    width: 50px;
+    height: 50px;
+
+    position: relative;
+    top: -40px;
+    left: 100px;
+}
+  #divForCsvFile:hover,#submit:hover{
+    transform: scale(1.2); /* 放大 */
+    cursor: pointer;
+}
+
+  /* API輸入框 */
+  #textAPI{
+    height: 30px;
+    font-size: 16px;
+    position: relative;
+    top: -7px;
+}
+  /* API上傳鈕 */
+  #submitAPI{
+    background-image: url("../image/submitButton.png");
+    background-color: transparent;
+    /* background-position: -5px; */
+    background-repeat: no-repeat;
+    background-size: 50px;
+    border: none;
+    
+    position: relative;
+    left: 5px;
+    top: 10px;
+
+    width: 50px;
+    height: 50px;
+}
+
+  /* 按鈕懸浮框 */
+  .suBoxForButtons{
+    width: 90px;
+    height: 40px;
+    background-color: rgb(249, 240, 240);
+
+    border-radius: 15px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    visibility: hidden;
+
+    z-index: 1;
   }
+
+  /* 圖表 */
+  #chartContainer {
+    width: 450px;
+    height: 350px;
+    
+    position: relative;
+    top: 20px;
+}
+
+  /* 摘要統計區塊 */
+  .statistic{
+    box-shadow: 0 2px 6px #ccc;
+    border-radius: 10px; /* 4角落 */
+
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
+    
+    position: relative;
+    left: 85.5%;
+    top: -820px;
+
+    visibility: hidden;
+
+    width: 250px;
+    height: 700px;
+
+    font-size: 22px;
+
+    background-color: rgb(237, 216, 169);
+}
+  #statClose{
+    width: 50px;
+    position: relative;
+}
+
+  /* 敘述框背景 */
+  #divForDescripBoxBackDrop{
+    width: 100%;
+    height: 750px;
+    background-color: rgba(21, 18, 18, 0.9);
+    
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    visibility: hidden;
+
+    position: relative;
+    top: -1500px;
+    z-index: 1;
+}
+
+  /* 敘述框 */
+  #descripBox{
+    /* background-image: url("../image/dialog_box.png");
+    background-color: transparent;
+    background-repeat: no-repeat;
+    background-size: 470px 750px;
+    background-position: -30px -80px;
+    border: none; */
+
+    border: none; /* 外框 */
+    box-shadow: 0 2px 6px #ccc;
+    border-radius: 10px; /* 4角落 */
+
+    background-color: #FFF0AC;
+
+    width: 400px;
+    height: 600px;
+
+    visibility: hidden;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+
+    position: absolute;
+    
+}
+  /* 敘述框內字體 */
+  .desSpan{
+    font-size: 20px;
+}
+  /* 敘述框內輸入框 */
+  .inputforDescript{
+    width: 250px;
+    height: 25px;
+    font-size: 17px;
+}
+  /* 文字敘述內容(未完成) */
+  #textarea{
+    width: 250px;
+    height: 170px;
+
+    font-size: 17px;
+}
+/* 作者、主題、文字敘述內容(完成) */
+  #divForFinish{
+    width: 200px;
+    height: 170px;
+    background-color: #FFFCEC;
+    
+    display: none;
+}
+/* 資料來源(完成) */
+  #divForDesAuthor,
+  #divForDesTheme,
+  #divForinputResource{
+    width: 200px;
+    height: 25px;
+    background-color: #FFFCEC;
+
+    display: none;
+}
+  .des_button{
+    font-size: 16px;
+    margin-left: 10px;
+
+    cursor: pointer;
+}
+  #descripSpan,#descripSpan1{
+    word-wrap: break-word;
+}
+  .btnDiv{
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
+
+  /* 背景區塊 */
+  #BackGround{
+    background-repeat: no-repeat;
+    background-size: cover;
+
+    width: 100%;
+    height: 100%;
+
+    position: absolute;
+    top: 0px;
+
+    z-index: -2;
+    opacity: 0.5;
+
+  }
+  /* 背景透視框 */
+  #default_BackGround{
+    box-shadow: 0 2px 6px;
+    border-radius: 10px;
+
+    width: 95%;
+    height: 90%;
+
+    background-color: rgba(121, 214, 231, 0.3);
+
+    position: absolute;
+    top: 5%;
+    left: 2.5%;
+
+    z-index: -2;
+}
+
+  /* 欄位選擇區塊 */
+  #selectColumnDiv{
+    background-color: rgba(0, 0, 0, 0.7);
+
+    position: relative;
+    left: -1%;
+    top: -2300px;
+
+    width: 350px;
+    height: 800px;
+
+    visibility: hidden;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    z-index: 3;
+}
+  /* 選擇行、選擇鄉鎮 */
+  .labelForCheckbox{
+    color: white;
+    font-size: 20px;
+}
+  /* 兩個複選盒 */
+  .data-container{
+    width: 250px;
+    height: 150px;
+    border: 1px solid #ccc;
+    overflow: auto;
+}
+  /* 選擇行複選盒 */
+  .checkbox-container{
+    display: flex;
+    flex-direction: column;
+
+    line-height: 50px;
+    font-size: 20px;
+    color: aqua;
+}
+  /* 選擇圖表區塊 */
+  .chartTypeSelectDiv{
+    width: 250px;
+    height: 150px;
+    border: 1px solid #ccc;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    
+    color: aqua;
+}
+  /* 各圖表標題 */
+  .chartsTitle{
+    margin-left: 30px;
+}
+
+  /* 下載框背景 */
+  #downloadDivBackDrop{
+    width: 100%;
+    height: 750px;
+    background-color: rgba(21, 18, 18, 0.9);
+    
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    position: relative;
+    top: -3800px;
+    z-index: 1;
+}
+
+  /* 自製表單背景 */
+  #selfFileBackDrop{
+    width: 100%;
+    height: 750px;
+    background-color: rgba(21, 18, 18, 0.9);
+    
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    position: relative;
+    top: -3050px;
+    z-index: 1;
+    
+}
+  /* 步驟框背景 */
+  #stepBoxBackDropDiv{
+    width: 100%;
+    height: 750px;
+    background-color: rgba(21, 18, 18, 0.9);
+    
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    position: relative;
+    top: -3050px;
+    z-index: 1;
+
+    visibility: hidden;
+}
+
+  /* 輸入欄位數量的區塊(自製表格) */
+  #chooseColNumDiv{
+    border-radius: 15px;
+
+    background-color: rgb(234, 244, 218);
+    width: 550px;
+    height: 70px;
+
+    position: relative;
+    top: 50px;
+    left: 50%;
+
+    margin-left: -275px;
+
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
+  /* 輸入欄位數量(自製表格) */
+  .inputForchooseColNum{
+    width: 130px;
+    height: 40px;
+    font-size: 20px;
+
+}
+  /* 按鈕(自製表格) */
+  .buttonForChooseColNum{
+    width: 50px;
+    height: 50px;
+}
+  .buttonForChooseColNum:hover{
+    cursor: pointer;
+    transform: scale(1.2);
+}
+  /* 確認鈕 */
+  #OKButtonForselfFile{
+    background-image: url("../image/OKForsentSelfFile.png");
+    background-color: transparent;
+    background-repeat: no-repeat;
+    background-size: 50px;
+    border: none;
+}
+  /* 上傳鈕 */
+  #submitButtonForselfFile{
+  background-image: url("../image/submitForsentSelfFile.png");
+  background-color: transparent;
+  background-repeat: no-repeat;
+  background-size: 50px;
+  border: none;
+}
+  /* 清除鈕 */
+  #clearButtonForselfFile{
+  background-image: url("../image/clearForsentSelfFile.png");
+  background-color: transparent;
+  background-repeat: no-repeat;
+  background-size: 50px;
+  border: none;
+}
+  /* 關閉鈕 */
+  #closeButtonForselfFile{
+    background-image: url("../image/closeButtonForselfFile.png");
+    background-color: transparent;
+    background-repeat: no-repeat;
+    background-size: 50px;
+    border: none;
+}
+  /* 自製表格區塊 */
+  #selfFile{
+    width: 1000px;
+    height: 500px;
+
+    position: absolute;
+    margin-left: 280px;
+    margin-top: 60px;
+    background-color: rgb(234, 244, 218);
+    overflow: scroll;
+}
 
   /* 地圖邊界大小 */
   .TaiwanMap{
@@ -98,6 +980,11 @@
     fill: #ccddff;
     stroke: #333333;
     stroke-width: 30;
+  }
+  .Kaohsiung_town{
+    fill: #ccddff;
+    stroke: #333333;
+    stroke-width: 4;
   }
   .Nantou_town{
     fill: #ccddff;
@@ -129,131 +1016,263 @@
     stroke: #333333;
     stroke-width: 30;
   }
+  .Kaohsiung_town:hover{
+    fill: #4F4FFF;
+    transform: translate(2px);
+    stroke: #333333;
+    stroke-width: 8;
+  }
   .Nantou_town:hover{
     fill: #4F4FFF;
     transform: translate(2px);
     stroke: #333333;
     stroke-width: 4;
-  }
-
-  /* 顏色範圍區塊 */
-  #rangeDiv{
-    width: 130px;
-    height: 178px;
-    background-color: #ffffff;
-
-    position: relative;
-    bottom: 230px;
-    left: 450px;
-    
-    visibility: hidden;
-    display: flex;
-    flex-direction: column;
-    line-height: 30px;
-    text-align: center;
     
   }
-  #colorDiv{
-   
-    visibility: hidden;
-    position: relative;
-    top:-750px;
-    left: 500px;
-    width: 70px;
-    height: 50px;
-    background-color: #DDDDDD;
-    line-height: 20px;
+
+
+
+
+
+
+
+  /* 選擇圖表類型框 */
+  #chooseFileTypeDiv{
+    border: none; /* 外框 */
+    box-shadow: 0 2px 6px #ccc;
+    border-radius: 10px; /* 4角落 */
     
-
-  }
-
-  /* 整個圖表區塊 */
-  .container__up {
-    text-align: center;
-  }
-
-  /* 檔案上傳、API上傳按鈕 */
-  .method{
-    margin: 20px;
-    width: 70px;
-    height: 30px;
-  }
-
-  /* 摘要統計區塊 */
-  .statistic{
-    top:10px;
-    display: flex;
-    flex-direction: column;
-    justify-content: start;
-    position: relative;
-    width: 200px;
-  }
-
-  /* 圖表配置 */
-  :root {
-    --header-height: 3rem;
-    --nav-width: 324px;
-    /*font weight*/
-    --font-medium: 500;
-    --font-semi-bold: 600;
-    --font-bold: 700;
-
-    /*color*/
-    --first-color: #026fbc;
-    --first-color-dark: #01489a;
-    --first-color-darken: #002077;
-    --text-color: #002261;
-    --first-color-light: #bce4e7;
-    --first-color-lighten: #ffffff;
-
-    /*font and typography*/
-    --body-font: 'cwTeXYen', sans-serif;
-    --h1-font-size: 1.5rem;
-    --h2-font-size: 1.25rem;
-    --h3-font-size: 1rem;
-    --normal-font-size: .938rem;
-    --small-font-size: .813rem;
-    --smaller-font-size: .75rem;
-
-    /*目錄*/
-    --mb-1: .5rem;
-    --mb-2: 1rem;
-    --mb-3: 1.5rem;
-    --mb-4: 2rem;
-    --mb-5: 2.5rem;
-
-    /*z index*/
-    --z-fixed: 100;
-  }
-
-#chartContainer {
-    width: 450px;
+    width: 650px;
     height: 350px;
-    margin-top: 50px;
-}
-/* .container {
-    text-align: center;
-    background-color: var(--first-color-light);
+    background-color: azure;
+
+    position: absolute;
+
     display: flex;
     justify-content: center;
     align-items: center;
     
-} */
-#chart{
-  margin-top: 50px;
+
+    font-size: 18px;
+  }
+  /* 柱狀圖 */
+  #Bar_ChartBtn{
+    background-image: url("../image/bar_chart.png");
+    background-repeat: no-repeat;
+    background-size: 190px;
+    background-color: transparent;
+    border: none;
+
+
+    width: 200px;
+    height: 200px;
+  }
+  /* 圓餅圖 */
+  #Pie_ChartBtn{
+    background-image: url("../image/pie_chart.png");
+    background-repeat: no-repeat;
+    background-size: 190px;
+    background-color: transparent;
+    border: none;
+
+
+    width: 200px;
+    height: 200px;
+  }
+  /* 折線圖 */
+  #Line_ChartBtn{
+    background-image: url("../image/line_chart.png");
+    background-repeat: no-repeat;
+    background-size: 190px;
+    background-color: transparent;
+    border: none;
+
+
+    width: 200px;
+    height: 200px;
+  }
+
+  #Bar_ChartBtn:hover,#Pie_ChartBtn:hover,#Line_ChartBtn:hover{
+    cursor: pointer;
+    transform: scale(1.2);
+  }
+
+  /* 步驟區塊 與 選擇檔案類型背景框 */
+
+  dialog::backdrop{
+    background: rgba(255, 0, 0, 0.25);
+  }
+
+  /* 下載區塊 */
+  #downloadDiv{
+    border: none; /* 外框 */
+    box-shadow: 0 2px 6px #ccc;
+    border-radius: 20px; /* 4角落 */
+
+    /* background-image: url("../image/stepBox.jpg");
+    background-position: -100px;
+    
+    background-size: 130% 130%;
+    background-repeat: no-repeat; */
+    
+    width: 200px;
+    height: 100px;
+    background-color: #FFF2FF;
+
+    position: absolute;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    font-size: 18px;
+  }
+
+
+  /* XLSX按鈕 */
+  #downloadXLSX{
+    background-image: url('../image/downloadXlsx.png');
+    background-repeat: no-repeat;
+    background-size: 50px;
+    background-position: center;
+    background-color: transparent;
+    border: none;
+
+    width: 100px;
+    height: 80px;
+  }
+  #downloadXLSX:hover{
+    transform: scale(1.2);
+    cursor: pointer;
+  }
+
+  /* JPG按鈕 */
+  #downloadJPG{
+    background-image: url('../image/jpg.png');
+    background-repeat: no-repeat;
+    background-size: 50px;
+    background-position: center;
+    background-color: transparent;
+    border: none;
+
+    width: 100px;
+    height: 80px;
+  }
+  #downloadJPG:hover{
+    transform: scale(1.2);
+    cursor: pointer;
+  }
+
+  /* 取消按鈕 */
+  #cancelDownload{
+    background-image: url('../image/closeButtonForselfFile.png');
+    background-repeat: no-repeat;
+    background-size: 30px;
+    background-position: center;
+    background-color: transparent;
+    border: none;
+
+    width: 30px;
+    height: 30px;
+
+    position: relative;
+    top: -34px;
+  }
+  #cancelDownload:hover{
+    transform: scale(1.2);
+    cursor: pointer;
+  }
+
+  /* 顯示頁數與按鈕區塊 */
+  #divForPaging{
+    width: 450px;
+    height: 30px;
+
+    background-color: #3ec7f9;
+
+    display: flex;
+    justify-content: center;
+  }
+  /* 頁數區塊 */
+  #fraction{
+    width: 70px;
+    height: 30px;
+
+    border-radius: 20px;
+
+    background-color: #ccc;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  /* 換頁按鈕(下一頁) */
+  #rightBtnForFraction{
+    background-image: url('../image/change_right.png');
+    background-repeat: no-repeat;
+    background-size: 30px;
+    background-position: center;
+    background-color: transparent;
+    border: none;
+
+    width: 30px;
+    height: 30px;
+  }
+  #rightBtnForFraction:hover{
+    cursor: pointer;
+    transform: scale(1.2);
+  }
+  /* 換頁按鈕(上一頁) */
+  #leftBtnForFraction{
+    background-image: url('../image/change_left.png');
+    background-repeat: no-repeat;
+    background-size: 30px;
+    background-position: center;
+    background-color: transparent;
+    border: none;
+
+    width: 30px;
+    height: 30px;
+  }
+  #leftBtnForFraction:hover{
+    cursor: pointer;
+    transform: scale(1.2);
+  }
+
+
+  /*響應式*/
+@media screen and (min-width: 1629px){
+  /* 呈現地圖區塊 */
+  .chooseMap {
+    font-size: 20px;
+    position: relative;
+    left: 100px;
+  }
+  #svgDiv svg {
+    width: 750px;
+    height: 750px;
+  }
+  /* 離島區塊 */
+  #Outlying_islands {
+    border-radius: 30px;
+
+    width: 150px;
+    height: 360px;
+    border-style: solid;
+
+    position: relative;
+    left: -880px;
+    top: -5px;
+
+    z-index: -1;
+  }
+  #chooseMethod{
+    display: flex;
+    justify-content:flex-end;
+  }
 }
 
-.link {
-    font-size: 1rem;
-    text-transform: uppercase;
-    color: var(--first-color);
-    font-weight: var(--font-bold);
-    transform: .3s;
-}
 
-.link:hover {
-    color: var(--text-color);
-}
+
 
 
   
