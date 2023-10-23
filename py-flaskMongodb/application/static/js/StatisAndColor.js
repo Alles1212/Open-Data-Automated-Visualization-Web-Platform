@@ -1,4 +1,3 @@
-
     var rangeDiv = document.getElementById("rangeDiv"); // 範圍區塊(分辨顏色)
 
     var showMax = document.getElementById("Max"); // 最大值之文字
@@ -7,17 +6,33 @@
     var showstD = document.getElementById("stD"); // 平均之文字
     var showSum = document.getElementById("sum"); // 總和之文字
     var showNum = document.getElementById("num"); // 個數之文字
-    
+    var statBtn = document.getElementById("statBtn") // 摘要統計按鈕
+    var statClose = document.getElementById("statClose") // 摘要統計按鈕
+
     var colArray = []; // 空陣列，存數值
     var townArray = []; // 空陣列，存鄉鎮
     var average = 0; // 平均
     var standard_deviation = 0; // 標準差
 
+
+    statBtn.addEventListener('click',function(){
+        if(InputData.length != 0){
+            statBtn.style.visibility = 'hidden'; // 顯示統計按鈕
+            stat.style.visibility = 'visible'; // 顯示統計區塊
+            
+        }
+
+        statClose.addEventListener('click',function(){
+            statBtn.style.visibility = 'visible'; // 顯示統計按鈕
+            stat.style.visibility = 'hidden'; // 隱藏統計區塊
+            statBtn.style.pointerEvents = 'visible'; // 統計按鈕恢復功能
+        })
+        
+    })
+    var maxValue = 0; // 最大數值
+    var minValue = 0; // 最小數值
     // 摘要統計
     function statistics(){
-
-        var maxValue = 0; // 最大數值
-        var minValue = 0; // 最小數值
         var sum = 0; // 總和
         var maxTown = ""; // 最大數值之鄉鎮
         var minTown = ""; // 最小數值之鄉鎮
@@ -28,7 +43,7 @@
         townArray = []; // 重製矩陣
 
         for(var i = 1; i < InputData.length; i++){ // 第一列為各欄位，不計入計算
-            colArray.push(parseInt(InputData[i][selectedColumnIndex])); // 將點選的下拉式欄位之數值加到空陣列
+            colArray.push(parseInt(InputData[i][posForColumnDiv])); // 將點選的欄位數值加到空陣列
             townArray.push(InputData[i][0]); // 將對應的鄉鎮加到空陣列
         }
         // 將所有要計算的數值先設為每一陣列第一個位置之值
@@ -57,114 +72,199 @@
         }
         standard_deviation = Math.sqrt((stD_sum/colArray.length)) // 計算標準差
 
-        showMax.textContent = "最大值" + maxTown + ":" + maxValue;
-        showmin.textContent = "最小值" + minTown + ":" + minValue;
-        showAvg.textContent = "平均值" + average.toFixed(2); // 限制在小數第二位
-        showstD.textContent = "標準差" + standard_deviation.toFixed(2); // 限制在小數第二位
-        showSum.textContent = "總和 "  + sum;
-        showNum.textContent = "個數 "  + num;
-
-        appearRange();
-
+        showMax.textContent = "最大值：" + maxTown + ":" + maxValue;
+        showmin.textContent = "最小值：" + minTown + ":" + minValue;
+        showAvg.textContent = "平均值：" + average.toFixed(2); // 限制在小數第二位
+        showstD.textContent = "標準差：" + standard_deviation.toFixed(2); // 限制在小數第二位
+        showSum.textContent = "總和： "  + sum;
+        showNum.textContent = "個數： "  + num;
+        
     }
-
-
-    // 依平均與標準差顯示數字範圍
-    function appearRange(){
+    
+    var groupInputDiv = document.getElementById('groupInputDiv'); // 組別輸入框區塊
+    var selectForGroup = document.getElementById('selectForGroup'); // 下拉式清單
+    var rangeArray = []; // 記錄所有範圍
+    var groupNum = 0; // 分幾組
+    // 進行分組
+    function Grouping(){
         rangeDiv.replaceChildren(); // 清除原本的所有元素
-        rangeDiv.style.visibility = 'visible';
+        rangeDiv.style.visibility = 'visible'; // 顯示範圍框
+        groupInputDiv.style.visibility = 'visible'; // 顯示組別輸入框區塊
         
-        average = parseFloat(average.toFixed(2)); // 限制在小數第二位
-        standard_deviation = parseFloat(standard_deviation.toFixed(2)); // 限制在小數第二位
-        
-        var rangeArray = [parseFloat(average + standard_deviation * 3).toFixed(2),
-                          parseFloat(average + standard_deviation * 2).toFixed(2),
-                          parseFloat(average + standard_deviation * 1).toFixed(2),
-                          parseFloat(average).toFixed(2),
-                          parseFloat(average - standard_deviation * 1).toFixed(2),
-                          parseFloat(average - standard_deviation * 2).toFixed(2),
-                          parseFloat(average - standard_deviation * 3).toFixed(2),
-                        ]
-        var inputColorPos = 0; // 在輸入的顏色陣列中的位置
-        for(var i = 0; i < rangeArray.length; i++){
-            if(i == rangeArray.length - 1){ // 讀到倒數第二個值就終止
-                break;
-            }
-            var span = document.createElement('span');
-            span.textContent = rangeArray[i+1] + ' ~ ' + rangeArray[i]; // 顯示文字(數值)
-            span.style.backgroundColor = redDiv1[inputColorPos] // 設定背景顏色
-           
-            rangeDiv.appendChild(span);
-            inputColorPos += 1; // 下一個位置
-            
+        for(var i = 1; i < 9; i++){
+            var option = document.createElement('option'); // 建立選項
+            option.style.position = 'absolute';
+            option.id = i;
+            option.textContent = i;
+            option.style.textAlign = 'center'; // 置中
+            selectForGroup.appendChild(option);
         }
-        chooseMap()
+
+        selectForGroup.addEventListener('change', function(d){
+            rangeDiv.replaceChildren(); // 清除原本的所有元素
+            groupNum = d.target.value; // 下拉式選單的值
+            appearRange();
+        })
+
+        if(selectForGroup.length > 8){ // 分8組
+            selectForGroup.length = 8; // 使option不重複出現
+        }
     }
+
+    // 生成範圍框
+    function appearRange(){
+        
+        rangeDiv.replaceChildren(); // 清除原本的所有元素
+        rangeArray.length = 0;
+
+        var interval = (maxValue-minValue) / groupNum; // 區間
+        var recordMin = minValue; // 將最小值記錄
+        var inputColorPos = 0; // 在輸入的顏色陣列中的位置
+
+        for(var i = 0; i < groupNum; i++){
+            rangeArray.push(parseFloat(minValue + interval).toFixed(0)); // 將所有區間加到陣列
+            minValue += interval; // 更新最小值
+        }
+        
+        minValue = recordMin; // 還原
+
+        for(var i = rangeArray.length-1; i >= 0; i--){ // 根據區間數量建立span
+            var span = document.createElement('span');
+            span.textContent = rangeArray[i-1] + " ~ " + rangeArray[i]; // 顯示文字
+            if(i == 0){ // 最後一組
+                span.textContent = minValue + " ~ " + rangeArray[i]; // 最後一組顯示最小值
+            }
+            span.style.backgroundColor = currentColorDiv[inputColorPos] // 設定背景顏色
+            
+
+            rangeDiv.appendChild(span);
+            // rangeDiv.appendChild(document.createElement('br'))
+            inputColorPos += 1; // 下一個位置
+        }        
+        
+        townArea(currentMap);
+
+        
+    }
+
+    var redDiv = ['#800000','#A80000','#D10000','#FF0000','#FF5959','#FFA1A1','#FFBFBF','#FFDEDE','#FFF2F2'] // 紅色
+    var orangeDiv = ['#805300','#A86E00','#D18800','#FFA600','#FFC559','#FFDEA1','#FFE8BF','#FFF3DE','#FFFAF2'] // 橙色
+    var yellowDiv = ['#808000','#A8A800','#D1D100','#FFFF00','#FFFF59','#FFFFA1','#FFFFBF','#FFFFDE','#FFFFF2'] // 黃色
+    var greenDiv = ['#008000','#00A800','#00D100','#00FF00','#59FF59','#A1FFA1','#BFFFBF','#DEFFDE','#F2FFF2'] // 綠色
+    var blueDiv = ['#008080','#00A8A8','#00D1D1','#00FFFF','#59FFFF','#A1FFFF','#BFFFFF','#DEFFFF','#F2FFFF'] // 藍色
+    var purpleDiv = ['#4A0080','#6100A8','#7900D1','#9300FF','#B959FF','#D7A1FF','#E4BFFF','#F1DEFF','#FAF2FF'] // 紫色
+    var allColor = [redDiv,orangeDiv,yellowDiv,greenDiv,blueDiv,purpleDiv] // 顏色陣列
+    var currentColorDiv = allColor[0] // 初始顏色
 
     // 生成顏色
     function renderColor(attr,svg_Polygon,i){
-        var rangeArray = [parseFloat(average + standard_deviation * 3).toFixed(2),
-            parseFloat(average + standard_deviation * 2).toFixed(2),
-            parseFloat(average + standard_deviation * 1).toFixed(2),
-            parseFloat(average).toFixed(2),
-            parseFloat(average - standard_deviation * 1).toFixed(2),
-            parseFloat(average - standard_deviation * 2).toFixed(2),
-            parseFloat(average - standard_deviation * 3).toFixed(2),]
         var townID = allMap[attr][i]['id']; // 該鄉鎮id
-        var townIDName = townID.slice(0,-1); // 刪掉最後一個字(鄉、鎮、市、區)
-
-        svg_Polygon.style.fill = redDiv1[6]; // 無數值之地區顏色
+        
+        svg_Polygon.style.fill = currentColorDiv[8]; // 無資料之地區顏色
+        
         for(var j = 0; j < townArray.length; j++){
-            if(townArray[j].indexOf(townIDName) != -1){
+            if(townArray[j] == townID){ // 對應的鄉鎮
                 var currentValue = parseInt(colArray[j]); // 當前數值
-                if(currentValue <= rangeArray[0] & currentValue >= rangeArray[1]){ // 設定顏色
-                    svg_Polygon.style.fill = redDiv1[0];
-                }else if(currentValue <= rangeArray[1] & currentValue >= rangeArray[2]){
-                    svg_Polygon.style.fill = redDiv1[1];
-                }else if(currentValue <= rangeArray[2] & currentValue >= rangeArray[3]){
-                    svg_Polygon.style.fill = redDiv1[2];
-                }else if(currentValue <= rangeArray[3] & currentValue >= rangeArray[4]){
-                    svg_Polygon.style.fill = redDiv1[3];
-                }else if(currentValue <= rangeArray[4] & currentValue >= rangeArray[5]){
-                    svg_Polygon.style.fill = redDiv1[4];
-                }else if(currentValue <= rangeArray[5] & currentValue >= rangeArray[6]){
-                    svg_Polygon.style.fill = redDiv1[5];
+                
+                for(var k = groupNum-1; k >= 0; k--){
+                    if(k == 0){ // 最小值
+                        if(currentValue <= rangeArray[0] & currentValue >= minValue){
+                            svg_Polygon.style.fill = currentColorDiv[groupNum-1];
+                        }
+                    }else{ // 其他數值
+                        if(currentValue <= rangeArray[k] & currentValue >= rangeArray[k-1]){
+                            svg_Polygon.style.fill = currentColorDiv[groupNum-(k+1)];
+                        }
+                    }
                 }
             }
         }
+        
     }
-    var basisColor = ['red','orange','yellow','green','blue','purple']
-    function chooseColor(attr,svg_Polygon,i){
-        var colorDiv = document.getElementById('colorDiv');
-        colorDiv.replaceChildren();
-        colorDiv.style.visibility = 'visible'
+    colorBtn.addEventListener('mousemove',chooseColor); // 顯示六個顏色按鈕
 
-        for(var i = 0; i < basisColor.length; i++){
+    columnNameDiv.style.backgroundColor = currentColorDiv[5];
+    // 生成選擇顏色按鈕
+    var btnColorArray = ['#FF0000','#FFA600','#FFFF00','#00FF00','#00FFFF','#9300FF']
+    var colorDiv = document.getElementById('colorDiv');
+    function chooseColor(){
+        colorDiv.replaceChildren();
+        colorDiv.style.visibility = 'visible'; // 顯示按鈕區塊
+
+        for(var i = 0; i < btnColorArray.length; i++){
             var btn = document.createElement('button');
             btn.style.position = 'relative';
             btn.style.width = 20 + 'px';
             btn.style.height = 20 + 'px';
             btn.style.left = 5 + 'px';
-            btn.style.background = basisColor[i];
-            btn.id = i
-
+            btn.style.background = btnColorArray[i];
+            btn.style.cursor = 'pointer';
+            btn.id = i;
+            
             if(i == 3){
-                var br = document.createElement('br');
+                var br = document.createElement('br'); // 第四個按鈕換行
                 colorDiv.appendChild(br)
             }
             colorDiv.appendChild(btn);
 
-            var btnId = document.getElementById(i)
-            btnId.addEventListener('click',changeColor)
+            //var btnId = document.getElementById(i); // 六個顏色按鈕
+            btn.addEventListener('click',changeColor); // 點擊六個按鈕
+            
         }
-    }
-    function changeColor(e){
-        var currentColorID = e.target.id // 當前被點到的顏色塊
 
-        redDiv1 = allColor[currentColorID];
-        console.log(redDiv1)
+        colorDiv.addEventListener('mouseleave',function(){ // 滑鼠離開按鈕區塊
+            colorDiv.style.visibility = 'hidden'; // 隱藏按鈕區塊
+        })
     }
     
+    var currentColorID = 0; // 記錄地圖顏色
+    // 改變顏色
+    function changeColor(e){
+        currentColorID = e.target.id // 當前被點到的顏色塊
+        currentColorDiv = allColor[currentColorID]; // 不同色系(紅、藍、綠)
+        colorDiv.style.visibility = 'hidden'; // 隱藏顏色選擇區塊
+        
+        columnNameDiv.style.backgroundColor = currentColorDiv[5];
+        
+        townArea(currentMap); // 同時改變地圖顏色
+        appearRange(); // 同時改變範圍框顏色
+        
+    }
+
+    function limitCityColor(){
+        var allMapKeys = Object.keys(allMap); // 記錄數值
+        var allMapValues = Object.values(allMap); // 記錄鄉鎮
+        var realMap; // 記錄當前點選的地圖
+
+        for(var k = 1; k < InputData.length; k++){
+            for(var i = 0; i < allMapValues.length; i++){
+                for(var j = 0; j < allMapValues[i].length; j++){
+                    if(allMapValues[i][j]['id'] == InputData[k][0]){ // 判斷為某縣市
+                        realMap = allMapKeys[i];
+                    }
+                }
+            }
+        }
+
+        if(currentMap != realMap){ 
+            originColor(); // 還原成背景顏色
+        }
+        
+    }
+
+    // 原始背景顏色
+    function originColor(){
+        var svgDiv = document.getElementById('svgDiv');
+        var svgPolygon = svgDiv.getElementsByTagName('polygon'); // 抓取每個polygon資料
+
+        for(var i = 0; i < svgPolygon.length; i++){
+            svgPolygon[i].style.fill = '#ccddff'; // 重製顏色
+        }
+
+        colorBtn.style.visibility = 'hidden'; // 隱藏選擇顏色按鈕
+        rangeDiv.style.visibility= 'hidden'; // 隱藏顏色範圍框
+    }
+
 
 
 
