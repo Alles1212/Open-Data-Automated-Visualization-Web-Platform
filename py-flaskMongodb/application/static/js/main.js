@@ -15,11 +15,15 @@ var textarea = document.getElementById('textarea'); // 文字區塊(敘述框)
 var divForFinish = document.getElementById('divForFinish'); // 建立div顯示輸入的文字(敘述框)
 var inputResource = document.getElementById('inputResource'); // 資料來源(敘述框)
 var divForinputResource = document.getElementById('divForinputResource'); // 資料來源(敘述框)
-var remitBtn = document.getElementById('remitBtn'); // 匯出按鈕
+var remitBackDropDiv = document.getElementById('remitBackDropDiv'); // 存檔背景
+var remitBtn = document.getElementById('remitBtn'); // 存檔按鈕
 var stepBoxBackDropDiv = document.getElementById('stepBoxBackDropDiv'); // 步驟框背景區塊
 var stepBox = document.getElementById('stepBox'); // 步驟方塊
 var itemsDiv = document.getElementById('itemsDiv'); // 項目區塊(步驟框)
 var contentForStep = document.getElementById('contentForStep'); // 內容區塊(步驟框)
+var allMethodDiv = document.getElementById('allMethodDiv'); // 上傳方式區塊(整塊)
+var methodDiv = document.getElementById('methodDiv'); // 上傳方式名稱區塊
+var methodContent = document.getElementById('methodContent'); // 上傳方式內容區塊
 
 
 step.addEventListener('click', showStep); // 點擊步驟框按鈕
@@ -59,7 +63,6 @@ function showStep(){
     
     
     stepBoxBackDropDiv.appendChild(stepBox)
-    document.body.appendChild(stepBoxBackDropDiv);
 
     button.addEventListener('mousemove',createButtonSuspendBox); // 滑鼠進入按鈕
 
@@ -75,6 +78,7 @@ function initStepContent(){
     mapImage.style.width = 300 + 'px';
     mapImage.style.height = 400 + 'px';
     mapImage.src = "./image/stepMap.png";
+    //mapImage.style.backgroundColor = 'pink'
 
     var mapText = document.createElement('div'); // 建立地圖文字區塊
     mapText.style.width = 300 + 'px';
@@ -82,6 +86,9 @@ function initStepContent(){
     mapText.style.display = 'flex';
     mapText.style.alignItems = 'center';
     mapText.style.textAlign = 'justify'; // 左右對齊
+    mapText.style.position = 'relative';
+    mapText.style.left = -10 + 'px';
+    //mapText.style.backgroundColor = 'red'
 
     var p = document.createElement('div'); // 建立地圖文字
     p.innerHTML = '單擊不同縣市區塊可以切換不同縣市地圖，\
@@ -110,19 +117,87 @@ function changeContent(e){
 
 // 檔案上傳步驟
 function allFileStep(){
-    contentForStep.replaceChildren();
+    methodDiv.replaceChildren();
+    var numArr = ['檔案','API','自製表單']; // 三種上傳方式名稱
 
-    
+    for(var i = 0; i < numArr.length; i++){
+        var methodNameDiv = document.createElement('div'); // 建立個別名稱區塊
+        methodNameDiv.className = 'methodNameDiv';
+        methodNameDiv.textContent = numArr[i]; // 設定文字
+        methodNameDiv.id = i;
+        methodDiv.appendChild(methodNameDiv);
+
+        methodNameDiv.addEventListener('click', changeMethod); // 更改上傳方式內容
+    }
+
+    allMethodDiv.appendChild(methodDiv);
+    allMethodDiv.appendChild(methodContent);
+    contentForStep.appendChild(allMethodDiv);
 }
+
+// 更改上傳方式內容
+function changeMethod(e){
+    var curDiv = e.target; // 當前點擊的項目
+    if(curDiv.id == 0){
+        fileMethod(); // 檔案上傳步驟
+    }else if(curDiv.id == 1){
+        //APIMethod(); // API上傳步驟
+    }else if(curDiv.id == 2){
+        //selffFileMethod(); // 自製表單上傳步驟
+    }
+}
+
+// 檔案上傳步驟
+function fileMethod(){
+    methodContent.replaceChildren();
+    var fileDiv = document.createElement('div'); // 建立上傳檔案說明區塊
+    fileDiv.id = 'fileDiv';
+
+    var fileImg = document.createElement('div'); // 建立上傳檔案圖片區塊
+    fileImg.id = 'fileImg';
+
+    var fileSpan = document.createElement('span'); // 建立上傳檔案文字區塊
+    fileSpan.id = 'fileSpan';
+    fileSpan.textContent = '點擊此按鈕進行檔案上傳';
+
+    var localDiv = document.createElement('div'); // 建立選擇檔案說明區塊
+    localDiv.id = 'localDiv';
+
+    var localImg = document.createElement('div'); // 建立選擇檔案圖片區塊
+    localImg.id = 'localImg';
+
+    var localSpan = document.createElement('span'); // 建立選擇檔案文字區塊
+    localSpan.id = 'localSpan';
+    localSpan.textContent = '選擇本機CSV檔案';
+
+    var submitDivForFile = document.createElement('div'); // 建立傳送說明區塊
+    submitDivForFile.id = 'submitDivForFile';
+
+    var submitDivForFileImg = document.createElement('div'); // 建立傳送圖片區塊
+    submitDivForFileImg.id = 'submitDivForFileImg';
+
+    var submitDivForFileSpan = document.createElement('span'); // 建立選擇檔案文字區塊
+    submitDivForFileSpan.id = 'submitDivForFileSpan';
+    submitDivForFileSpan.textContent = '確認';
+
+    fileDiv.appendChild(fileImg);
+    fileDiv.appendChild(fileSpan);
+    localDiv.appendChild(localImg);
+    localDiv.appendChild(localSpan);
+    submitDivForFile.appendChild(submitDivForFileImg);
+    submitDivForFile.appendChild(submitDivForFileSpan);
+    methodContent.appendChild(fileDiv);
+    methodContent.appendChild(localDiv);
+    methodContent.appendChild(submitDivForFile);
+}
+
+
 
 var recordTheme = ""
 var recordDescript = "";
 var recordResource = "";
 // 顯示敘述框
 function showDescription(){
-    // gatherBtnDiv.style.visibility = 'hidden'; // 顯示按鈕區塊
-    // gatherBtn.style.visibility = 'visible'; // 顯示按鈕
-    
     description.style.pointerEvents = 'none';  // 使敘述框按鈕失去功能
     divForDescripBoxBackDrop.style.visibility = 'visible'; // 顯示敘述框
     descripBox.style.visibility = 'visible'; // 顯示敘述框
@@ -240,7 +315,7 @@ function showDescription(){
     editBtn.addEventListener('click',function(){
         editBtn.style.pointerEvents = 'none'; // 編輯按鈕失去功能
 
-        divForDesAuthor.style.display = 'none'; // 隱藏作者名稱完成框
+        //divForDesAuthor.style.display = 'none'; // 隱藏作者名稱完成框
         // inputAuthor.style.display = 'block'; // 顯示作者輸入框
 
         divForDesTheme.style.display = 'none'; // 隱藏主題名稱完成框
@@ -272,45 +347,30 @@ remitBtn.addEventListener('click',remitScreen);
 
 // 存檔
 function remitScreen(){
+    remitBackDropDiv.style.visibility = 'visible';
+    setTimeout(function(){
+        remitBackDropDiv.style.visibility = 'hidden';
 
-    var divForRemit = document.createElement('div'); // 資料區塊
-    divForRemit.id = 'divForRemit';
+    },1500)
 
+    // var htmlCode = '<style>' + '.TaiwanMap{fill: #ccddff;stroke: #333333;stroke-width: 10;}' + '</style>' + 
+    //                 document.getElementById('default').innerHTML;
 
-    var spanForMap = document.createElement('span');
-    spanForMap.textContent = CityName[currentMap]; // 縣市名稱
-    spanForMap.style.position = 'relative';
-    spanForMap.style.fontSize = 40 + 'px';
+    // var newHtml = document.implementation.createHTMLDocument("newHtml");
+    // newHtml.documentElement.innerHTML = (htmlCode); 
 
-    var spanForChart = document.createElement('span');
-    spanForChart.textContent = columnNameArray[0]; // 欄位資料
-    spanForChart.style.position = 'relative';
-    spanForChart.style.fontSize = 40 + 'px';
-    spanForChart.style.left = 200 + 'px'
+    // console.log(newHtml)
 
-    divForRemit.appendChild(spanForMap);
-    divForRemit.appendChild(spanForChart);
-    document.body.appendChild(divForRemit);
+    // var iframe = document.createElement('iframe');
+    // var blob = new Blob([htmlCode], {
+    //     'type': 'text/html'
+    // });
+    // iframe.src = URL.createObjectURL(blob);
+    // iframe.style.width = 100 + '%';
+    // iframe.style.height = 800 + 'px';
+    // iframe.click()
 
-    
-    var htmlCode = '<style>' + '.TaiwanMap{fill: #ccddff;stroke: #333333;stroke-width: 10;}' + '</style>' + 
-                    document.getElementById('default').innerHTML;
-
-    var newHtml = document.implementation.createHTMLDocument("newHtml");
-    newHtml.documentElement.innerHTML = (htmlCode); 
-
-    console.log(newHtml)
-
-    var iframe = document.createElement('iframe');
-    var blob = new Blob([htmlCode], {
-        'type': 'text/html'
-    });
-    iframe.src = URL.createObjectURL(blob);
-    iframe.style.width = 100 + '%';
-    iframe.style.height = 800 + 'px';
-    iframe.click()
-
-    document.body.appendChild(iframe)
+    // document.body.appendChild(iframe)
     
 
     var JsonData = {
@@ -318,6 +378,7 @@ function remitScreen(){
                         "descript": recordDescript, // 目前敘述
                         "resource": recordResource, // 目前資料來源
                         "svgMap": currentMap, // 目前縣市地圖
+                        "townName": recordTownName, // 目前縣市名稱
                         "backGround": recordBackGround, // 目前選擇的背景(跟地圖一樣)
                         "inputData": InputData, // 目前上傳的檔案(二維陣列)
                         "rangeGroup": groupNum, // 目前選擇的顏色分組數
@@ -347,7 +408,7 @@ function createButtonSuspendBox(d){
     suBoxForButtons.style.visibility = 'visible';
     suBoxForButtons.style.position = 'relative';
     suBoxForButtons.style.left = d.pageX - 10 + 'px';
-    suBoxForButtons.style.top = d.pageY - 60 + 'px';
+    suBoxForButtons.style.top = d.pageY - 80 + 'px';
 
     if(d.target.id == 'sentFile'){ // 檔案區
         suBoxForButtons.textContent = '上傳檔案';
@@ -355,6 +416,16 @@ function createButtonSuspendBox(d){
         suBoxForButtons.textContent = '上傳API';
     }else if(d.target.id == 'sentSelfFile'){
         suBoxForButtons.textContent = '自製表單';
+    }else if(d.target.id == 'sumFileBtn'){
+        suBoxForButtons.textContent = '加總';
+    }else if(d.target.id == 'avgFileBtn'){
+        suBoxForButtons.textContent = '平均';
+    }else if(d.target.id == 'maxFileBtn'){
+        suBoxForButtons.textContent = '最大值';
+    }else if(d.target.id == 'minFileBtn'){
+        suBoxForButtons.textContent = '最小值';
+    }else if(d.target.id == 'returnBtn'){
+        suBoxForButtons.textContent = '返回';
     }else if(d.target.id == 'downloadAll'){
         suBoxForButtons.textContent = '下載'; // 最上面區
     }else if(d.target.id == 'remitBtn'){
@@ -388,13 +459,25 @@ function createButtonSuspendBox(d){
         suBoxForButtons.textContent = '上傳';
         suBoxForButtons.style.zIndex = 2;
     }else if(d.target.id == 'clearButtonForselfFile'){
-        suBoxForButtons.textContent = '清除欄位';
+        suBoxForButtons.textContent = '全部清除';
+        suBoxForButtons.style.zIndex = 2;
+    }else if(d.target.id == 'returnButtonForselfFile'){
+        suBoxForButtons.textContent = '返回';
         suBoxForButtons.style.zIndex = 2;
     }else if(d.target.id == 'closeButtonForselfFile'){
         suBoxForButtons.textContent = '關閉表格';
         suBoxForButtons.style.zIndex = 2;
-    }else if(d.target.id == 'divForCsvFile'){
-        suBoxForButtons.textContent = '選擇CSV';
+    }else if(d.target.id == 'addButton_Row'){
+        suBoxForButtons.textContent = '新增列';
+        suBoxForButtons.style.zIndex = 2;
+    }else if(d.target.id == 'addButton_Col'){
+        suBoxForButtons.textContent = '新增欄';
+        suBoxForButtons.style.zIndex = 2;
+    }else if(d.target.id == 'minusButton_Row'){
+        suBoxForButtons.textContent = '刪除列';
+        suBoxForButtons.style.zIndex = 2;
+    }else if(d.target.id == 'minusButton_Col'){
+        suBoxForButtons.textContent = '刪除欄';
         suBoxForButtons.style.zIndex = 2;
     }else if(d.target.id == 'divForCsvFile'){
         suBoxForButtons.textContent = '選擇CSV';
