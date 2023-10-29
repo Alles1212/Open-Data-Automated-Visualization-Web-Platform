@@ -1,6 +1,17 @@
 var stat = document.getElementById('stat');
+var sumFileBtn = document.getElementById('sumFileBtn'); // 檔案加總鈕
+var avgFileBtn = document.getElementById('avgFileBtn'); // 檔案平均鈕
+var maxFileBtn = document.getElementById('maxFileBtn'); // 檔案最大值鈕
+var minusAllBtn = document.getElementById('minFileBtn'); // 檔案最小值鈕
+
+sumFileBtn.addEventListener('click',sumFile)
+avgFileBtn.addEventListener('click',avgFile)
+maxFileBtn.addEventListener('click',maxFile)
+minusAllBtn.addEventListener('click',minFile)
+
 // 資料分析
 function analyze(InputData){
+    console.log(InputData)
     var firstCol = InputData[0]; // 記錄欄位名稱
     var tArray = []; //存轉置後的矩陣
 
@@ -16,13 +27,20 @@ function analyze(InputData){
         }
         tArray.push(rowArray)
     }
+    console.log(tArray)
+
+    if(isSelfFile == true){ // 從自製表單來的就不進入總和判斷
+        tArray = tArray;
+    }else{
+        tArray = delTotal(tArray); // 刪除統計量
+    }
     
-    tArray = delTotal(tArray); // 刪除統計量
+    console.log(tArray)
     
     var originArray = []; // 將清洗好的陣列還原
 
     if(judgeBlankSpace(InputData)){
-        chartContainer.replaceChildren(); // 清空原本的元素
+        chartsDiv.replaceChildren(); // 清空原本的元素
         showError(InputData); // 顯示空白的位置
     }else{
         tArray = judgeFile(tArray,firstCol); // 判斷屬於哪種類型的檔案
@@ -61,12 +79,15 @@ function clearAccumulate(InputData){
         newData = InputData;
     }
 
+    console.log(newData)
+
     return newData;
 }
 
 // 刪除特殊符號
 var data = []; // 存取修改後的陣列
 function dealMarks(InputData){
+    console.log(InputData)
     for(var i = 0; i < InputData.length; i++){
         var rowData = []; // 存取每一列
         for(var j = 0; j < InputData[0].length; j++){
@@ -74,15 +95,17 @@ function dealMarks(InputData){
         }
         data.push(rowData);
     }
+    console.log(data)
     return data;
 }
 
 // 刪除統計值
 function delTotal(tArray){
+    console.log(tArray)
     var lastpos = tArray[0].length - 1; // 每一列最後一個位置
     var lastCount = 0; // 計算最後一列總計量出現的次數
     var firstCount = 0; // 計算第一列總計量出現的次數
-    
+    console.log(lastpos)
     for(var i = 1; i < tArray.length; i++){
         var lastsum = 0; // 計算總和(最後一列為總和值)
         for(var j = 0; j < tArray[0].length; j++){
@@ -115,6 +138,8 @@ function delTotal(tArray){
             tArray[i].shift(); // 刪掉總計值
         }
     }
+
+    console.log(tArray)
     return tArray;
 }
 
@@ -141,6 +166,7 @@ function judgeFile(tArray,firstCol){
         return tArray;
     }
     else{ // 數值檔
+        console.log(tArray)
         tArray = dealValueFile(tArray);
         return tArray;
     }
@@ -328,8 +354,11 @@ function countRepeat(tArray){
     return countTown; // type: obj
 }
 
+
+var dealingArray = []; // 多餘的資料已處理
 // 處理數值檔
 function dealValueFile(tArray){
+    console.log(tArray)
     var strArray = []; // 記錄找到的鄉鎮列
     var countArray = []; // 記錄每一列找到的鄉鎮欄位數量
 
@@ -355,11 +384,14 @@ function dealValueFile(tArray){
 
     changeRow(tArray,strArray); // 交換欄位並改變鄉鎮名稱
 
+
+    dealingArray = tArray; // 記錄陣列
+    console.log(tArray)
+
     var countForValue = countRepeat(tArray); // 計算重複的鄉鎮資料
-    var objectKeys = Object.keys(countForValue); // 矩陣,計錄鄉鎮名
+    var objectKeys = Object.keys(countForValue); // 矩陣,記錄鄉鎮名
     var sumArray = []; // 記錄各鄉鎮之各欄位總和
 
-    
     for(var k = 0; k < objectKeys.length; k++){
         for(var i = 1; i < tArray.length; i++){
             var sum = 0; // 計入該鄉鎮的總和
@@ -371,6 +403,8 @@ function dealValueFile(tArray){
             sumArray.push(sum)
         }
     }
+    console.log(sumArray)
+
 
     
     var newArray = []; // 新矩陣
@@ -401,7 +435,7 @@ function judgeBlankSpace(InputData){
     return false;
 }
 
-
+var skipAlready = false; // 判斷是否有刪除空白欄
 // 刪掉空白較多的行
 function skipBlank(InputData){
     var arr = []; // 記錄空白格所在的行位置
@@ -429,13 +463,18 @@ function skipBlank(InputData){
     for(var i = objectLength-1; i >= 0; i--){
         for(var j = 0; j < InputData.length; j++){
             if(Object.values(total_count)[i] > 10){
+                skipAlready = true;
                 InputData[j].splice(Object.keys(total_count)[i],1)
                 console.log(i)
+            }else{
+                skipAlready = false;
             }
         }
         
     }
     console.log(InputData)
+    console.log(skipAlready)
+    console.log(Object.values(total_count)[0])
     
 }
 
@@ -454,13 +493,13 @@ function showError(InputData){
     }
     paging(); // 顯示錯誤訊息並分頁
 
-    chartContainer.style.fontSize = 20 + 'px';
-    chartContainer.style.backgroundColor = '#FFFFFF';
-    chartContainer.style.borderRadius = 20 + 'px';
-    chartContainer.style.display = 'flex';
-    chartContainer.style.flexDirection = 'column';
-    chartContainer.style.justifyContent = 'space-around';
-
+    chartsDiv.style.fontSize = 20 + 'px';
+    chartsDiv.style.backgroundColor = '#FFFFFF';
+    chartsDiv.style.borderRadius = 20 + 'px';
+    chartsDiv.style.display = 'flex';
+    chartsDiv.style.flexDirection = 'column';
+    chartsDiv.style.justifyContent = 'space-around';
+    console.log(blankArray)
     clearAll(); // 檔案空白時，重置網頁
 
 }
@@ -469,7 +508,7 @@ var curNumForPaging = 1; // 第幾頁
 var curPos = 0; // 目前欄位位置(在blankArray中)
 // 顯示錯誤訊息並分頁
 function paging(){
-    chartContainer.replaceChildren()
+    chartsDiv.replaceChildren()
     var firSpan = document.createElement('span'); // 標頭
     var secSpan = document.createElement('span'); // 空白位置
     var upPos = document.createElement('span'); // 上一個欄位
@@ -484,10 +523,10 @@ function paging(){
     firSpan.style.fontWeight = 'bold';
     secSpan.style.color = 'red';
 
-    chartContainer.appendChild(firSpan);
-    chartContainer.appendChild(secSpan);
-    chartContainer.appendChild(upPos);
-    chartContainer.appendChild(downPos);
+    chartsDiv.appendChild(firSpan);
+    chartsDiv.appendChild(secSpan);
+    chartsDiv.appendChild(upPos);
+    chartsDiv.appendChild(downPos);
 
     var divForPaging = document.createElement('div'); // 顯示頁數與按鈕區塊
     divForPaging.id = 'divForPaging';
@@ -509,17 +548,27 @@ function paging(){
     var downColumn = document.createElement('span'); // 顯示下一個欄位
 
     blankSpan.textContent = '第' + parseInt(blankArray[curPos][0]+1) + '列，第' + parseInt(blankArray[curPos][1]+1) + '行為空白'; // 第三行顯示空白位置
-    upColumn.textContent = InputData[blankArray[curPos][0]-1][blankArray[curPos][1]];
-    downColumn.textContent = InputData[blankArray[curPos][0]+1][blankArray[curPos][1]];
+    if(blankArray[curPos][0]-1 < 0){
+        upColumn.textContent = "";
+    }else{
+        upColumn.textContent = InputData[blankArray[curPos][0]-1][blankArray[curPos][1]];
+    }
 
-    chartContainer.insertBefore(blankSpan, chartContainer.childNodes[2]);
-    chartContainer.insertBefore(upColumn, chartContainer.childNodes[4]);
-    chartContainer.insertBefore(downColumn, chartContainer.childNodes[6]);
+    if(blankArray[curPos][0]+1 > InputData.length-1){
+        downColumn.textContent = "";
+    }else{
+        downColumn.textContent = InputData[blankArray[curPos][0]+1][blankArray[curPos][1]];
+    }
+    
+
+    chartsDiv.insertBefore(blankSpan, chartsDiv.childNodes[2]);
+    chartsDiv.insertBefore(upColumn, chartsDiv.childNodes[4]);
+    chartsDiv.insertBefore(downColumn, chartsDiv.childNodes[6]);
 
     divForPaging.appendChild(leftBtnForFraction);
     divForPaging.appendChild(fraction);
     divForPaging.appendChild(rightBtnForFraction);
-    chartContainer.appendChild(divForPaging);
+    chartsDiv.appendChild(divForPaging);
 
     rightBtnForFraction.addEventListener('click',changedown);
     leftBtnForFraction.addEventListener('click',changeup);
@@ -570,6 +619,169 @@ function clearAll(){
     colorDiv.style.backgroundColor = 'transparent';
     
 }
+
+// 轉置資料
+// function transposeData(){
+//     var tArray = []; // 新陣列
+//     // 進行轉置
+//     for(var i = 0; i < InputData[0].length; i++){
+//         var rowArray = [];
+//         for(var j = 1; j < InputData.length; j++){
+//             rowArray.push(InputData[j][i]);
+//         }
+//         tArray.push(rowArray)
+//     }
+//     return tArray;
+// }
+
+// 檔案各鄉鎮取加總
+function sumFile(){
+    console.log(dealingArray);
+    var firstCol = InputData[0]; // 記錄欄位名稱
+    var countForValue = countRepeat(dealingArray); // 計算重複的鄉鎮資料
+    var objectKeys = Object.keys(countForValue); // 矩陣,記錄鄉鎮名
+    var sumArray = []; // 記錄各鄉鎮之各欄位總和
+
+    for(var k = 0; k < objectKeys.length; k++){
+        for(var i = 1; i < dealingArray.length; i++){
+            var sum = 0; // 計入該鄉鎮的總和
+            for(var j = 0; j < dealingArray[0].length; j++){
+                if(dealingArray[0][j] == objectKeys[k]){ // 找到一樣的縣市
+                    sum += parseInt(dealingArray[i][j]); // 加起來
+                }
+            }
+            sumArray.push(sum)
+        }
+    }
+
+    var newArray = []; // 新矩陣
+    var len = dealingArray.length - 1; // 一組有len個資料
+    newArray.push(objectKeys); // 先加入鄉鎮
+    for(var i = 0; i < dealingArray.length; i++){
+        var rowArray = []; // 存取列資料
+            for(var k = 0; k < sumArray.length; k++){
+                if(k % len == i){ // 分組
+                    rowArray.push(sumArray[k])
+                }
+            }
+        newArray.push(rowArray);
+    }
+    newArray.pop(); // 多建立一行要刪掉
+    console.log(newArray)
+
+    var originArray = []; // 將清洗好的陣列還原
+    for(var i = 0; i < newArray[0].length; i++){
+        var rowArray = [];
+        for(var j = 0; j < newArray.length; j++){
+            rowArray.push(newArray[j][i]);
+        }
+        originArray.push(rowArray);
+    }
+
+    originArray.unshift(firstCol); // 加入欄位名稱(單位、A1件數)
+    InputData = originArray; // 更新InputData
+
+    buttonVisible(); // 顯示各式按鈕
+    renderColumnSelect(); // 生成欄位下拉式清單
+    renderRowSelect();
+    renderColumnText(); // 生成欄位名稱區塊(地圖變換用)
+    Grouping(); // 分組
+
+    console.log(InputData)
+    
+}
+// 檔案各鄉鎮取平均
+function avgFile(){
+    var firstCol = InputData[0]; // 記錄欄位名稱
+    var countForValue = countRepeat(dealingArray); // 計算重複的鄉鎮資料
+    var objectKeys = Object.keys(countForValue); // 矩陣,記錄鄉鎮名
+    var objectValues = Object.values(countForValue); // 矩陣，記錄鄉鎮數量
+    var sumArray = []; // 記錄各鄉鎮之各欄位總和
+
+    for(var k = 0; k < objectKeys.length; k++){
+        for(var i = 1; i < dealingArray.length; i++){
+            var sum = 0; // 計入該鄉鎮的總和
+            for(var j = 0; j < dealingArray[0].length; j++){
+                if(dealingArray[0][j] == objectKeys[k]){ // 找到一樣的縣市
+                    sum += parseInt(dealingArray[i][j]); // 加起來
+                }
+            }
+            sumArray.push(sum)
+        }
+    }
+
+    var newArray = []; // 新矩陣
+    var len = dealingArray.length - 1; // 一組有len個資料
+    newArray.push(objectKeys); // 先加入鄉鎮
+    for(var i = 0; i < dealingArray.length; i++){
+        var rowArray = []; // 存取列資料
+            for(var k = 0; k < sumArray.length; k++){
+                if(k % len == i){ // 分組
+                    rowArray.push(sumArray[k])
+                }
+            }
+        newArray.push(rowArray);
+    }
+    newArray.pop(); // 多建立一行要刪掉
+
+    // 算平均
+    for(var k = 0; k < objectValues.length; k++){
+        for(var i = 1; i < newArray.length; i++){
+            for(var j = 0; j < newArray[0].length; j++){
+                if(j == k){
+                    newArray[i][j] = parseInt(newArray[i][j]) / parseInt(objectValues[k])
+                }
+            }
+        }
+    }
+    console.log(newArray)
+
+    var originArray = []; // 將清洗好的陣列還原
+    for(var i = 0; i < newArray[0].length; i++){
+        var rowArray = [];
+        for(var j = 0; j < newArray.length; j++){
+            rowArray.push(newArray[j][i]);
+        }
+        originArray.push(rowArray);
+    }
+
+    originArray.unshift(firstCol); // 加入欄位名稱(單位、A1件數)
+    InputData = originArray; // 更新InputData
+
+    buttonVisible(); // 顯示各式按鈕
+    renderColumnSelect(); // 生成欄位下拉式清單
+    renderRowSelect();
+    renderColumnText(); // 生成欄位名稱區塊(地圖變換用)
+    Grouping(); // 分組
+
+    console.log(InputData)
+
+}
+// 檔案各鄉鎮取最大值
+function maxFile(){
+    var firstCol = InputData[0]; // 記錄欄位名稱
+    var countForValue = countRepeat(dealingArray); // 計算重複的鄉鎮資料
+    var objectKeys = Object.keys(countForValue); // 矩陣,記錄鄉鎮名
+    var testArr = []
+    
+    for(var k = 0; k < objectKeys.length; k++){
+        for(var i = 1; i < dealingArray.length; i++){
+            var arr = []
+            for(var j = 0; j < dealingArray[0].length; j++){
+                if(dealingArray[0][j] == objectKeys[k]){ // 找到一樣的縣市
+                   arr.push(parseInt(dealingArray[i][j])); // 加起來
+                }
+            }
+            testArr.push(arr)
+        }
+    }
+    console.log(testArr)
+}
+// 檔案各鄉鎮取最小值
+function minFile(){
+    
+}
+    
 
 
 
