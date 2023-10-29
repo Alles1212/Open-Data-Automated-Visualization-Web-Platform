@@ -16,7 +16,7 @@
             
             <div>
                 <div id="townNameDiv"> <!--鄉鎮名稱區塊-->
-                    <span id = 'townName'>台灣地圖</span> <!--鄉鎮名稱-->
+                    <span id = 'townName'>臺灣地圖</span> <!--鄉鎮名稱-->
 
                     <button class="download" id="downloadAll"> <!--下載按鈕-->
                     <button id = "remitBtn"></button> <!--匯出按鈕-->
@@ -24,15 +24,21 @@
                     <button id = "description"></button> <!--敘述框按鈕-->
                 </div> 
             </div>
-
-            
             <div style="width: 46px; height: 46px;"></div>
+        </div>
+
+        <div style="position: relative; left: 70%;">
+            <button id="sumFileBtn">總和</button>
+            <button id="avgFileBtn">平均</button>
+            <button id="maxFileBtn">最大值</button>
+            <button id="minFileBtn">最小值</button>
         </div>
 
         <!-- <p id="themeCalled">{{ todo.file['theme'] }}</p>
         <p id="descriptCalled">{{ todo.file['descript'] }}</p>
         <p id="resourceCalled">{{ todo.file['resource'] }}</p>
         <p id="svgMapCalled">{{ todo.file['svgMap'] }}</p>
+        <p id="townNameCalled">{{ todo.file['townName'] }}</p>
         <p id="backGroundCalled">{{ todo.file['backGround'] }}</p>
         <p id="inputDataCalled">{{ todo.file['inputData'] }}</p>
         <p id="rangeGroupCalled">{{ todo.file['rangeGroup'] }}</p>
@@ -43,6 +49,7 @@
     
         
         <button id= "statBtn" ></button> <!--摘要統計按鈕-->
+        <button id= "returnBtn" ></button> <!--返回按鈕-->
         <div id="suBoxForButtons" class="suBoxForButtons">
         </div>
 
@@ -73,21 +80,21 @@
                         <svg width = "600px" height = "600px" viewBox = "400 30 700 1450">
                             <g style = cursor:pointer>
                                 <polygon id="新北市" class="TaiwanMap" points="668.5,178 716.5,198.5 716.9,230.6 694,248 708.6,289.9 736.8,290.9 757.9,354.7 811.2,330.1 815.4,307.1 881,253.5 896.1,257 939,230.8 968.9,223.9 968.5,202.1 944.9,202.3 932.2,177.3 899.5,170.4 846.4,154.6 805.1,102.4 783.8,100.9 730.8,138.8 726.4,159"/>
-                                <polygon id="台北市" class="TaiwanMap" points="790.1,139.2 813,162 820,201.4 831.13,211.1 811.9,217.2 813,238.9 779.9,222.4 765.8,223.3 771.1,187.3 753,181.3 762,154.6 779,154"/>
+                                <polygon id="臺北市" class="TaiwanMap" points="790.1,139.2 813,162 820,201.4 831.13,211.1 811.9,217.2 813,238.9 779.9,222.4 765.8,223.3 771.1,187.3 753,181.3 762,154.6 779,154"/>
                                 <polygon id="基隆市" class="TaiwanMap" points="899.5,170.4 882,183 896,202 881,216.1 847.5,201.5 829.1,167.2 846.4,154.6"/>
                                 <polygon id="桃園市" class="TaiwanMap" points="668.5,178 716.5,198.5 716.9,230.6 694,248 708.6,289.9 736.8,290.9 757.9,354.7 747,401.1 691.4,360.2 697.2,325.7 681.2,309.7 636.1,299.1 599,256.9 568.9,249.9"/>
                                 <polygon id="新竹縣" class="TaiwanMap" points="527.1,345 655.5,408 683.5,458.1 713,440.4 747,401.1 691.4,360.2 697.2,325.7 681.2,309.7 636.1,299.1 599,256.9 568.9,249.9 541,288"/>
                                 <polygon id="新竹市" class="TaiwanMap" points="527.1,345 541,288 575,303.9 578.1,327.2 560,319"/>
                                 <polygon id="苗栗縣" class="TaiwanMap" points="527.1,345 655.5,408 683.5,458.1 600.3,512.5 542.8,504.1 520.9,485.6 484.2,502.2 429,469 481.1,379.2"/>
-                                <polygon id="台中市" class="TaiwanMap" points="713,440.4 723.2,467.8 755.3,465.8 722.7,515 732.8,562.2 673.1,563 652,537.7 520.8,590.6 498.8,630.8 433.9,619.9 382,561.2 429,469 484.2,502.2 520.9,485.6 542.8,504.1 600.3,512.5 683.5,458.1"/>
+                                <polygon id="臺中市" class="TaiwanMap" points="713,440.4 723.2,467.8 755.3,465.8 722.7,515 732.8,562.2 673.1,563 652,537.7 520.8,590.6 498.8,630.8 433.9,619.9 382,561.2 429,469 484.2,502.2 520.9,485.6 542.8,504.1 600.3,512.5 683.5,458.1"/>
                                 <polygon id="彰化縣" class="TaiwanMap" points="433.9,619.9 434.4,697.6 466.2,708.8 465.5,726 295.9,709.1 382,561.2"/>
                                 <polygon id="雲林縣" class="TaiwanMap" points="454,725 451.9,782.9 490,783.2 490,800.1 410.1,802.1 392.1,781.9 361.5,782.5 273.5,845.5 245.4,839.6 247.7,779.7 295.9,709.1"/>
                                 <polygon id="嘉義縣" class="TaiwanMap" points="490,783.2 490,800.1 410.1,802.1 392.1,781.9 361.5,782.5 273.5,845.5 245.4,839.6 245.1,924 277.1,936.2 336.9,875.1 382.4,872.1 420.3,903.2 409.9,914.9 427.1,955.1 447,942 466.6,946 575,849 558.7,847.7 529.1,817.1 533,797"/>
                                 <polygon id="嘉義市" class="TaiwanMap" points="382.4,872.1 393,858 402.2,866.2 413.4,854.4 396.8,836.8 365,843.1"/>
-                                <polygon id="台南市" class="TaiwanMap" points="285.9,1080.5 363.1,1087.5 371.9,1073 386,1078.3 386.8,1055.1 411.8,1041 411,1027.4 463.6,973.9 466.6,946 447,942 427.1,955.1 409.9,914.9 420.3,903.2 382.4,872.1 336.9,875.1 277.1,936.2 245.1,924 233.3,991.9 242.9,996.7 239.4,1029.6"/>
+                                <polygon id="臺南市" class="TaiwanMap" points="285.9,1080.5 363.1,1087.5 371.9,1073 386,1078.3 386.8,1055.1 411.8,1041 411,1027.4 463.6,973.9 466.6,946 447,942 427.1,955.1 409.9,914.9 420.3,903.2 382.4,872.1 336.9,875.1 277.1,936.2 245.1,924 233.3,991.9 242.9,996.7 239.4,1029.6"/>
                                 <polygon id="高雄市" class="TaiwanMap" points="620,848 602.2,865 607.7,881 627,880 625,898.2 574.1,934.1 570,1016 549,1041 558,1074 531,1093 521,1078 503,1085.2 493,1074 449,1078 449,1095.5 397,1114 396.8,1196 407.5,1209 389.8,1249 323,1183 336.7,1172 285.9,1080.5 363.1,1087.5 371.9,1073 386,1078.3 386.8,1055.1 411.8,1041 411,1027.4 463.6,973.9 466.6,946 575,849"/>
                                 <polygon id="屏東縣" class="TaiwanMap" points="558,1074 531,1093 521,1078 503,1085.2 493,1074 449,1078 449,1095.5 397,1114 396.8,1196 407.5,1209 389.8,1249 425,1258 546,1382 538.2,1420 567,1464 575.2,1446 606,1470.5 611,1334 564,1317 570,1293 552.2,1293 529,1209 546.1,1155.3 590,1134 593,1104.4"/>
-                                <polygon id="台東縣" class="TaiwanMap" points="611,1334 564,1317 570,1293 552.2,1293 529,1209 546.1,1155.3 590,1134 593,1104.4 558,1074 549,1041 570,1016 574.1,934.1 625,898.2 747,956.9 773.4,840 815.2,825.3 786.3,956.3 801.2,969.2 744.3,1066 719.8,1066.2 718.2,1092.1 637.3,1190.2"/>
+                                <polygon id="臺東縣" class="TaiwanMap" points="611,1334 564,1317 570,1293 552.2,1293 529,1209 546.1,1155.3 590,1134 593,1104.4 558,1074 549,1041 570,1016 574.1,934.1 625,898.2 747,956.9 773.4,840 815.2,825.3 786.3,956.3 801.2,969.2 744.3,1066 719.8,1066.2 718.2,1092.1 637.3,1190.2"/>
                                 <polygon id="花蓮縣" class="TaiwanMap" points="625,898.2 627,880 607.7,881 602.2,865 620,848 642.2,815.2 666.3,811 669,789 686.3,786.1 700.5,722.9 683,708.9 713.2,637.8 701,626.9 726.8,562.5 732.8,562.2 722.7,515 755.3,465.8 821.1,487.2 846.3,473.1 895.1,485.3 898.1,509 860.4,534 815.2,825.3 773.4,840 747,956.9"/>
                                 <polygon id="宜蘭縣" class="TaiwanMap" points="755.3,465.8 821.1,487.2 846.3,473.1 895.1,485.3 935.7,374.9 916.1,361 906.2,283.4 939,230.8 896.1,257 881,253.1 815.4,307.1 811.2,330.1 757.9,354.7 747,401.1 713,440.4 723.2,467.8"/>
                                 <polygon id="南投縣" class="TaiwanMap" points="642.2,815.2 666.3,811 669,789 686.3,786.1 700.5,722.9 683,708.9 713.2,637.8 701,626.9 726.8,562.5 673.1,563 651.4,537.3 520.8,590.6 498.8,630.8 433.9,619.9 434.4,697.6 466.2,708.8 465.5,726 454,725 451.9,782.9 490,783.2 533,797 529.1,817.1 558.7,847.7 620,848"/>
@@ -123,11 +130,22 @@
                 <div id="appearDiv"> <!--出現兩種上傳模式-->
                 </div>
                     
-                <div> <!--圖表(長條圖、圓餅圖)-->
-                    <nav>
-                        <div id="chartContainer"></div>
-                        <div id="piechartContainer"></div>
-                    </nav>
+                <div id = 'chartsDiv'> <!--圖表(長條圖、圓餅圖)-->
+                    <div class="reel__center">
+                        <div class="reel">
+                            <div calss="reel__item">
+                                <div id="container">
+                                    <div id="piechartContainer"></div>
+                                    <div id="chartContainer"></div>
+                                    <div id="linechartContainer"></div>
+                                    <div id="areachartContainer"></div>
+                                    <div id="barchartContainer"></div>
+                                    <div id="combochartContainer"></div>
+                                    <div id="stackchartContainer"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -170,10 +188,10 @@
                 <div id = 'divForinputResource'></div>
                 
                 <div class = 'btnDiv'>
-                    <button class = 'des_button' id = 'clearBtn'>清除</button>
-                    <button class = 'des_button' id = 'editBtn'>編輯</button>
-                    <button class = 'des_button' id = 'finishBtn'>完成</button>
-                    <button class = 'des_button' id = 'closeBTN'>關閉</button>
+                    <button class = 'des_button' id = 'clearBtn'></button>
+                    <button class = 'des_button' id = 'editBtn'></button>
+                    <button class = 'des_button' id = 'finishBtn'></button>
+                    <button class = 'des_button' id = 'closeBTN'></button>
                 </div>
             </div>
             
@@ -201,30 +219,36 @@
             <div> <!-- 選擇圖表區塊 -->
                 <label for="chartTypeSelect"  class="labelForCheckbox">選擇圖表類型：</label>
                 <div id="chartTypeSelect" class="chartTypeSelectDiv">
-                    <laebl>
-                        <input type="checkbox" value="column" id="showColumnChart" class="chartsTitle">
-                            長條圖
-                        </input>
-                    </laebl>
-                    <laebl>
-                        <input type="checkbox" value="pie" id="showPieChart" class="chartsTitle">
-                                圓餅圖
-                        </input>
-                    </laebl>
+                    <laebl><input type="checkbox" value="column" id="showColumnChart">柱狀圖</input></laebl>
+                    <laebl><input type="checkbox" value="pie" id="showPieChart">圓餅圖</input></laebl>
+                    <laebl><input type="checkbox" value="lin" id="showLineChart">折線圖</input></laebl>
+                    <laebl><input type="checkbox" value="area" id="showAreaChart">區域圖</input></laebl>
+                    <laebl><input type="checkbox" value="Bar" id="showBarChart">長條圖</input></laebl>
+                    <laebl><input type="checkbox" value="combo" id="showComboChart">組合圖</input></laebl>
+                    <laebl><input type="checkbox" value="stack" id="showStackChart">堆疊階梯狀圖</input></laebl>
                 </div>
-                
             </div>
         </div>
 
+
         <!-- 自製表格 -->
-        <div id = 'selfFileBackDrop' style="display: none;">
+        <div id = 'selfFileBackDrop' style="display: none;"> <!-- 背景 -->
+            <button id="addButton_Row"></button> <!-- 新增列按鈕 -->
+            <button id="addButton_Col"></button> <!-- 新增欄按鈕 -->
+            <!-- <button id="minusButton_Row"></button> 刪除列按鈕 -->
+            <!-- <button id="minusButton_Col"></button> 刪除欄按鈕 -->
+
             <div id="chooseColNumDiv">
                 <input id="inputRow" placeholder="輸入列數：" type="text" class="inputForchooseColNum"></input>
                 <input id="inputCol" placeholder="輸入行數：" type="text" class="inputForchooseColNum"></input>
+                <div id="inputRowDiv" class="inputDivForchooseColNum"></div>
+                <div id="inputColDiv" class="inputDivForchooseColNum"></div>
                 <button id="OKButtonForselfFile" class='buttonForChooseColNum'></button>
                 <button id="submitButtonForselfFile" class='buttonForChooseColNum'></button>
                 <button id="clearButtonForselfFile" class='buttonForChooseColNum'></button>
-                <button id="closeButtonForselfFile" class='buttonForChooseColNum'></button>
+                <button id="returnButtonForselfFile" class='buttonForChooseColNum'></button>
+                <button id="minusAllBtn"></button>
+                <button id="closeButtonForselfFile"></button>
             </div>
 
             <div id = 'selfFile'>
@@ -233,13 +257,25 @@
         </div>
 
         <!-- 步驟框 -->
-        <div id = 'stepBoxBackDropDiv'> <!---->
+        <div id = 'stepBoxBackDropDiv'>
             <div id="stepBox"> <!--步驟方塊-->
                 <div id="itemsDiv"></div> <!--項目區塊-->
-                <div id="contentForStep"></div> <!--內容區塊-->
+                <div id="contentForStep"> <!--內容區塊-->
+                    <div id = 'allMethodDiv'>
+                        <div id = 'methodDiv'></div> <!--上傳方式名稱區塊-->
+                        <div id = 'methodContent'></div> <!--上傳方式內容區塊-->
+                    </div> <!--上傳方式區塊(整塊)-->
+                </div>
             </div>
         </div>
 
+        <!-- 存檔框 -->
+        <div id = 'remitBackDropDiv'>
+            <div id="remitBox"> <!--步驟方塊-->
+                <div id = 'successImg'></div>
+                <span style="font-size: 28px;">儲存成功</span>
+            </div>
+        </div>
             
         
 
