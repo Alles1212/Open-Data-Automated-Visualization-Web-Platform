@@ -9,7 +9,7 @@
     width: 100%;
     height: 100%;
     margin: 0;
-    font-family: '標楷體';
+    font-family: Microsoft JhengHei;
 }
 
   /* 畫面最上面 */
@@ -200,9 +200,28 @@
     left: 97.3%;
     
 }
-  #statBtn:hover{
+  #statBtn:hover,#returnBtn:hover{
     transform: scale(1.2);
     cursor: pointer;
+}
+  /* 返回按鈕 */
+  #returnBtn{
+    background-image: url("../image/returnBtn.png");
+    background-repeat: no-repeat;
+    background-color: transparent;
+    border: none;
+    background-size: cover;
+
+    width: 43px;
+    height: 43px;
+
+    position: relative;
+    top: 570px;
+    left: 91%;
+    z-index: 2;
+
+    visibility: hidden;
+  
 }
 
   /* 步驟框 */
@@ -233,7 +252,7 @@
   /* 項目區塊 */
   #itemsDiv{
     width: 650px;
-    height: 70px;
+    height: 60px;
 
     display: flex;
     justify-content: center;
@@ -242,10 +261,11 @@
   /* 項目名稱區塊 */
   .itemsNameDiv{
     width: 200px;
-    height: 70px;
+    height: 60px;
 
     display: flex;
     justify-content: center;
+    align-items: center;
     border-radius: 30px;
 
     background-color: #FFECEC;
@@ -253,9 +273,10 @@
     position: relative;
     left: 30px;
 }
-  .itemsNameDiv:hover{
+  .itemsNameDiv:hover,.methodNameDiv:hover{
     background-color: #ccc;
-  }
+    cursor: pointer;
+}
   /* 內容區塊 */
   #contentForStep{
     height: 400px;
@@ -264,6 +285,111 @@
     display: flex;
     justify-content: space-around;
 }
+  /* 上傳方式區塊(整塊) */
+  #allMethodDiv{
+    width: 650px;
+    height: 400px;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+
+
+  }
+  /* 上傳方式名稱區塊 */
+  #methodDiv{
+    width: 650px;
+    height: 50px;
+
+    display: flex;
+    justify-content: center;
+
+}
+  /* 上傳方式名稱區塊 */
+  .methodNameDiv{
+    width: 100px;
+    height: 50px;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 30px;
+
+    font-size: 18px;
+
+    background-color: #FFECEC;
+
+    position: relative;
+}
+  /* 上傳方式內容區塊 */
+  #methodContent{
+    width: 650px;
+    height: 350px;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+}
+  /* 上傳檔案說明區塊、選擇檔案說明區塊 */
+  #fileDiv,#localDiv,#submitDivForFile{
+    width: 650px;
+    height: 70px;
+
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+   
+}
+  /* 上傳檔案圖片區塊 */
+  #fileImg{
+    width: 70px;
+    height: 70px;
+
+    background-image: url("../image/sentFile.png");
+    background-color: transparent;
+    background-position: 5px;
+    background-repeat: no-repeat;
+    background-size: 70px;
+    border: none;   
+   
+}
+  /* 上傳檔案文字區塊、選擇檔案文字區塊 */
+  #fileSpan,#localSpan,#submitDivForFileSpan{
+    width: 300px;
+    height: 70px;
+
+    font-size: 20px;
+}
+  /* 選擇檔案圖片區塊 */
+  #localImg{
+    width: 70px;
+    height: 70px;
+
+    background-image: url("../image/uploadFile.png");
+    background-color: transparent;
+    background-position: 5px;
+    background-repeat: no-repeat;
+    background-size: 70px;
+    border: none;   
+   
+}
+  /* 確認圖片區塊 */
+  #submitDivForFileImg{
+    width: 70px;
+    height: 70px;
+
+    background-image: url("../image/submitButton.png");
+    background-color: transparent;
+    background-position: 5px;
+    background-repeat: no-repeat;
+    background-size: 70px;
+    border: none;   
+   
+}
+
+
+
   /* 關閉按鈕 */
   #closeStep{
     background-image: url("../image/closeButtonForselfFile.png");
@@ -495,8 +621,7 @@
     height: 50px;
     position: relative;
 
-}
-  .method:hover{
+}.method:hover{
     cursor: pointer;
     transform: scale(1.2);
 }
@@ -596,6 +721,10 @@
     width: 50px;
     height: 50px;
 }
+  #submitAPI:hover{
+    cursor: pointer;
+    transform: scale(1.2);
+  }
 
   /* 按鈕懸浮框 */
   .suBoxForButtons{
@@ -614,14 +743,50 @@
     z-index: 1;
   }
 
+  #chartsDiv{
+    position: relative;
+    top: 30px;
+
+    height: 300px;
+
+}
+  #container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+  .reel__center{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.reel{
+    display: flex;
+    align-items: center;
+    column-gap: 20px;
+    overflow-x:scroll;
+    scroll-snap-type: x mandatory;
+    height: 300px;
+    width: 400px;
+    display: flex;
+    
+}
+.reel__item {
+    scroll-snap-align: center;
+    min-width: 25%;
+
+}
+
   /* 圖表 */
-  #chartContainer {
+  /* #chartContainer {
     width: 450px;
     height: 350px;
     
     position: relative;
     top: 20px;
-}
+} */
+
 
   /* 摘要統計區塊 */
   .statistic{
@@ -743,6 +908,64 @@
     display: flex;
     justify-content: space-around;
     align-items: center;
+
+    position: relative;
+    left: 20px;
+}
+  /* 清除 */
+  #clearBtn{
+    background-image: url("../image/clearBtnForDesciption.png");
+    background-color: transparent;
+    background-repeat: no-repeat;
+    background-size: 50px;
+    background-position: -4px -8px;
+    border: none;
+
+    width: 50px;
+    height: 50px;
+}
+  #clearBtn:hover,#editBtn:hover,#finishBtn:hover,#closeBTN:hover{
+    transform: scale(1.2);
+    cursor: pointer;
+}
+  /* 編輯 */
+  #editBtn{
+    background-image: url("../image/editBtnForDesciption.png");
+    background-color: transparent;
+    background-repeat: no-repeat;
+    background-size: 50px;
+    background-position: -4px 8px;
+    border: none;
+
+    width: 50px;
+    height: 50px;
+}
+  /* 完成 */
+  #finishBtn{
+    background-image: url("../image/OkForDescription.png");
+    background-color: transparent;
+    background-repeat: no-repeat;
+    background-size: 50px;
+    background-position: -4px;
+    border: none;
+
+    width: 50px;
+    height: 50px;
+}
+  /* 關閉 */
+  #closeBTN{
+    background-image: url("../image/closeButtonForselfFile.png");
+    background-color: transparent;
+    background-repeat: no-repeat;
+    background-size: 40px;
+    border: none;
+
+    width: 40px;
+    height: 40px;
+
+    position: relative;
+    top: -545px;
+    left: 70px;
 }
 
   /* 背景區塊 */
@@ -826,13 +1049,12 @@
 
     display: flex;
     flex-direction: column;
-    justify-content: space-around;
+    justify-content: space-between;
     
     color: aqua;
-}
-  /* 各圖表標題 */
-  .chartsTitle{
-    margin-left: 30px;
+    font-size: 20px;
+
+    overflow-y: scroll;
 }
 
   /* 下載框背景 */
@@ -846,7 +1068,7 @@
     align-items: center;
 
     position: relative;
-    top: -3800px;
+    top: -4550px;
     z-index: 1;
 }
 
@@ -906,11 +1128,27 @@
     height: 40px;
     font-size: 20px;
 
+    display: none;
+
+}
+  /* 欄位數量區塊(自製表格) */
+  .inputDivForchooseColNum{
+    width: 130px;
+    height: 40px;
+    font-size: 22px;
+
+    display: flex;
+    align-items: center;
 }
   /* 按鈕(自製表格) */
   .buttonForChooseColNum{
     width: 50px;
     height: 50px;
+
+    position: relative;
+    left: 45px;
+
+    margin-left: 10px;
 }
   .buttonForChooseColNum:hover{
     cursor: pointer;
@@ -926,28 +1164,61 @@
 }
   /* 上傳鈕 */
   #submitButtonForselfFile{
-  background-image: url("../image/submitForsentSelfFile.png");
-  background-color: transparent;
-  background-repeat: no-repeat;
-  background-size: 50px;
-  border: none;
-}
-  /* 清除鈕 */
-  #clearButtonForselfFile{
-  background-image: url("../image/clearForsentSelfFile.png");
-  background-color: transparent;
-  background-repeat: no-repeat;
-  background-size: 50px;
-  border: none;
-}
-  /* 關閉鈕 */
-  #closeButtonForselfFile{
-    background-image: url("../image/closeButtonForselfFile.png");
+    background-image: url("../image/submitForsentSelfFile.png");
     background-color: transparent;
     background-repeat: no-repeat;
     background-size: 50px;
     border: none;
 }
+  /* 清除鈕 */
+  #clearButtonForselfFile{
+    background-image: url("../image/clearForsentSelfFile.png");
+    background-color: transparent;
+    background-repeat: no-repeat;
+    background-size: 50px;
+    border: none;
+}
+  /* 返回鈕 */
+  #returnButtonForselfFile{
+    background-image: url("../image/returnForSelfFile.png");
+    background-color: transparent;
+    background-repeat: no-repeat;
+    background-size: 50px;
+    border: none;
+}
+  /* 刪除鈕 */
+  #minusAllBtn{
+    background-image: url("../image/minus.png");
+    background-color: transparent;
+    background-repeat: no-repeat;
+    background-size: 43px;
+    border: none;
+
+    width: 44px;
+    height: 44px;
+} #minusAllBtn:hover{
+  cursor: pointer;
+  transform: scale(1.2);
+}
+
+  /* 關閉鈕 */
+  #closeButtonForselfFile{
+    background-image: url("../image/closeButtonForselfFile.png");
+    background-color: transparent;
+    background-repeat: no-repeat;
+    background-size: 30px;
+    border: none;
+
+    width: 30px;
+    height: 30px;
+    position: relative;
+    top: -25px;
+    left: 9px;
+}
+  #closeButtonForselfFile:hover{
+    cursor: pointer;
+    transform: scale(1.2);
+  }
   /* 自製表格區塊 */
   #selfFile{
     width: 1000px;
@@ -964,22 +1235,32 @@
   .TaiwanMap{
     fill: #ccddff;
     stroke: #333333;
-    stroke-width: 10;
+    stroke-width: 6;
+  }
+  .Keelung_town{
+    fill: #ccddff;
+    stroke: #333333;
+    stroke-width: 5;
   }
   .New_Taipei_town{
     fill: #ccddff;
     stroke: #333333;
-    stroke-width: 15;
+    stroke-width: 10;
+  }
+  .Hsinchu_County{
+    fill: #ccddff;
+    stroke: #333333;
+    stroke-width: 5;
   }
   .Taichung_town{
     fill: #ccddff;
     stroke: #333333;
-    stroke-width: 8;
+    stroke-width: 5;
   }
   .Chiayi_City_town{
     fill: #ccddff;
     stroke: #333333;
-    stroke-width: 30;
+    stroke-width: 10;
   }
   .Kaohsiung_town{
     fill: #ccddff;
@@ -989,44 +1270,55 @@
   .Nantou_town{
     fill: #ccddff;
     stroke: #333333;
-    stroke-width: 2;
+    stroke-width: 1;
   }
   /* hover */
   .TaiwanMap:hover{
     fill: #4F4FFF;
-    transform: translate(10px);
+    /* transform: translate(10px); */
     stroke: #333333;
-    stroke-width: 15;
+    stroke-width: 11;
+  }
+  .Keelung_town:hover{
+    fill: #4F4FFF;
+    stroke: #333333;
+    stroke-width: 8;
   }
   .New_Taipei_town:hover{
     fill: #4F4FFF;
-    transform: translate(20px);
+    /* transform: translate(20px); */
     stroke: #333333;
-    stroke-width: 25;
+    stroke-width: 17;
+  }
+  .Hsinchu_County:hover{
+    fill: #4F4FFF;
+    /* transform: translate(20px); */
+    stroke: #333333;
+    stroke-width: 8;
   }
   .Taichung_town:hover{
     fill: #4F4FFF;
     transform: translate(5px);
     stroke: #333333;
-    stroke-width: 10;
+    stroke-width: 7;
   }
   .Chiayi_City_town:hover{
     fill: #4F4FFF;
     transform: translate(5px);
     stroke: #333333;
-    stroke-width: 30;
+    stroke-width: 15;
   }
   .Kaohsiung_town:hover{
     fill: #4F4FFF;
     transform: translate(2px);
     stroke: #333333;
-    stroke-width: 8;
+    stroke-width: 6;
   }
   .Nantou_town:hover{
     fill: #4F4FFF;
-    transform: translate(2px);
+    /* transform: translate(1px); */
     stroke: #333333;
-    stroke-width: 4;
+    stroke-width: 1.5;
     
   }
 
@@ -1054,7 +1346,7 @@
     
 
     font-size: 18px;
-  }
+}
   /* 柱狀圖 */
   #Bar_ChartBtn{
     background-image: url("../image/bar_chart.png");
@@ -1066,7 +1358,7 @@
 
     width: 200px;
     height: 200px;
-  }
+}
   /* 圓餅圖 */
   #Pie_ChartBtn{
     background-image: url("../image/pie_chart.png");
@@ -1078,7 +1370,7 @@
 
     width: 200px;
     height: 200px;
-  }
+}
   /* 折線圖 */
   #Line_ChartBtn{
     background-image: url("../image/line_chart.png");
@@ -1090,18 +1382,18 @@
 
     width: 200px;
     height: 200px;
-  }
+}
 
   #Bar_ChartBtn:hover,#Pie_ChartBtn:hover,#Line_ChartBtn:hover{
     cursor: pointer;
     transform: scale(1.2);
-  }
+}
 
   /* 步驟區塊 與 選擇檔案類型背景框 */
 
   dialog::backdrop{
     background: rgba(255, 0, 0, 0.25);
-  }
+}
 
   /* 下載區塊 */
   #downloadDiv{
@@ -1126,7 +1418,7 @@
     align-items: center;
 
     font-size: 18px;
-  }
+}
 
 
   /* XLSX按鈕 */
@@ -1140,11 +1432,11 @@
 
     width: 100px;
     height: 80px;
-  }
+}
   #downloadXLSX:hover{
     transform: scale(1.2);
     cursor: pointer;
-  }
+}
 
   /* JPG按鈕 */
   #downloadJPG{
@@ -1157,11 +1449,11 @@
 
     width: 100px;
     height: 80px;
-  }
+}
   #downloadJPG:hover{
     transform: scale(1.2);
     cursor: pointer;
-  }
+}
 
   /* 取消按鈕 */
   #cancelDownload{
@@ -1177,11 +1469,122 @@
 
     position: relative;
     top: -34px;
-  }
+}
   #cancelDownload:hover{
     transform: scale(1.2);
     cursor: pointer;
-  }
+}
+  /* 新增列按鈕 */
+  #addButton_Row{
+    background-image: url('../image/addButton.png');
+    background-repeat: no-repeat;
+    background-size: 25px;
+    background-position: center;
+    background-color: transparent;
+    border: none;
+
+    width: 25px;
+    height: 25px;
+
+    position: relative;
+    top: 90px;
+    left: 580px;
+    z-index: 2;
+}
+  #addButton_Row:hover,#addButton_Col:hover,#minusButton_Row:hover,#minusButton_Col:hover{
+    cursor: pointer;
+    transform: scale(1.2);
+}
+
+  /* 新增行按鈕 */
+  #addButton_Col{
+    background-image: url('../image/addButton.png');
+    background-repeat: no-repeat;
+    background-size: 25px;
+    background-position: center;
+    background-color: transparent;
+    border: none;
+
+    width: 25px;
+    height: 25px;
+
+    position: relative;
+    top: 90px;
+    left: 670px;
+    z-index: 2;
+}
+  /* 刪除列按鈕 */
+  #minusButton_Row{
+    background-image: url('../image/minus.png');
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+    background-color: transparent;
+    border: none;
+
+    width: 19px;
+    height: 19px;
+
+    position: relative;
+    top: 118.5px;
+    left: 540px;
+    z-index: 2;
+}
+  /* 刪除欄按鈕 */
+  #minusButton_Col{
+    background-image: url('../image/minus.png');
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+    background-color: transparent;
+    border: none;
+
+    width: 19px;
+    height: 19px;
+
+    position: relative;
+    top: 118.5px;
+    left: 657px;
+    z-index: 2;
+}
+  /* 刪除列按鈕(逐行) */
+  .minusBtnForRow{
+    background-image: url('../image/minus.png');
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+    background-color: transparent;
+    border: none;
+
+    width: 19px;
+    height: 19px;
+
+    position: relative;
+    top: 25px;
+}.minusBtnForRow:hover{
+  cursor: pointer;
+  transform: scale(1.2);
+}
+  /* 刪除列按鈕(逐行) */
+  .minusBtnForCol{
+    background-image: url('../image/minus.png');
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+    background-color: transparent;
+    border: none;
+
+    width: 19px;
+    height: 19px;
+
+    left: 75px;
+    top: 10px;
+    position: relative;
+    
+  }.minusBtnForCol:hover{
+  cursor: pointer;
+  transform: scale(1.2);
+}
 
   /* 顯示頁數與按鈕區塊 */
   #divForPaging{
@@ -1192,7 +1595,7 @@
 
     display: flex;
     justify-content: center;
-  }
+}
   /* 頁數區塊 */
   #fraction{
     width: 70px;
@@ -1204,7 +1607,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
-  }
+}
   /* 換頁按鈕(下一頁) */
   #rightBtnForFraction{
     background-image: url('../image/change_right.png');
@@ -1216,11 +1619,11 @@
 
     width: 30px;
     height: 30px;
-  }
+}
   #rightBtnForFraction:hover{
     cursor: pointer;
     transform: scale(1.2);
-  }
+}
   /* 換頁按鈕(上一頁) */
   #leftBtnForFraction{
     background-image: url('../image/change_left.png');
@@ -1232,11 +1635,55 @@
 
     width: 30px;
     height: 30px;
-  }
+}
   #leftBtnForFraction:hover{
     cursor: pointer;
     transform: scale(1.2);
-  }
+}
+
+  /* 存檔背景 */
+  #remitBackDropDiv{
+    width: 100%;
+    height: 750px;
+    background-color: rgba(21, 18, 18, 0.9);
+    
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    position: relative;
+    top: -3800px;
+    z-index: 1;
+
+    visibility: hidden;
+}
+  #remitBox{
+    width: 400px;
+    height: 300px;
+
+    border-radius: 20px;
+
+    background-color: #FFE6FF;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+}
+  #successImg{
+    background-image: url('../image/submitButton.png');
+    background-repeat: no-repeat;
+    background-size: 150px;
+    background-position: center;
+    background-color: transparent;
+    border: none;
+
+    position: relative;
+    top: 30px;
+
+    width: 150px;
+    height: 150px;
+}
 
 
   /*響應式*/
