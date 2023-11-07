@@ -7,28 +7,33 @@
     var showSum = document.getElementById("sum"); // 總和之文字
     var showNum = document.getElementById("num"); // 個數之文字
     var statBtn = document.getElementById("statBtn") // 摘要統計按鈕
-    var statClose = document.getElementById("statClose") // 摘要統計按鈕
+    var forGroupBtn = document.getElementById("forGroupBtn") // 分組單位按鈕
+    var groupInputDiv = document.getElementById("groupInputDiv") // 分組單位區塊
 
     var colArray = []; // 空陣列，存數值
     var townArray = []; // 空陣列，存鄉鎮
     var average = 0; // 平均
     var standard_deviation = 0; // 標準差
 
-
-    statBtn.addEventListener('click',function(){
+    statBtn.addEventListener('mousemove',function(){ // 點擊摘要統計按鈕
         if(InputData.length != 0){
-            statBtn.style.visibility = 'hidden'; // 顯示統計按鈕
             stat.style.visibility = 'visible'; // 顯示統計區塊
-            
+            statClick += 1;
         }
+    });
 
-        statClose.addEventListener('click',function(){
-            statBtn.style.visibility = 'visible'; // 顯示統計按鈕
-            stat.style.visibility = 'hidden'; // 隱藏統計區塊
-            statBtn.style.pointerEvents = 'visible'; // 統計按鈕恢復功能
-        })
-        
+    stat.addEventListener('mouseleave',function(){ // 滑鼠離開摘要統計區塊
+        stat.style.visibility = 'hidden'; // 隱藏統計區塊
+    });
+
+    forGroupBtn.addEventListener('mousemove',function(){
+        groupInputDiv.style.visibility = 'visible'; // 顯示分組單位區塊
     })
+
+    groupInputDiv.addEventListener('mouseleave',function(){ // 滑鼠離開分組單位區塊
+        groupInputDiv.style.visibility = 'hidden'; // 隱藏分組單位區塊
+    });
+
     var maxValue = 0; // 最大數值
     var minValue = 0; // 最小數值
     // 摘要統計
@@ -72,8 +77,8 @@
         }
         standard_deviation = Math.sqrt((stD_sum/colArray.length)) // 計算標準差
 
-        showMax.textContent = "最大值：" + maxTown + ":" + maxValue;
-        showmin.textContent = "最小值：" + minTown + ":" + minValue;
+        showMax.textContent = "最大值：" + maxTown + "：" + maxValue;
+        showmin.textContent = "最小值：" + minTown + "：" + minValue;
         showAvg.textContent = "平均值：" + average.toFixed(2); // 限制在小數第二位
         showstD.textContent = "標準差：" + standard_deviation.toFixed(2); // 限制在小數第二位
         showSum.textContent = "總和： "  + sum;
@@ -81,15 +86,15 @@
         
     }
     
-    var groupInputDiv = document.getElementById('groupInputDiv'); // 組別輸入框區塊
     var selectForGroup = document.getElementById('selectForGroup'); // 下拉式清單
+    var unit = document.getElementById('unit'); // 單位輸入盒
     var rangeArray = []; // 記錄所有範圍
     var groupNum = 0; // 分幾組
+    var recordUnit = "";
     // 進行分組
     function Grouping(){
         rangeDiv.replaceChildren(); // 清除原本的所有元素
         rangeDiv.style.visibility = 'visible'; // 顯示範圍框
-        groupInputDiv.style.visibility = 'visible'; // 顯示組別輸入框區塊
         
         for(var i = 1; i < 9; i++){
             var option = document.createElement('option'); // 建立選項
@@ -113,9 +118,8 @@
 
     // 生成範圍框
     function appearRange(){
-        
         rangeDiv.replaceChildren(); // 清除原本的所有元素
-        rangeArray.length = 0;
+        rangeArray.length = 0; // 清空
 
         var interval = (maxValue-minValue) / groupNum; // 區間
         var recordMin = minValue; // 將最小值記錄
@@ -130,22 +134,47 @@
 
         for(var i = rangeArray.length-1; i >= 0; i--){ // 根據區間數量建立span
             var span = document.createElement('span');
+
             span.textContent = rangeArray[i-1] + " ~ " + rangeArray[i]; // 顯示文字
+
             if(i == 0){ // 最後一組
                 span.textContent = minValue + " ~ " + rangeArray[i]; // 最後一組顯示最小值
             }
             span.style.backgroundColor = currentColorDiv[inputColorPos] // 設定背景顏色
             
-
             rangeDiv.appendChild(span);
-            // rangeDiv.appendChild(document.createElement('br'))
+
             inputColorPos += 1; // 下一個位置
-        }        
+        }
+        console.log(rangeDiv.getElementsByTagName('span'))
+        console.log(unit.value)
+        var unitPos = rangeDiv.getElementsByTagName('span'); // 單位文字該放的上一個位置
+        for(var i = unitPos.length-1; i >= 0; i--){
+            var unitSpan = document.createElement('span'); // 建立新文字
+            unitSpan.textContent = "  (" + unit.value + ")";
+            unitSpan.style.fontSize = 17 + 'px';
+
+            if(unit.value == ""){
+                unitSpan.textContent = "（單位）";
+            }
+            unitPos[i].appendChild(unitSpan)
+            //rangeDiv.insertBefore(unitSpan, rangeDiv.childNodes[i])
+        }
         
         townArea(currentMap);
-
-        
     }
+
+    // 單位輸入盒按enter後，改變單位
+    unit.addEventListener('keydown', function(event){ // 按enter鍵
+        if(event.key === 'Enter'){
+            for(var i = 0; i < rangeDiv.getElementsByTagName('span').length; i++){
+                if(i % 2 != 0){ // 奇數span才要改單位
+                    rangeDiv.getElementsByTagName('span')[i].textContent = "  (" + unit.value + ")";
+                    
+                }
+            }
+        }
+    });
 
     var redDiv = ['#800000','#A80000','#D10000','#FF0000','#FF5959','#FFA1A1','#FFBFBF','#FFDEDE','#FFF2F2'] // 紅色
     var orangeDiv = ['#805300','#A86E00','#D18800','#FFA600','#FFC559','#FFDEA1','#FFE8BF','#FFF3DE','#FFFAF2'] // 橙色
@@ -184,6 +213,11 @@
     colorBtn.addEventListener('mousemove',chooseColor); // 顯示六個顏色按鈕
 
     columnNameDiv.style.backgroundColor = currentColorDiv[5];
+    fileNameDiv.style.backgroundColor = currentColorDiv[5];
+    sumFileBtn.style.backgroundColor = currentColorDiv[7];
+    avgFileBtn.style.backgroundColor = currentColorDiv[7];
+    groupInputDiv.style.backgroundColor = currentColorDiv[6];
+    stat.style.backgroundColor = currentColorDiv[8];
     // 生成選擇顏色按鈕
     var btnColorArray = ['#FF0000','#FFA600','#FFFF00','#00FF00','#00FFFF','#9300FF']
     var colorDiv = document.getElementById('colorDiv');
@@ -225,6 +259,11 @@
         colorDiv.style.visibility = 'hidden'; // 隱藏顏色選擇區塊
         
         columnNameDiv.style.backgroundColor = currentColorDiv[5];
+        fileNameDiv.style.backgroundColor = currentColorDiv[5];
+        sumFileBtn.style.backgroundColor = currentColorDiv[7];
+        avgFileBtn.style.backgroundColor = currentColorDiv[7];
+        groupInputDiv.style.backgroundColor = currentColorDiv[6];
+        stat.style.backgroundColor = currentColorDiv[8];
         
         townArea(currentMap); // 同時改變地圖顏色
         appearRange(); // 同時改變範圍框顏色
@@ -258,7 +297,7 @@
         var svgPolygon = svgDiv.getElementsByTagName('polygon'); // 抓取每個polygon資料
 
         for(var i = 0; i < svgPolygon.length; i++){
-            svgPolygon[i].style.fill = '#ccddff'; // 重製顏色
+            svgPolygon[i].style.fill = '#d0d0d0'; // 重製顏色
         }
 
         colorBtn.style.visibility = 'hidden'; // 隱藏選擇顏色按鈕
