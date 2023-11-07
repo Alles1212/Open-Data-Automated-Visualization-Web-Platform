@@ -1,19 +1,16 @@
 var stat = document.getElementById('stat');
 var sumFileBtn = document.getElementById('sumFileBtn'); // 檔案加總鈕
 var avgFileBtn = document.getElementById('avgFileBtn'); // 檔案平均鈕
-var maxFileBtn = document.getElementById('maxFileBtn'); // 檔案最大值鈕
-var minusAllBtn = document.getElementById('minFileBtn'); // 檔案最小值鈕
-
+var blankDiv = document.getElementById('blankDiv'); // 空白區域
 sumFileBtn.addEventListener('click',sumFile)
 avgFileBtn.addEventListener('click',avgFile)
-maxFileBtn.addEventListener('click',maxFile)
-minusAllBtn.addEventListener('click',minFile)
+
 
 // 資料分析
 function analyze(InputData){
     console.log(InputData)
     var firstCol = InputData[0]; // 記錄欄位名稱
-    var tArray = []; //存轉置後的矩陣
+    var tArray = []; // 存轉置後的矩陣
 
     
     InputData = dealMarks(InputData); // 處理特殊符號
@@ -40,7 +37,7 @@ function analyze(InputData){
     var originArray = []; // 將清洗好的陣列還原
 
     if(judgeBlankSpace(InputData)){
-        chartsDiv.replaceChildren(); // 清空原本的元素
+        allChartsContainer.replaceChildren(); // 清空原本的元素
         showError(InputData); // 顯示空白的位置
     }else{
         tArray = judgeFile(tArray,firstCol); // 判斷屬於哪種類型的檔案
@@ -200,7 +197,6 @@ function recombineStr(tArray,firstCol){
         }
     }
     skipCityName(tArray,strArray,firstCol); // 刪掉欄位中的縣市名
-    //changeRow(tArray,strArray); // 交換欄位並改變鄉鎮名稱
 
     var countTownForStr = countRepeat(tArray); // 計算重複的鄉鎮
     var newData = []; // 製作新陣列
@@ -220,6 +216,8 @@ function recombineStr(tArray,firstCol){
 
  // 刪掉欄位中的縣市名
 function skipCityName(tArray,strArray,firstCol){ // 刪掉欄位中的縣市名
+    console.log(tArray)
+    console.log(strArray)
     var countArray = []; // 記錄鄉鎮行是否出現縣市
     var posArray = []; // 記錄縣市行位置
     for(var i = 0; i < strArray.length; i++){
@@ -231,6 +229,7 @@ function skipCityName(tArray,strArray,firstCol){ // 刪掉欄位中的縣市名
         }
         countArray.push(count); // 丟到陣列
     }
+    console.log(countArray)
 
     for(var i = 0; i < countArray.length; i++){
         if(countArray[i] >= tArray[0].length){
@@ -382,6 +381,10 @@ function dealValueFile(tArray){
         }
     }
 
+    console.log(tArray)
+    console.log(strArray)
+
+
     changeRow(tArray,strArray); // 交換欄位並改變鄉鎮名稱
 
 
@@ -435,72 +438,76 @@ function judgeBlankSpace(InputData){
     return false;
 }
 
-var skipAlready = false; // 判斷是否有刪除空白欄
+var skipAlreadyArr = []; // 記錄被刪掉的空白行
+
 // 刪掉空白較多的行
 function skipBlank(InputData){
     var arr = []; // 記錄空白格所在的行位置
     for(var i = 0; i < InputData.length; i++){
         for(var j = 0; j < InputData[0].length; j++){
             if(InputData[i][j] == ""){ // 找到空白
-                arr.push(j)
+                arr.push(j);
             }
         }
     }
     console.log(arr)
     var total_count = arr.reduce((obj,item)=>{ // 計算重複次數
         if(item in obj) {
-          obj[item]++
+          obj[item]++;
         }else {
-          obj[item] = 1
+          obj[item] = 1;
         }
-        return obj
+        return obj;
     },{})
-    console.log(total_count)
+    console.log(total_count);
 
     var objectLength = Object.keys(total_count).length; // 總長度
     console.log(typeof(Object.values(total_count)[0]))
 
     for(var i = objectLength-1; i >= 0; i--){
         for(var j = 0; j < InputData.length; j++){
-            if(Object.values(total_count)[i] > 10){
-                skipAlready = true;
-                InputData[j].splice(Object.keys(total_count)[i],1)
-                console.log(i)
-            }else{
-                skipAlready = false;
+            if(Object.values(total_count)[i] > 10){ // 同一行超過10個欄位為空白
+                InputData[j].splice(Object.keys(total_count)[i],1);
+                skipAlreadyArr.push(Object.keys(total_count)[i]); // 有刪除的空白行
+                
             }
         }
         
     }
-    console.log(InputData)
-    console.log(skipAlready)
-    console.log(Object.values(total_count)[0])
-    
+
+    skipAlreadyArr = Array.from(new Set(skipAlreadyArr)); // 刪除重複的值
+
 }
 
 var blankArray = []; // 記錄所有空白欄位
 // 顯示有空白的欄位位置
 function showError(InputData){
+    blankDiv.style.visibility = 'visible';
     for(var i = 0; i < InputData.length; i++){
         for(var j = 0; j < InputData[0].length; j++){
             if(InputData[i][j] == ""){ // 找到空白
                 var oneBlankArr = []; // 記錄單一空白欄位
                 oneBlankArr.push(i); // 列欄位
                 oneBlankArr.push(j); // 行欄位
+                console.log(oneBlankArr)
                 blankArray.push(oneBlankArr);
             }
         }
     }
+
+    // 找出正確的空白欄位位置
+    for(var i = blankArray.length-1; i >= 0; i--){
+        for(var j = 0; j < skipAlreadyArr.length; j++){
+            if((blankArray[i][1]+1) >= parseInt(skipAlreadyArr[j])){
+                blankArray[i][1] += 1;
+            }
+        }
+    }
+
+    console.log(blankArray)
     paging(); // 顯示錯誤訊息並分頁
 
-    chartsDiv.style.fontSize = 20 + 'px';
-    chartsDiv.style.backgroundColor = '#FFFFFF';
-    chartsDiv.style.borderRadius = 20 + 'px';
-    chartsDiv.style.display = 'flex';
-    chartsDiv.style.flexDirection = 'column';
-    chartsDiv.style.justifyContent = 'space-around';
     console.log(blankArray)
-    clearAll(); // 檔案空白時，重置網頁
 
 }
 
@@ -508,7 +515,8 @@ var curNumForPaging = 1; // 第幾頁
 var curPos = 0; // 目前欄位位置(在blankArray中)
 // 顯示錯誤訊息並分頁
 function paging(){
-    chartsDiv.replaceChildren()
+    console.log(1)
+    blankDiv.replaceChildren();
     var firSpan = document.createElement('span'); // 標頭
     var secSpan = document.createElement('span'); // 空白位置
     var upPos = document.createElement('span'); // 上一個欄位
@@ -523,10 +531,10 @@ function paging(){
     firSpan.style.fontWeight = 'bold';
     secSpan.style.color = 'red';
 
-    chartsDiv.appendChild(firSpan);
-    chartsDiv.appendChild(secSpan);
-    chartsDiv.appendChild(upPos);
-    chartsDiv.appendChild(downPos);
+    blankDiv.appendChild(firSpan);
+    blankDiv.appendChild(secSpan);
+    blankDiv.appendChild(upPos);
+    blankDiv.appendChild(downPos);
 
     var divForPaging = document.createElement('div'); // 顯示頁數與按鈕區塊
     divForPaging.id = 'divForPaging';
@@ -541,7 +549,7 @@ function paging(){
     leftBtnForFraction.id = 'leftBtnForFraction';
 
     fraction.textContent = curNumForPaging + "/" + blankArray.length;
-    console.log(blankArray[0][0])
+    //console.log(blankArray[0][0])
 
     var blankSpan = document.createElement('span'); // 顯示空白欄位
     var upColumn = document.createElement('span'); // 顯示上一個欄位
@@ -561,14 +569,16 @@ function paging(){
     }
     
 
-    chartsDiv.insertBefore(blankSpan, chartsDiv.childNodes[2]);
-    chartsDiv.insertBefore(upColumn, chartsDiv.childNodes[4]);
-    chartsDiv.insertBefore(downColumn, chartsDiv.childNodes[6]);
+    blankDiv.insertBefore(blankSpan, blankDiv.childNodes[2]);
+    blankDiv.insertBefore(upColumn, blankDiv.childNodes[4]);
+    blankDiv.insertBefore(downColumn, blankDiv.childNodes[6]);
 
     divForPaging.appendChild(leftBtnForFraction);
     divForPaging.appendChild(fraction);
     divForPaging.appendChild(rightBtnForFraction);
-    chartsDiv.appendChild(divForPaging);
+    console.log(divForPaging)
+    blankDiv.appendChild(divForPaging);
+    console.log(blankDiv)
 
     rightBtnForFraction.addEventListener('click',changedown);
     leftBtnForFraction.addEventListener('click',changeup);
@@ -583,7 +593,7 @@ function changedown(){
 
     if(curNumForPaging >= blankArray.length){ // 超過總頁數
         curNumForPaging = blankArray.length;
-        curPosg = blankArray.length-1;
+        curPos = blankArray.length-1;
         paging(); // 顯示錯誤訊息並分頁
         rightBtnForFraction.style.visibility = 'hidden'; // 隱藏下一頁按鈕
     } 
@@ -598,7 +608,7 @@ function changeup(){
 
     if(curNumForPaging <= 1){ // 低於最小頁數
         curNumForPaging = 1;
-        curPosg = blankArray.length-1;
+        curPos = blankArray.length-1;
         paging(); // 顯示錯誤訊息並分頁
         leftBtnForFraction.style.visibility = 'hidden'; // 隱藏上一頁按鈕
 
@@ -607,6 +617,8 @@ function changeup(){
 
 // 清除所有資料
 function clearAll(){
+    allChartsContainer.replaceChildren();
+    blankDiv.replaceChildren();
     var statSpan = stat.getElementsByTagName('span'); // 獲取所有摘要統計的span
     originColor(); // 還原顏色
     
@@ -617,22 +629,40 @@ function clearAll(){
     colorBtn.style.visibility = 'hidden'; // 選擇顏色按鈕隱藏
     colorDiv.replaceChildren(); // 清除6顏色按鈕
     colorDiv.style.backgroundColor = 'transparent';
+
+    document.getElementById('chooseMethod').style.visibility = 'visible'; // 顯示按鈕區塊
+    returnBtn.style.visibility = 'hidden'; // 隱藏返回鈕
+    sumFileBtn.style.visibility = 'hidden'; // 隱藏加總鈕
+    avgFileBtn.style.visibility = 'hidden'; // 隱藏平均鈕
+    statBtn.style.visibility = 'hidden'; // 隱藏摘要統計鈕
+    blankDiv.style.visibility = 'hidden'; // 隱藏空白區塊
+    fileNameDiv.style.visibility = 'hidden'; // 隱藏檔案名稱框
+    columnNameDiv.style.visibility = 'hidden'; // 隱藏欄位名稱框
+    forGroupBtn.style.visibility = 'hidden'; // 隱藏單位分組按鈕
+
+    selectedColumnIndices = [];
+    selectedRows = [];
+
+    selectColumnData.replaceChildren();
+    selectTownData.replaceChildren();
+
+    //取消選擇圖的複選框
+    var chartTypeCheckbox = document.querySelectorAll('#chartTypeSelect input[type="checkbox"]');
+    chartTypeCheckbox.forEach(function (checkbox) {
+        checkbox.checked = false;
+    });
+
+    var chartTypeCheckbox1 = document.querySelectorAll('.checkbox-container input[type="checkbox"]');
+    chartTypeCheckbox1.forEach(function (checkbox) {
+        checkbox.checked = false;
+    });
+
+    //清除選擇圖表類型數量
+    selectedChartCount = 0;
+    updateChartTypeStyle();
     
 }
 
-// 轉置資料
-// function transposeData(){
-//     var tArray = []; // 新陣列
-//     // 進行轉置
-//     for(var i = 0; i < InputData[0].length; i++){
-//         var rowArray = [];
-//         for(var j = 1; j < InputData.length; j++){
-//             rowArray.push(InputData[j][i]);
-//         }
-//         tArray.push(rowArray)
-//     }
-//     return tArray;
-// }
 
 // 檔案各鄉鎮取加總
 function sumFile(){
@@ -681,6 +711,7 @@ function sumFile(){
     originArray.unshift(firstCol); // 加入欄位名稱(單位、A1件數)
     InputData = originArray; // 更新InputData
 
+    posForColumnDiv = 0;
     buttonVisible(); // 顯示各式按鈕
     renderColumnSelect(); // 生成欄位下拉式清單
     renderRowSelect();
@@ -748,6 +779,7 @@ function avgFile(){
     originArray.unshift(firstCol); // 加入欄位名稱(單位、A1件數)
     InputData = originArray; // 更新InputData
 
+    posForColumnDiv = 0;
     buttonVisible(); // 顯示各式按鈕
     renderColumnSelect(); // 生成欄位下拉式清單
     renderRowSelect();
