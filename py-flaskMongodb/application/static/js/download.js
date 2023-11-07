@@ -2,57 +2,69 @@
 
 	downloadAll.addEventListener('click',chooseDownload);
 
+	var downloadExist = false;
 	// 選擇下載方式
 	function chooseDownload(){
-		var downloadDivBackDrop = document.createElement('div'); // 建立下載按鈕選擇區塊的背景區塊
-		downloadDivBackDrop.id = 'downloadDivBackDrop';
 
-		var downloadDiv = document.createElement('div'); // 建立下載按鈕選擇區塊
-		downloadDiv.id = 'downloadDiv';
+		if(downloadExist){
+			document.getElementById('downloadDivBackDrop').style.visibility = 'visible';
+		}else{
+			var downloadDivBackDrop = document.createElement('div'); // 建立下載按鈕選擇區塊的背景區塊
+			downloadDivBackDrop.id = 'downloadDivBackDrop';
+			var downloadDiv = document.createElement('div'); // 建立下載按鈕選擇區塊
+			downloadDiv.id = 'downloadDiv';
+	
+			var downloadXLSX = document.createElement('button'); // 下載CSV按鈕(預留)
+			var downloadJPG = document.createElement('button'); // 下載JPG按鈕
+			var cancelDownload = document.createElement('button'); // 下載JPG按鈕
+	
+			downloadXLSX.id = 'downloadXLSX';
+			downloadJPG.id = 'downloadJPG';
+			cancelDownload.id = 'cancelDownload';
+	
+			downloadXLSX.addEventListener('click', exportXlsxFile); // 選擇下載XLSX
+			downloadJPG.addEventListener('click', exportJpgFile); // 選擇下載JPG
+	
+			cancelDownload.addEventListener('click',function(){ // 點擊取消按鈕
+				downloadDivBackDrop.style.visibility = 'hidden';
+			});
+	
+			downloadDiv.appendChild(downloadXLSX);
+			downloadDiv.appendChild(downloadJPG);
+			downloadDiv.appendChild(cancelDownload);
+			downloadDivBackDrop.appendChild(downloadDiv);
+			document.body.appendChild(downloadDivBackDrop);
+	
+			downloadXLSX.addEventListener('mousemove',createButtonSuspendBox); // 滑鼠進入按鈕
+	
+			downloadXLSX.addEventListener('mouseout',function(){  // 滑鼠離開按鈕
+				suBoxForButtons.style.visibility = 'hidden';
+			})
+			downloadJPG.addEventListener('mousemove',createButtonSuspendBox); // 滑鼠進入按鈕
+	
+			downloadJPG.addEventListener('mouseout',function(){  // 滑鼠離開按鈕
+				suBoxForButtons.style.visibility = 'hidden';
+			});
 
-		var downloadXLSX = document.createElement('button'); // 下載CSV按鈕(預留)
-		var downloadJPG = document.createElement('button'); // 下載JPG按鈕
-		var cancelDownload = document.createElement('button'); // 下載JPG按鈕
-
-		downloadXLSX.id = 'downloadXLSX';
-		downloadJPG.id = 'downloadJPG';
-		cancelDownload.id = 'cancelDownload';
-
-		downloadXLSX.addEventListener('click', exportXlsxFile); // 選擇下載XLSX
-		downloadJPG.addEventListener('click', exportJpgFile); // 選擇下載JPG
-
-		cancelDownload.addEventListener('click',function(){ // 點擊取消按鈕
-			document.body.removeChild(downloadDivBackDrop); // 刪除下載區塊
-		});
-
-		downloadDiv.appendChild(downloadXLSX);
-		downloadDiv.appendChild(downloadJPG);
-		downloadDiv.appendChild(cancelDownload);
-		downloadDivBackDrop.appendChild(downloadDiv);
-		document.body.appendChild(downloadDivBackDrop);
-
-		downloadXLSX.addEventListener('mousemove',createButtonSuspendBox); // 滑鼠進入按鈕
-
-		downloadXLSX.addEventListener('mouseout',function(){  // 滑鼠離開按鈕
-    		suBoxForButtons.style.visibility = 'hidden';
-		})
-		downloadJPG.addEventListener('mousemove',createButtonSuspendBox); // 滑鼠進入按鈕
-
-		downloadJPG.addEventListener('mouseout',function(){  // 滑鼠離開按鈕
-    		suBoxForButtons.style.visibility = 'hidden';
-		})
-		
+			downloadExist = true;
+		}
 	}
 	
 	// 匯出jpg
 	function exportJpgFile(){
+		var originHeight = window.getComputedStyle(document.getElementById('all')).getPropertyValue('height');
+		document.getElementById('all').style.height = 700 + 'px';
+		suBoxForButtons.style.visibility = 'hidden';
+
 		JpgFile('all');
-		document.body.removeChild(downloadDivBackDrop); // 刪除下載區塊
+
+		document.getElementById('all').style.height = originHeight;
+		document.getElementById('downloadDivBackDrop').style.visibility = 'hidden';
 	}
 
 	function JpgFile(id){
 		html2canvas(document.getElementById(id)).then(canva => {
-			document.body.appendChild(canva);
+			// document.body.appendChild(canva);
 		
 			a = document.createElement('a');
 			a.href = canva.toDataURL("image/jpeg",0.92).replace("image/jpeg", "image/octet-stream");
@@ -64,71 +76,10 @@
 		
 	}
 
-    // // 匯出csv
-	// function exportCsvFile(){
-	// 	html2canvas(document.getElementById("showSvg")).then(function (canvas){ // 擷取區塊
-	// 		var imageCode = canvas.toDataURL("image/jpeg", 0.92).replace("image/jpeg", "image/octet-stream");
-	// 		csv(imageCode); // 將圖片變為 base64 編碼
-	// 	});
-
-	// 	function csv(imageCode){
-	// 		var data = getData(); // 建立資料
-	// 		var blob = new Blob([data + '\n' + imageCode], { // 藉型別陣列建構的 blob 來建立 URL
-	// 		type : "data:text/csv;charset=utf-8",
-	// 		});
-	// 		var href = URL.createObjectURL(blob); // 從 Blob 取出資料
-	// 		console.log(href)
-	// 		var link = document.createElement("a");
-	// 		link.href = href; // 設定herf
-	// 		link.download = "OpenData.csv"; // 匯出的檔名
-	// 		document.body.appendChild(link);
-	// 		link.click(); // 透過建立的 a 連結所產生的點擊事件
-	// 	}
-	// }
-	// var test1 = map_Selected.textContent.slice(5,map_Selected.textContent.length)
-	
-	// // 要匯出的資料
-	// function getData() {
-	// 	var totalDiv; // 所有資料
-
-	// 	var mapSelected = map_Selected.textContent.slice(5,map_Selected.textContent.length); // 縣市名稱
-	// 	var TownName = townName.textContent.slice(5,townName.textContent.length); // 鄉鎮名稱
-	// 	var TownData = townData.textContent.slice(5,townData.textContent.length); // 鄉鎮資料
-	// 	var chooseMap_header = "\ufeff縣市名稱,鄉鎮名稱,鄉鎮資料\n"; // 地圖標題
-	// 	var chooseMap_array = [mapSelected, TownName, TownData];
-	// 	var chooseMap_data = chooseMap_array.join(','); // 以逗號連接
-	// 	var chooseMap_div = chooseMap_header + chooseMap_data; // 標題加資料
-
-	// 	var columnName = '欄位名稱：' + columnNameArray[0]; // 當前欄位名稱
-	// 	var TownArray = townArray.join(","); // 鄉鎮
-	// 	var ColArray = colArray.join(","); // 數值
-	// 	var chart_array = [columnName, TownArray, ColArray]
-	// 	var chart_div = chart_array.join("\n"); // 以換行連接
-
-	// 	var ShowMax = showMax.textContent.slice(4,showMax.textContent.length); // 最大值之文字
-	// 	var Showmin = showmin.textContent.slice(4,showmin.textContent.length); // 最小值之文字
-	// 	var ShowAvg = showAvg.textContent.slice(4,showAvg.textContent.length); // 平均值之文字
-	// 	var ShowstD = showstD.textContent.slice(4,showstD.textContent.length); // 標準差之文字
-	// 	var ShowSum = showSum.textContent.slice(3,showSum.textContent.length); // 總和之文字
-	// 	var ShowNum = showNum.textContent.slice(3,showNum.textContent.length); // 個數之文字
-	// 	var statistic_header = "最大值,最小值,平均值,標準差,總和,個數\n"; // 摘要統計標題
-	// 	var statistic_array = [ShowMax, Showmin, ShowAvg, ShowstD, ShowSum, ShowNum];
-	// 	var statistic_data = statistic_array.join(','); // 以逗號連接
-	// 	var statistic_div = statistic_header + statistic_data; // 標題加資料
-		
-	// 	totalDiv = [chooseMap_div + "\n", chart_div + "\n", statistic_div  + "\n"].join("\n") // 加入換行符號
-	// 	console.log(totalDiv)
-		
-	// 	return totalDiv;
-	// }
-
-	
 	// 下載xlsx
 	function exportXlsxFile() {
 		document.body.removeChild(downloadDivBackDrop); // 刪除下載區塊
-		var mapArray = [townName.textContent.slice(5,townName.textContent.length),
-					   ];
-		var chartArray = ['欄位名稱：' + columnNameArray[0]];
+		var mapArray = [townName.textContent];
 		var statArray = [showMax.textContent.slice(4,showMax.textContent.length),showmin.textContent.slice(4,showmin.textContent.length),
 							showAvg.textContent.slice(4,showAvg.textContent.length),showstD.textContent.slice(4,showstD.textContent.length),
 							showSum.textContent.slice(3,showSum.textContent.length),showNum.textContent.slice(3,showNum.textContent.length)
@@ -140,10 +91,10 @@
 
 		// 測試資料
 		var data = [
-			['縣市名稱'], // 地圖標題
-			mapArray, // 地圖區塊資料
+			['縣市名稱：', mapArray], // 鄉鎮名稱
 			[], // 換行
-			chartArray, // 圖表標題
+			['檔案名稱：', fileNameDiv.textContent], // 檔案名稱
+			['欄位名稱：', columnNameDiv.textContent], // 檔案欄位名稱
 			townArray, // 鄉鎮名稱
 			colArray, // 鄉鎮資料
 			[], // 換行
