@@ -27,29 +27,31 @@
             <div style="width: 46px; height: 46px;"></div>
         </div>
 
-        <div style="position: relative; left: 70%;">
-            <button id="sumFileBtn">總和</button>
+        <div id = 'twoBtnDiv'>
+            <button id="sumFileBtn">加總</button>
             <button id="avgFileBtn">平均</button>
-            <button id="maxFileBtn">最大值</button>
-            <button id="minFileBtn">最小值</button>
         </div>
 
-        <!-- <p id="themeCalled">{{ todo.file['theme'] }}</p>
-        <p id="descriptCalled">{{ todo.file['descript'] }}</p>
-        <p id="resourceCalled">{{ todo.file['resource'] }}</p>
-        <p id="svgMapCalled">{{ todo.file['svgMap'] }}</p>
-        <p id="townNameCalled">{{ todo.file['townName'] }}</p>
-        <p id="backGroundCalled">{{ todo.file['backGround'] }}</p>
-        <p id="inputDataCalled">{{ todo.file['inputData'] }}</p>
-        <p id="rangeGroupCalled">{{ todo.file['rangeGroup'] }}</p>
-        <p id="mapColorCalled">{{ todo.file['mapColor'] }}</p>
-        <p id="columnNameCalled">{{ todo.file['columnName'] }}</p>
-        <p id="selectColumnCalled">{{ todo.file['selectColumn'] }}</p>
-        <p id="selectTownCalled">{{ todo.file['selectTown'] }}</p> -->
-    
+        <div style = 'display: none;'>
+            <p id="themeCalled">{{ todo.file['theme'] }}</p>
+            <p id="descriptCalled">{{ todo.file['descript'] }}</p>
+            <p id="resourceCalled">{{ todo.file['resource'] }}</p>
+            <p id="svgMapCalled">{{ todo.file['svgMap'] }}</p>
+            <p id="townNameCalled">{{ todo.file['townName'] }}</p>
+            <p id="backGroundCalled">{{ todo.file['backGround'] }}</p>
+            <p id="inputDataCalled">{{ todo.file['inputData'] }}</p>
+            <p id="rangeGroupCalled">{{ todo.file['rangeGroup'] }}</p>
+            <p id="mapColorCalled">{{ todo.file['mapColor'] }}</p>
+            <p id="fileNameCalled">{{ todo.file['fileName'] }}</p>
+            <p id="unitCalled">{{ todo.file['unitValue'] }}</p>
+            <p id="columnNameCalled">{{ todo.file['columnName'] }}</p>
+            <p id="selectColumnCalled">{{ todo.file['selectColumn'] }}</p>
+            <p id="selectTownCalled">{{ todo.file['selectTown'] }}</p>
+        </div>
         
-        <button id= "statBtn" ></button> <!--摘要統計按鈕-->
+        
         <button id= "returnBtn" ></button> <!--返回按鈕-->
+        <button id= "statBtn" ></button> <!--摘要統計按鈕-->
         <div id="suBoxForButtons" class="suBoxForButtons">
         </div>
 
@@ -58,6 +60,8 @@
 
             <!--地圖區塊-->
             <div class = "chooseMap">
+
+                <div id="fileNameDiv"></div>
 
                 <div id="columnNameDiv"> <!--欄位名稱區塊-->
                     <button id= "changeBtnForLeft"></button> <!--切換地圖按鈕--> 
@@ -72,6 +76,7 @@
                     </div>
 
                     <button id = "colorBtn"></button> <!--選擇顏色按鈕-->
+                    <button id = "forGroupBtn"></button>
 
                     <div id = "colorDiv"> <!--顏色選擇框-->
                     </div>
@@ -105,9 +110,17 @@
                             </g>
                         </svg>
                     </div>
-                    
+
                     <div id = "groupInputDiv"> <!--顏色分組下拉式清單-->
-                        <select id="selectForGroup"></select>
+                        <div>
+                            <label for = "selectForGroup" id = 'selectForGroupLabel'>選擇等級：</label>
+                            <select id="selectForGroup"></select>
+                        </div>
+                        
+                        <div>
+                            <label for = "unit" id = 'unitLabel'>輸入單位：</label>
+                            <input id="unit" type="text" placeholder="完成按Enter"></input>
+                        </div>
                     </div>
 
                     <div id = "rangeDiv" > <!--顏色範圍框-->
@@ -130,23 +143,23 @@
                 <div id="appearDiv"> <!--出現兩種上傳模式-->
                 </div>
                     
-                <div id = 'chartsDiv'> <!--圖表(長條圖、圓餅圖)-->
-                    <div class="reel__center">
-                        <div class="reel">
-                            <div calss="reel__item">
-                                <div id="container">
-                                    <div id="piechartContainer"></div>
-                                    <div id="chartContainer"></div>
-                                    <div id="linechartContainer"></div>
-                                    <div id="areachartContainer"></div>
-                                    <div id="barchartContainer"></div>
-                                    <div id="combochartContainer"></div>
-                                    <div id="stackchartContainer"></div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                <div id="allChartsContainer">
+                    <div class="charts" id="piechartContainer" ></div>
+                    <div class="charts" id="pieholeContainer" ></div>
+                    <div class="charts" id="chartContainer" ></div>
+                    <div class="charts" id="barchartContainer"></div>
+                    <div class="charts" id="histogramContainer"></div>
+                    <div class="charts" id="stackchartContainer"></div>
+                    <div class="charts" id="linechartContainer"></div>
+                    <div class="charts" id="areachartContainer"></div>
+                    <div class="charts" id="scatterchartContainer"></div>
+                    <div class="charts" id="bubblechartContainer"></div>
                 </div>
+
+                <div id="blankDiv">
+
+                </div>
+
             </div>
         </div>
 
@@ -157,13 +170,13 @@
 
         <!--摘要統計區塊-->
         <div id = 'stat' class="statistic">
+            <span style = 'position: relative; left: 100px; top: 10px; font-weight: bold;'>摘要統計</span><br>
             <span id = "Max"></span><br>
             <span id = "min"></span><br>
             <span id = "avg"></span><br>
             <span id = "stD"></span><br>
             <span id = "sum"></span><br>
             <span id = "num"></span>
-            <button id = "statClose">關閉</button> <!--關閉按鈕-->
         </div>
 
         <!--敘述框-->
@@ -187,11 +200,12 @@
                 <input type = 'text' id = inputResource placeholder="若無資料來源，請輸入「自訂」" class="inputforDescript"></input>
                 <div id = 'divForinputResource'></div>
                 
+                <button class = 'des_button' id = 'closeBTN'></button>
+
                 <div class = 'btnDiv'>
                     <button class = 'des_button' id = 'clearBtn'></button>
                     <button class = 'des_button' id = 'editBtn'></button>
                     <button class = 'des_button' id = 'finishBtn'></button>
-                    <button class = 'des_button' id = 'closeBTN'></button>
                 </div>
             </div>
             
@@ -201,7 +215,7 @@
         <div id="selectColumnDiv"> 
 
             <div> <!-- 選擇行區塊 -->
-                <label for="checkbox_chooseColumn" class="labelForCheckbox">選擇行：</label><!-- a1 -->
+                <label for="checkbox_chooseColumn" class="labelForCheckbox">選擇欄位名稱：</label><!-- a1 -->
                 <div class="data-container">
                     <div id="selectColumnData" class="checkbox-container">
                     </div>
@@ -209,7 +223,7 @@
             </div>
 
             <div> <!-- 選擇鄉鎮區塊 -->
-                <label for="checkbox_chooseTown" class="labelForCheckbox">資料名稱：</label>
+                <label for="checkbox_chooseTown" class="labelForCheckbox">選擇鄉鎮縣市：</label>
                 <div class="data-container">
                     <div id="selectTownData"  class="checkbox-container">      
                     </div>
@@ -219,13 +233,16 @@
             <div> <!-- 選擇圖表區塊 -->
                 <label for="chartTypeSelect"  class="labelForCheckbox">選擇圖表類型：</label>
                 <div id="chartTypeSelect" class="chartTypeSelectDiv">
-                    <laebl><input type="checkbox" value="column" id="showColumnChart">柱狀圖</input></laebl>
-                    <laebl><input type="checkbox" value="pie" id="showPieChart">圓餅圖</input></laebl>
-                    <laebl><input type="checkbox" value="lin" id="showLineChart">折線圖</input></laebl>
-                    <laebl><input type="checkbox" value="area" id="showAreaChart">區域圖</input></laebl>
-                    <laebl><input type="checkbox" value="Bar" id="showBarChart">長條圖</input></laebl>
-                    <laebl><input type="checkbox" value="combo" id="showComboChart">組合圖</input></laebl>
-                    <laebl><input type="checkbox" value="stack" id="showStackChart">堆疊階梯狀圖</input></laebl>
+                    <laebl for="showPieChart"><input type="checkbox" value="pie" id="showPieChart">圓餅圖</input></laebl>
+                    <label for="showPieholeChart"><input type="checkbox" value="piehole" id="showPieholeChart">圓環圖</label>
+                    <laebl for="showColumnChart"><input type="checkbox" value="column" id="showColumnChart">柱狀圖</laebl>
+                    <laebl for="showBarChart"><input type="checkbox" value="Bar" id="showBarChart">長條圖</laebl>
+                    <laebl for="showHistogramChart"><input type="checkbox" value="histogram" id="showHistogramChart">直方圖</laebl>
+                    <laebl for="showStackChart"><input type="checkbox" value="stack" id="showStackChart">堆疊階梯狀圖</laebl>
+                    <laebl for="showLineChart"><input type="checkbox" value="lin" id="showLineChart">折線圖</laebl>
+                    <laebl for="showAreaChart"><input type="checkbox" value="area" id="showAreaChart">區域圖</laebl>
+                    <laebl for="showScatterChart"><input type="checkbox" value="scatter" id="showScatterChart">散佈圖</laebl>
+                    <laebl for="showBubbleChart"><input type="checkbox" value=" bubble" id="showBubbleChart">泡泡圖</laebl>
                 </div>
             </div>
         </div>
@@ -235,15 +252,12 @@
         <div id = 'selfFileBackDrop' style="display: none;"> <!-- 背景 -->
             <button id="addButton_Row"></button> <!-- 新增列按鈕 -->
             <button id="addButton_Col"></button> <!-- 新增欄按鈕 -->
-            <!-- <button id="minusButton_Row"></button> 刪除列按鈕 -->
-            <!-- <button id="minusButton_Col"></button> 刪除欄按鈕 -->
+            <button id="selfFileDesBtn"></button> <!-- 說明框按鈕 -->
+            
 
             <div id="chooseColNumDiv">
-                <input id="inputRow" placeholder="輸入列數：" type="text" class="inputForchooseColNum"></input>
-                <input id="inputCol" placeholder="輸入行數：" type="text" class="inputForchooseColNum"></input>
                 <div id="inputRowDiv" class="inputDivForchooseColNum"></div>
                 <div id="inputColDiv" class="inputDivForchooseColNum"></div>
-                <button id="OKButtonForselfFile" class='buttonForChooseColNum'></button>
                 <button id="submitButtonForselfFile" class='buttonForChooseColNum'></button>
                 <button id="clearButtonForselfFile" class='buttonForChooseColNum'></button>
                 <button id="returnButtonForselfFile" class='buttonForChooseColNum'></button>
@@ -276,6 +290,29 @@
                 <span style="font-size: 28px;">儲存成功</span>
             </div>
         </div>
+
+        <!-- 預覽框 -->
+        <div id="previewBoxBackDrop">
+            <div id="previewBox">
+            </div>
+
+            <button id="closePreview"></button>
+        </div>
+
+        <!--詳細說明框-->
+        <div id = 'detailDesDivBackDrop'>
+            <button id = 'closeDetailDesBox'></button>
+            <div id = 'detailDesBox'>
+                <div id = detailBtnDiv>
+                    <div class = 'detailDivBtnClass'>操作說明</div>
+                    <div class = 'detailDivBtnClass'>按鈕介紹</div>
+                </div>
+                <div id="detailContent"></div>
+            </div>    
+        </div>
+
+        <!-- <div id="downloadDivBackDrop">
+        </div>     -->
             
         
 
