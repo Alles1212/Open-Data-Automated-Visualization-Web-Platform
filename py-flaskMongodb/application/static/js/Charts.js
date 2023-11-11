@@ -49,9 +49,14 @@ window.onload = (function() {
     addButton_Col.addEventListener('click',addColForSelfFile); // 新增欄鈕
     returnButtonForselfFile.addEventListener('click',returnMinus); // 返回鈕
     minusAllBtn.addEventListener('click',minusAll); // 刪除按鈕
+    
 
     // 圖表返回鈕
     returnBtn.addEventListener('click',function(){
+        sentFile.style.visibility = 'visible'; // 隱藏按鈕
+        sentAPI.style.visibility = 'visible'; // 隱藏按鈕
+        sentSelfFile.style.visibility = 'visible'; // 隱藏按鈕
+        appearDiv.replaceChildren();
         allChartsContainer.replaceChildren();
         blankDiv.replaceChildren();
         
@@ -95,6 +100,7 @@ window.onload = (function() {
 
         //清除選擇圖表類型數量
         selectedChartCount = 0;
+        townArray = []; // 清空鄉鎮陣列
         updateChartTypeStyle();
     });
 
@@ -525,7 +531,6 @@ window.onload = (function() {
 		columnNameDiv.style.visibility = 'visible'; // 顯示欄位選擇區塊
         fileNameDiv.style.visibility = 'visible'; // 顯示檔案名稱區塊
         forGroupBtn.style.visibility = 'visible'; // 顯示分組單位按鈕
-        groupInputDiv.style.visibility = 'visible'; // 顯示分組單位區塊
 		colorBtn.style.visibility = 'visible'; // 顯示按鈕
 		selectColumnDiv.style.visibility = 'visible'; // 顯示選擇欄位區塊
 	}
@@ -542,10 +547,11 @@ window.onload = (function() {
 
 	// API上傳
 	function API_Appear(){
-		//rangeDiv.style.visibility = 'hidden';  // 將範圍框隱藏
+        sentFile.style.visibility = 'hidden'; // 隱藏按鈕
+        sentAPI.style.visibility = 'hidden'; // 隱藏按鈕
+        sentSelfFile.style.visibility = 'hidden'; // 隱藏按鈕
+        returnBtn.style.visibility = 'visible'; // 隱藏返回鈕
 		appearDiv.replaceChildren(); // 清除原本的所有元素
-		//chartContainer.replaceChildren();
-
 
         var text = document.createElement('input'); // 生成文字輸入框
 		text.type = 'text';
@@ -588,7 +594,7 @@ window.onload = (function() {
         appearDiv.replaceChildren();
         
 		InputData = []; // 要傳出去製作圖表的陣列
-        
+
 		d3.csv(textAPI).then((data) => {
 			var JSON_List = []; // 空陣列,存資料用
 			colData = [] // 空陣列,存欄位名稱
@@ -637,6 +643,10 @@ window.onload = (function() {
     var form = document.getElementById('csvForm') // 出現不同上傳模式的區塊		
 	// 檔案上傳
     function File_Appear(){
+        sentFile.style.visibility = 'hidden'; // 隱藏按鈕
+        sentAPI.style.visibility = 'hidden'; // 隱藏按鈕
+        sentSelfFile.style.visibility = 'hidden'; // 隱藏按鈕
+        returnBtn.style.visibility = 'visible'; // 隱藏返回鈕
 		appearDiv.replaceChildren(); // 清除原本的所有元素
 		allChartsContainer.replaceChildren(); // 清除原本的所有元素
 
@@ -759,8 +769,8 @@ window.onload = (function() {
 		return data;
 	}
 
-    var selectedChartCount = 0;//選擇的圖表類型數量
-    var maxSelectedChartCount = 4;//設置最大允許的圖表類型數量
+    var selectedChartCount = 0; //選擇的圖表類型數量
+    var maxSelectedChartCount = 4; //設置最大允許的圖表類型數量
 
     //選擇圖形，複選框的選中狀態變化時，將用handleChartTypeChange函式
     var chartTypeCheckbox = document.querySelectorAll('#chartTypeSelect input[type="checkbox"]');
@@ -1069,7 +1079,7 @@ window.onload = (function() {
             checkWhichCharts.push('pieholeContainer')
         }
         if(showScatterChart){
-            checkWhichCharts.push('scatterchartContainert')
+            checkWhichCharts.push('scatterchartContainer')
         }
         if(showHistogramChart){
             checkWhichCharts.push('histogramContainer')
@@ -1327,7 +1337,7 @@ window.onload = (function() {
             renderPieholeChart();
         }else if(e.target.id == 'previewBtn_' + 'histogramContainer'){ // 點擊推疊梯狀圖的預覽
             renderHistogramChart();
-        }else if(e.target.id == 'previewBtn_' + 'scatterchartContainer'){ // 點擊推疊梯狀圖的預覽
+        }else if(e.target.id == 'previewBtn_' + 'scatterchartContainer'){ // 點擊散佈圖的預覽
             renderScatterChart();
         }
         
@@ -1568,104 +1578,104 @@ window.onload = (function() {
         }
     }
 
-    //google charts 散佈圖
-    function renderScatterChart() {
-        scatterchartContainer.innerHTML = '';
+//google charts 散佈圖
+function renderScatterChart() {
+    scatterchartContainer.innerHTML = '';
 
-        // 加載 Google Charts corechart 套件
-        google.charts.load('current', { packages: ['corechart'] });
-        google.charts.setOnLoadCallback(drawVisualization);
+    // 加載 Google Charts corechart 套件
+    google.charts.load('current', { packages: ['corechart'] });
+    google.charts.setOnLoadCallback(drawVisualization);
 
-        function drawVisualization() {
-            // 創建 DataTable
-            var data = new google.visualization.DataTable();
-            data.addColumn('string', 'Name');
+    function drawVisualization() {
+        // 創建 DataTable
+        var data = new google.visualization.DataTable();
+        data.addColumn('string', 'Name');
 
-            for (var i = 0; i < selectedColumnIndices.length; i++) {
-                var columnIndex = selectedColumnIndices[i];
-                data.addColumn('number', InputData[0][columnIndex]);
-                // 將數值作為 annotation 顯示
-                data.addColumn({ type: 'number', role: 'annotation' });
-            }
+        for (var i = 0; i < selectedColumnIndices.length; i++) {
+            var columnIndex = selectedColumnIndices[i];
+            data.addColumn('number', InputData[0][columnIndex]);
+            // 將數值作為 annotation 顯示
+            data.addColumn({ type: 'number', role: 'annotation' });
+        }
 
 
-            for (var i = 1; i < InputData.length; i++) {
-                var row = InputData[i];
-                var rowData = [row[0].replace(/"/g, '')];
+        for (var i = 1; i < InputData.length; i++) {
+            var row = InputData[i];
+            var rowData = [row[0].replace(/"/g, '')];
 
-                if (selectedRows.indexOf(rowData[0]) !== -1) {
-                    for (var j = 0; j < selectedColumnIndices.length; j++) {
-                        var columnIndex = selectedColumnIndices[j];
-                        var value = parseFloat(row[columnIndex]);
-                        rowData.push(value);
-                        rowData.push(value); // 複製一份數值作為 annotation
-
-                    }
-                    data.addRow(rowData);
+            if (selectedRows.indexOf(rowData[0]) !== -1) {
+                for (var j = 0; j < selectedColumnIndices.length; j++) {
+                    var columnIndex = selectedColumnIndices[j];
+                    var value = parseFloat(row[columnIndex]);
+                    rowData.push(value);
+                    rowData.push(value); // 複製一份數值作為 annotation
 
                 }
-            }
+                data.addRow(rowData);
 
-
-            var options = {
-                title: uploadedFileName, //標題文字
-                animation: {
-                    startup: true,
-                    duration: 1000,
-                    easing: 'out',
-                },
-                hAxis: {
-                    title: '市、縣(鄉鎮區)',
-                    textStyle: {
-                        fontSize: 10,
-                        color: '#053061',
-                        bold: true,
-                        italic: false,
-                    },
-                    titleTextStyle: {
-                        fontSize: 10,
-                        color: '#053061',
-                        bold: true,
-                        italic: false,
-                    },
-                },
-                vAxis: {
-                    title: '類別',
-                    textStyle: {
-                        fontSize: 10,
-                        color: '#67001f',
-                        bold: false,
-                        italic: false,
-                    },
-                    titleTextStyle: {
-                        fontSize: 10,
-                        color: '#67001f',
-                        bold: true,
-                        italic: false,
-                    },
-                },
-                series: {
-                    0: { color: '#CA8EC2' }//設定顏色為 #FFDAB9
-
-                },
-                pointShape: { type: 'star', sides: 5, dent: 0.7 },
-                width: '100%',
-                height: '100%',
-                legend: { position: 'top' },
-                chartArea: { width: '85%', height: '65%' }, // 調整圖表區域大小
-                crosshair: { trigger: 'both', orientation: 'both' }, // 啟用Crosshair
-            };
-
-            var chart = new google.visualization.ScatterChart(document.getElementById('scatterchartContainer'));
-            chart.draw(data, options);
-
-            if(previewBool == true){
-                var chart = new google.visualization.ScatterChart(document.getElementById('previewBox'));
-                chart.draw(data, options);
-                previewBool = false; // 還原
             }
         }
+
+
+        var options = {
+            title: uploadedFileName, //標題文字
+            animation: {
+                startup: true,
+                duration: 1000,
+                easing: 'out',
+            },
+            hAxis: {
+                title: '市、縣(鄉鎮區)',
+                textStyle: {
+                    fontSize: 10,
+                    color: '#053061',
+                    bold: true,
+                    italic: false,
+                },
+                titleTextStyle: {
+                    fontSize: 10,
+                    color: '#053061',
+                    bold: true,
+                    italic: false,
+                },
+            },
+            vAxis: {
+                title: '類別',
+                textStyle: {
+                    fontSize: 10,
+                    color: '#67001f',
+                    bold: false,
+                    italic: false,
+                },
+                titleTextStyle: {
+                    fontSize: 10,
+                    color: '#67001f',
+                    bold: true,
+                    italic: false,
+                },
+            },
+            series: {
+                0: { color: '#CA8EC2' }//設定顏色為 #FFDAB9
+
+            },
+            pointShape: { type: 'star', sides: 5, dent: 0.7 },
+            width: '100%',
+            height: '100%',
+            legend: { position: 'top' },
+            chartArea: { width: '85%', height: '65%' }, // 調整圖表區域大小
+            crosshair: { trigger: 'both', orientation: 'both' }, // 啟用Crosshair
+        };
+
+        var chart = new google.visualization.ScatterChart(document.getElementById('scatterchartContainer'));
+        chart.draw(data, options);
+
+        if(previewBool == true){
+            var chart = new google.visualization.ScatterChart(document.getElementById('previewBox'));
+            chart.draw(data, options);
+            previewBool = false; // 還原
+        }
     }
+}
 
 
 
