@@ -16,7 +16,7 @@
             
             <div>
                 <div id="townNameDiv"> <!--鄉鎮名稱區塊-->
-                    <span id = 'townName'>臺灣地圖</span> <!--鄉鎮名稱-->
+                    <span id = 'townName'>主題</span> <!--鄉鎮名稱-->
 
                     <button class="download" id="downloadAll"> <!--下載按鈕-->
                     <button id = "remitBtn"></button> <!--匯出按鈕-->
@@ -47,11 +47,13 @@
             <p id="columnNameCalled">{{ todo.file['columnName'] }}</p>
             <p id="selectColumnCalled">{{ todo.file['selectColumn'] }}</p>
             <p id="selectTownCalled">{{ todo.file['selectTown'] }}</p>
+            <p id="chartCountCalled">{{ todo.file['chartCount'] }}</p>
         </div>
         
         
         <button id= "returnBtn" ></button> <!--返回按鈕-->
         <button id= "statBtn" ></button> <!--摘要統計按鈕-->
+        <button id= "introBtn" ></button> <!--說明按鈕-->
         <div id="suBoxForButtons" class="suBoxForButtons">
         </div>
 
@@ -119,7 +121,7 @@
                         
                         <div>
                             <label for = "unit" id = 'unitLabel'>輸入單位：</label>
-                            <input id="unit" type="text" placeholder="完成按Enter"></input>
+                            <input id="unit" type="text" placeholder="按Enter"></input>
                         </div>
                     </div>
 
@@ -182,10 +184,6 @@
         <!--敘述框-->
         <div id = 'divForDescripBoxBackDrop'> <!--敘述框背景-->
             <div id = 'descripBox'> <!--敘述框-->
-
-                <!-- <span class="desSpan">作者：</span>
-                <input type="text" class="inputforDescript" placeholder="輸入作者名稱：" id="inputAuthor"></input>
-                <div id = 'divForDesAuthor'></div> -->
 
                 <span class="desSpan">主題：</span>
                 <input type="text" class="inputforDescript" placeholder="輸入主題名稱：" id="inputTheme"></input>
@@ -311,36 +309,29 @@
             </div>    
         </div>
 
-        <!-- <div id="downloadDivBackDrop">
-        </div>     -->
+        <div id = 'showDescriptDiv'>
+            <div class="forShowDES">
+                <span style="font-weight: bold;">說明：</span>
+                <div id="showDES">
+                    <span class = 'showDESpan'></span>
+                </div>
+            </div>
+
+            <div class="forShowDES">
+                <span style="font-weight: bold;">資料來源：</span>
+                <div id="showRES">
+                    <span class = 'showDESpan'></span>
+                </div>
+            </div>
+
+        </div>
+
+        <div id="gobackDiv">
+            <button id="gobackBtn"></button>
+            <span>返回</span>
+        </div>
             
         
-
-        <!-- <table id="exTable" border="2">
-            <thead class="lockedRecordsBg">
-                <tr bgcolor='#87AFC6' style='height: 75px; text-align: center; width: 250px'>
-                    <th style="width:40px">S#</th>
-                    <th>name</th>
-                    <th>Email</th>
-                    <th>Phone</th>
-                    <th>Country</th>
-                </tr>
-            </thead>
-            <tr>
-                <th>4</th>
-                <td style="height: 150px">
-                    <img id = 'td'
-                     src="https://avatars0.githubusercontent.com/u/4952560?s=460&v=4"
-                     height="85"
-                     width="100"
-                     alt="sample image"
-                    />
-                </td>
-                <td style="font-weight:bold">test@gmail.com</td>
-                <td></td>
-                <td>USA</td>
-            </tr>
-        </table> -->
         
         <!--使用jQuery操作dom-->
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
