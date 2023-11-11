@@ -18,7 +18,6 @@
     statBtn.addEventListener('mousemove',function(){ // 點擊摘要統計按鈕
         if(InputData.length != 0){
             stat.style.visibility = 'visible'; // 顯示統計區塊
-            statClick += 1;
         }
     });
 
@@ -218,6 +217,7 @@
     avgFileBtn.style.backgroundColor = currentColorDiv[7];
     groupInputDiv.style.backgroundColor = currentColorDiv[6];
     stat.style.backgroundColor = currentColorDiv[8];
+
     // 生成選擇顏色按鈕
     var btnColorArray = ['#FF0000','#FFA600','#FFFF00','#00FF00','#00FFFF','#9300FF']
     var colorDiv = document.getElementById('colorDiv');
@@ -264,7 +264,7 @@
         avgFileBtn.style.backgroundColor = currentColorDiv[7];
         groupInputDiv.style.backgroundColor = currentColorDiv[6];
         stat.style.backgroundColor = currentColorDiv[8];
-        
+        townNameDiv.getElementsByTagName('span')[0].style.backgroundColor = currentColorDiv[8];
         townArea(currentMap); // 同時改變地圖顏色
         appearRange(); // 同時改變範圍框顏色
         
