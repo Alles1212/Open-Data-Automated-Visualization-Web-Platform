@@ -56,10 +56,36 @@
 		document.getElementById('all').style.height = 700 + 'px';
 		suBoxForButtons.style.visibility = 'hidden';
 
+		selectColumnBtn.style.visibility = 'hidden';
+        colorBtn.style.visibility = 'hidden';
+        forGroupBtn.style.visibility = 'hidden';
+        statBtn.style.visibility = 'hidden';
+        returnBtn.style.visibility = 'hidden';
+        sumFileBtn.style.visibility = 'hidden';
+        avgFileBtn.style.visibility = 'hidden';
+        changeBtnForRight.style.visibility = 'hidden';
+        changeBtnForLeft.style.visibility = 'hidden';
+        for(var i = 0; i < allChartsContainer.getElementsByTagName('button').length; i++){
+            allChartsContainer.getElementsByTagName('button')[i].style.visibility = 'hidden';
+        }
+
 		JpgFile('all');
 
 		document.getElementById('all').style.height = originHeight;
 		document.getElementById('downloadDivBackDrop').style.visibility = 'hidden';
+
+		selectColumnBtn.style.visibility = 'visible';
+        colorBtn.style.visibility = 'visible';
+        forGroupBtn.style.visibility = 'visible';
+        statBtn.style.visibility = 'visible';
+        returnBtn.style.visibility = 'visible';
+        sumFileBtn.style.visibility = 'visible';
+        avgFileBtn.style.visibility = 'visible';
+        changeBtnForRight.style.visibility = 'visible';
+        changeBtnForLeft.style.visibility = 'visible';
+        for(var i = 0; i < allChartsContainer.getElementsByTagName('button').length; i++){
+            allChartsContainer.getElementsByTagName('button')[i].style.visibility = 'visible';
+        }
 	}
 
 	function JpgFile(id){
