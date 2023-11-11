@@ -25,20 +25,20 @@
     background-repeat: no-repeat;
     background-color: transparent;
     border: none;
-    background-size: 30px;
+    background-size: cover;
 
-    width: 30px;
-    height: 30px;
+    width: 35px;
+    height: 35px;
     
     position: relative;
+    left: 0.5%;
     z-index: 2;
+    
 
 }
   #selectColumnBtn:hover{
     cursor: pointer;
     transform: scale(1.1);
-    background-color: rgba(255,255,255, 0.7);
-    
 }
 
   /* 鄉鎮名稱區塊 */
@@ -206,6 +206,66 @@
     visibility: hidden;
   
 }
+
+  /* 說明框 */
+  #showDescriptDiv{
+    width: 450px;
+    height: 300px;
+
+    border-radius: 20px;
+
+    background-color: #F1E1FF;
+
+    font-size: 22px;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+
+    position: relative;
+    left: 3%;
+    top: -6370px;
+
+    z-index: 1;
+
+    visibility: hidden;
+}
+  .forShowDES{
+    display: flex;
+    justify-content: center;
+}
+  #showDES{
+    width: 300px;
+    height: 170px;
+    border-radius: 20px;
+
+    position: relative;
+    left: 22px;
+
+    background-color: #FCFCFC;
+
+    word-wrap: break-word;
+    overflow-y: scroll;
+}
+  #showRES{
+    width: 300px;
+    height: 40px;
+    border-radius: 20px;
+
+    background-color: #FCFCFC;
+
+    position: relative;
+    top: -2px;
+
+    display: flex;
+    align-items: center;
+
+    overflow-y: scroll;
+}
+  .showDESpan{
+    margin: 10px;
+}
+  
 
   /* 步驟框 */
   #stepBox{
@@ -586,9 +646,86 @@
     background-size: 270px;
     background-position: 30px;
     border: none;
+}
+  .individualBtn{
+    width: 70px;
+    height: 70px;
+    
+    position: relative;
+    left: 10px;
+}
+
+  #individualBtn00{
+    background-image: url("../image/arrow.png");
+    background-repeat: no-repeat;
+    background-color: transparent;
+    border: none;
+    background-size: cover;
+}
+  #individualBtn01{
+    background-image: url("../image/introduce.png");
+    background-repeat: no-repeat;
+    background-color: transparent;
+    border: none;
+    background-size: cover;
+}
+  #individualBtn02{
+    background-image: url("../image/art_palette.png");
+    background-repeat: no-repeat;
+    background-color: transparent;
+    border: none;
+    background-size: cover;
+}
+  #individualBtn10{
+    background-image: url("../image/number.png");
+    background-repeat: no-repeat;
+    background-color: transparent;
+    border: none;
+    background-size: cover;
+}
+  #individualBtn11{
+    background-image: url("../image/statBtn.png");
+    background-repeat: no-repeat;
+    background-color: transparent;
+    border: none;
+    background-size: cover;
+}
+  #individualBtn12{
+    background-image: url("../image/dir.png");
+    background-repeat: no-repeat;
+    background-color: transparent;
+    border: none;
+    background-size: cover;
+    background-position: -5px;
+}
+  #individualBtn20{
+    background-image: url("../image/eye.png");
+    background-repeat: no-repeat;
+    background-color: transparent;
+    border: none;
+    background-size: cover;
+}
+  #individualBtn21{
+    background-image: url("../image/returnBtn.png");
+    background-repeat: no-repeat;
+    background-color: transparent;
+    border: none;
+    background-size: cover;
+}
+  #individualBtn22{
+    background-image: url("../image/sum_avg.png");
+    background-repeat: no-repeat;
+    background-color: transparent;
+    border: none;
+    background-size: cover;
+}
+
+  #individualBtn00:hover,#individualBtn01:hover,#individualBtn02:hover,
+  #individualBtn10:hover,#individualBtn11:hover,#individualBtn12:hover,
+  #individualBtn20:hover,#individualBtn21:hover,#individualBtn22:hover{
+    cursor: pointer;
+    transform: scale(1.1);
   }
-
-
 
   /* 關閉按鈕 */
   #closeStep{
@@ -597,9 +734,11 @@
     background-color: transparent;
     border: none;
     background-size: cover;
+    background-position: -4px;
 
     width: 43px;
     height: 43px;
+
 
     position: relative;
     top: -40px;
@@ -699,7 +838,22 @@
     
     z-index: 1;
 }
+  #introBtn{
+    background-image: url("../image/introduce.png");
+    background-color: transparent;
+    background-repeat: no-repeat;
+    background-size: cover;
+    border: none;
 
+    width: 40px;
+    height: 40px;
+
+    position: relative;
+    left: -6.4%;
+    top: -28px;
+    
+    z-index: 1;
+  }
   /* 加總按鈕、平均按鈕 */
   #sumFileBtn,#avgFileBtn{
     visibility: hidden;
@@ -720,6 +874,7 @@
     box-shadow: 0 6px 6px gray;
     
 }
+  #introBtn:hover,
   #sumFileBtn:hover,
   #avgFileBtn:hover{
     cursor: pointer;
@@ -729,7 +884,7 @@
   /* 整個svg區塊*/
   #showSvg{
     position: relative;
-    top: -450px;
+    top: -460px;
     left: 200px;
 
     display: flex;
@@ -762,8 +917,8 @@
     height: 50px;
 
     position: relative;
-    left: 150px;
-    top: 0px;
+    left: -10.9%;
+    top: 60px;
     visibility: hidden;
 
     z-index: 1;
@@ -776,8 +931,8 @@
   /* 顏色選擇框 */
   #colorDiv{
     position: relative;
-    top: 45px;
-    left: 140px;
+    top: 100px;
+    left: -11.5%;
 
     width: 70px;
     height: 50px;
@@ -807,8 +962,8 @@
     height: 40px;
 
     position: absolute;
-    left: 5px;
-    top: 220px;
+    left: -10.8%;
+    top: 21%;
 
     visibility: hidden;
     z-index: 2;
@@ -824,8 +979,8 @@
     height: 100px;
 
     position: relative;
-    left: -670px;
-    top: 250px;
+    left: -63%;
+    top: 160px;
 
     display: flex;
     flex-direction: column;
@@ -900,29 +1055,33 @@
 }
   /* 三按鈕區塊 */
   #chooseMethod{
-    /* background-image: url("../image/dialog_box.png");
+    background-image: url("../image/chooseMethod.png");
     background-color: transparent;
     background-repeat: no-repeat;
-    background-size: cover;
-    border: none; */
+    background-size: 600px 350px;
+    background-position: -35px -20px;
+    /* border-style: solid; */
 
     display: flex;
     justify-content: center;
     align-items: center;
 
-    width: 400px;
+    width: 500px;
     height: 300px;
 
     position: relative;
-    top: 110px;
-    left: -50px;
+    top: 140px;
+    left: -80px;
 }
   /* 檔案上傳、API上傳、自製表格按鈕 */
   .method{
-    margin: 20px;
-    width: 50px;
-    height: 50px;
+    margin: 30px;
+    width: 70px;
+    height: 70px;
     position: relative;
+    top: 10px;
+    z-index: 2;
+
 
 }.method:hover{
     cursor: pointer;
@@ -935,7 +1094,7 @@
     background-color: transparent;
     background-position: 5px;
     background-repeat: no-repeat;
-    background-size: 50px;
+    background-size: cover;
     border: none;   
 }
 
@@ -945,7 +1104,7 @@
     background-color: transparent;
     background-position: 4px;
     background-repeat: no-repeat;
-    background-size: 50px;
+    background-size: cover;
     border: none;
 }
 
@@ -955,7 +1114,7 @@
     background-color: transparent;
     background-position: 3px;
     background-repeat: no-repeat;
-    background-size: 50px;
+    background-size: cover;
     border: none;
 }
 
@@ -973,15 +1132,14 @@
     /* background-color: transparent; */
     /* background-position: -5px; */
     background-repeat: no-repeat;
-    background-size: 50px;
+    background-size: cover;
 
-    width: 50px;
-    height: 50px;
+    width: 70px;
+    height: 70px;
 
     position: relative;
-    top: 10px;
-    left: 130px;
-
+    top: -30px;
+    left: 25%;
 }
   /* 上傳按鈕 */
   #submit{
@@ -989,15 +1147,15 @@
     background-color: transparent;
     background-position: -5px;
     background-repeat: no-repeat;
-    background-size: 50px;
+    background-size: cover;
     border: none;
 
-    width: 50px;
-    height: 50px;
+    width: 70px;
+    height: 70px;
 
     position: relative;
-    top: -40px;
-    left: 30px;
+    top: -95px;
+    left: 12%;
 }
   #divForCsvFile:hover,#submit:hover{
     transform: scale(1.2); /* 放大 */
@@ -1006,11 +1164,13 @@
 
   /* API輸入框 */
   #textAPI{
-    height: 30px;
-    font-size: 16px;
+    height: 50px;
+    width: 300px;
+    font-size: 22px;
+
     position: relative;
-    top: -7px;
-    left: -40px;
+    top: -50px;
+    left: -5%;
 }
   /* API上傳鈕 */
   #submitAPI{
@@ -1018,15 +1178,15 @@
     background-color: transparent;
     /* background-position: -5px; */
     background-repeat: no-repeat;
-    background-size: 50px;
+    background-size: cover;
     border: none;
     
     position: relative;
-    left: -40px;
-    top: 10px;
+    left: -4%;
+    top: -21px;
 
-    width: 50px;
-    height: 50px;
+    width: 70px;
+    height: 70px;
 }
   #submitAPI:hover{
     cursor: pointer;
@@ -1067,8 +1227,8 @@
     height: 500px;
 
     position: relative;
-    top: -550px;
-    left: -30px;
+    top: -750px;
+    left: -100px;
 
     display: flex;
     flex-direction: column;
@@ -1092,8 +1252,8 @@
     justify-content: center;
     
     position: relative;
-    left: 70%;
-    top: -1320px;
+    left: 3%;
+    top: -1250px;
 
     visibility: hidden;
 
@@ -1161,6 +1321,8 @@
     height: 30px;
     font-size: 17px;
 
+    display: block;
+
     position: relative;
     top: 20px;
 }
@@ -1170,6 +1332,7 @@
     height: 170px;
 
     font-size: 17px;
+    display: block;
 
     position: relative;
     top: 20px;
@@ -1209,7 +1372,6 @@
   .btnDiv{
     display: flex;
     justify-content: space-around;
-    align-items: center;
 
     position: relative;
     left: -10px;
@@ -1297,7 +1459,7 @@
 
     position: absolute;
     top: 5%;
-    left: 2.5%;
+    left: 3%;
 
     z-index: -2;
 }
@@ -1371,7 +1533,7 @@
     align-items: center;
 
     position: relative;
-    top: -6500px;
+    top: -6800px;
     z-index: 2;
 }
 
@@ -1956,8 +2118,8 @@
     height: 45px;
 
     position: relative;
-    left: 86%;
-    top: 520px;
+    left: -3.1%;
+    top: 160px;
 
     z-index: 1;
     
@@ -2238,8 +2400,8 @@
     height: 40px;
 
     position: relative;
-    top: -250px;
-    left: 270px;
+    top: -240px;
+    left: 17.5%;
 }
   #closePreview:hover,#closeDetailDesBox:hover{
     cursor: pointer;
@@ -2337,6 +2499,165 @@
     line-height: 60px;
 }
 
+  #gobackDiv{
+    position: relative;
+    top: -6190px;
+    left: 29.5%;
+
+    visibility: hidden;
+    z-index: 2;
+}
+  #gobackBtn{
+    background-image: url('../image/goBack.png');
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-color: transparent;
+    border: none;
+
+    width: 30px;
+    height: 30px;
+
+}#gobackBtn:hover{
+    cursor: pointer;
+    transform: scale(1.1);
+}
+
+  #gobackDiv span{
+    font-size: 20px;
+    position: relative;
+    left: 0.5%;
+    top: -5px;
+}
+  #allBtnStepDiv{
+    width: 650px;
+    height: 300px;
+
+    display: flex;
+    justify-content: space-around;
+
+}
+  #stepSpan{
+    font-size: 20px;
+    width: 550px;
+
+    line-height: 50px;
+    margin: 10px;
+}
+  .childDiv{
+    height: 200px;
+    width: 180px;
+}
+  #childDiv0{
+    background-image: url('../image/chooseColumnStep.png');
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-color: transparent;
+    border: none;
+}
+  #childDiv1{
+    background-image: url('../image/chooseTownStep.png');
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-color: transparent;
+    border: none;
+}
+  #childDiv2{
+    background-image: url('../image/chooseChartsStep.png');
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-color: transparent;
+    border: none;
+}
+  #introduceStepImg{
+    height: 200px;
+    width: 300px;
+
+    position: relative;
+    top: -20px;
+
+    background-image: url('../image/introStepImg.png');
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-color: transparent;
+    border: none;
+}
+  #colorStepImg{
+    height: 300px;
+    width: 550px;
+
+    position: relative;
+    top: -20px;
+
+    background-image: url('../image/colorStepImg.png');
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-color: transparent;
+    border: none;
+}
+  #groupStepImg{
+    height: 300px;
+    width: 500px;
+
+    position: relative;
+    top: -20px;
+
+    background-image: url('../image/groupStepImg.png');
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-color: transparent;
+    border: none;
+}
+  #statStepImg{
+    height: 270px;
+    width: 200px;
+
+    position: relative;
+    top: -20px;
+    left: 5%;
+
+    background-image: url('../image/statStepImg.png');
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-color: transparent;
+    border: none;
+}
+  #previewStepImg{
+    height: 390px;
+    width: 300px;
+
+    position: relative;
+    left: 5%;
+
+    background-image: url('../image/previewStepImg.png');
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-color: transparent;
+    border: none;
+}
+  #dirImg{
+    height: 350px;
+    width: 400px;
+
+    background-image: url('../image/dirImg.png');
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-color: transparent;
+    border: none;
+}
+  #sumavgImg{
+    height: 100px;
+    width: 300px;
+
+    position: relative;
+    top: -50px;
+    left: 5%;
+
+    background-image: url('../image/sumavgImg.png');
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-color: transparent;
+    border: none;
+}
 
 
 
