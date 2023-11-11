@@ -26,8 +26,24 @@ var detailDesDivBackDrop = document.getElementById('detailDesDivBackDrop'); // �
 var closeDetailDesBox = document.getElementById('closeDetailDesBox'); // 詳細說明刪除鈕
 var detailBtnDiv = document.getElementById('detailBtnDiv'); // 使用說明、按鈕介紹按鈕
 var detailContent = document.getElementById('detailContent'); // 詳細說明內容
+var introBtn = document.getElementById('introBtn'); // 主題說明按鈕
 
-selfFileDesBtn.addEventListener('click',function(){
+var showDescriptDiv = document.getElementById('showDescriptDiv'); // 說明框
+var showDES = document.getElementById('showDES'); // 說明框說明
+var showRES = document.getElementById('showRES'); // 說明框資料來源
+var gobackDiv = document.getElementById('gobackDiv'); // 按鈕步驟框返回紐
+var gobackBtn = document.getElementById('gobackBtn'); // 按鈕步驟框返回紐
+
+
+introBtn.addEventListener('mousemove',function(){
+    showDescriptDiv.style.visibility = 'visible';
+})
+
+showDescriptDiv.addEventListener('mouseleave',function(){
+    showDescriptDiv.style.visibility = 'hidden';
+})
+
+selfFileDesBtn.addEventListener('click',function(){ // 自製表單步驟框
     opendetailBox()
 })
 
@@ -137,7 +153,7 @@ function btnIntroduceForSelfFile(){
 
 
 step.addEventListener('click', showStep); // 點擊步驟框按鈕
-description.addEventListener('click', showDescription); // 點擊敘述框按鈕
+description.addEventListener('click', showDescription); // 點擊敘述框
 
 
  // 顯示步驟框
@@ -146,7 +162,7 @@ function showStep(){
     itemsDiv.replaceChildren();
     initStepContent(); // 初始步驟畫面(地圖)
     
-    var itemsName = ['1. 地圖選擇','2. 上傳方式','3. 選擇欄位']; // 項目名稱
+    var itemsName = ['1. 地圖選擇','2. 上傳方式','3. 選擇欄位','4. 按鈕操作']; // 項目名稱
     for(var i = 0; i < itemsName.length; i++){
         var itemsNameDiv = document.createElement('div'); // 建立項目名稱區塊
         itemsNameDiv.className = 'itemsNameDiv';
@@ -167,6 +183,7 @@ function showStep(){
     button.addEventListener('click', function(){  // 關閉步驟框
         stepBoxBackDropDiv.style.visibility = 'hidden'; // 隱藏步驟框背景
         suBoxForButtons.style.visibility = 'hidden'; // 隱藏按鈕懸浮框
+        gobackDiv.style.visibility = 'hidden'; // 隱藏返回區塊
     })
 
     itemsDiv.appendChild(button);
@@ -185,6 +202,7 @@ function showStep(){
 // 初始步驟畫面(地圖)
 function initStepContent(){
     contentForStep.replaceChildren();
+    contentForStep.style.flexDirection = ''; // 刪除css樣式
     var mapImage = document.createElement('img'); // 建立地圖圖片
     mapImage.style.width = 300 + 'px';
     mapImage.style.height = 400 + 'px';
@@ -209,7 +227,7 @@ function initStepContent(){
     contentForStep.appendChild(mapText);
 }
 
-// 更改步驟內容
+// 更改步驟內容(主畫面)
 function changeContent(e){
     contentForStep.replaceChildren();
     var curDiv = e.target; // 當前點擊的項目
@@ -222,6 +240,9 @@ function changeContent(e){
     }
     if(curDiv.id == 2){
         chartsStep(); // 選擇圖表步驟
+    }
+    if(curDiv.id == 3){
+        btnStep(); // 按鈕操作步驟
     }
 }
 
@@ -461,6 +482,203 @@ function thirdColumnStep(){
     methodContent.appendChild(outDiv);
 }
 
+// 按鈕操作步驟
+function btnStep(){
+    contentForStep.replaceChildren();
+    gobackDiv.style.visibility = 'hidden'; // 隱藏返回區塊
+
+    var span = document.createElement('span'); // 建立文字
+    span.textContent = '點擊下列按鈕開啟功能說明：';
+    span.style.fontSize = 22 + 'px';
+    span.style.height = 70 + 'px';
+
+    var btnNameArr = ['欄位鈕','說明鈕','顏色切換鈕',
+                      '級距鈕','統計鈕','欄位切換鈕',
+                      '預覽鈕','重製鈕','資料切換紐']
+    var btnNameArrPos = 0; // 記錄位置
+
+    for(var i = 0; i < 3; i++){
+        var btnStepDiv = document.createElement('div'); // 建立三個區塊
+        for(var j = 0; j < 3; j++){
+            var individualBtn = document.createElement('button'); // 建立按鈕
+            individualBtn.id = 'individualBtn' + i + j;
+            individualBtn.className = 'individualBtn';
+
+            var btnspan = document.createElement('span'); // 建立對應的文字
+            btnspan.textContent = btnNameArr[btnNameArrPos++]; // 陣列位置往後
+            btnspan.style.position = 'relative';
+            btnspan.style.left = -10 + 'px';
+
+            individualBtn.addEventListener('click',changeBtnStep); // 切換按鈕步驟
+
+            btnStepDiv.appendChild(individualBtn);
+            btnStepDiv.appendChild(btnspan);
+        }
+        btnStepDiv.style.display = 'flex';
+        btnStepDiv.style.justifyContent = 'space-around';
+        btnStepDiv.style.width = 650 + 'px';
+
+        contentForStep.appendChild(btnStepDiv)
+    }
+    contentForStep.insertBefore(span,contentForStep.childNodes[0]);
+
+    contentForStep.style.flexDirection = 'column';
+    contentForStep.style.alignItems = 'center';
+}
+
+gobackBtn.addEventListener('click',btnStep); // 返回步驟框
+
+// 清除並建立返回鈕
+function clearBtnStep(){
+    contentForStep.replaceChildren();
+    gobackDiv.style.visibility = 'visible'; // 顯示返回區塊
+       
+}
+function changeBtnStep(e){
+    clearBtnStep(); // 清除原本畫面
+    if(e.target.id == 'individualBtn00'){
+        selectcolumnStep();
+    }else if(e.target.id == 'individualBtn01'){
+        introduceStep();
+    }else if(e.target.id == 'individualBtn02'){
+        colorStep();
+    }else if(e.target.id == 'individualBtn10'){
+        groupStep();
+    }else if(e.target.id == 'individualBtn11'){
+        statStep();
+    }else if(e.target.id == 'individualBtn12'){
+        rightleftStep();
+    }else if(e.target.id == 'individualBtn20'){
+        previewStep();
+    }else if(e.target.id == 'individualBtn21'){
+        returnStep();
+    }else if(e.target.id == 'individualBtn22'){
+        sumavgStep();
+    }
+}
+
+// 欄位鈕步驟
+function selectcolumnStep(){
+    var span = document.createElement('p');
+    span.textContent = '滑鼠移至按鈕上方，開啟欄位選擇畫面，如下圖，進行 3. 欄位選擇步驟。';
+    span.id = 'stepSpan';
+
+    var div = document.createElement('div');
+    div.id = 'allBtnStepDiv';
+    for(var i = 0; i < 3; i++){
+        var childDiv = document.createElement('div');
+        childDiv.id = 'childDiv' + i;
+        childDiv.className = 'childDiv';
+        div.appendChild(childDiv);
+    }
+
+    contentForStep.appendChild(span);
+    contentForStep.appendChild(div);
+}
+
+// 說明鈕步驟
+function introduceStep(){
+    var span = document.createElement('p');
+    span.textContent = '滑鼠移至按鈕上方，開啟說明畫面，如下圖，提供使用者確認輸入的說明與資料來源。';
+    span.id = 'stepSpan';
+
+    var div = document.createElement('div');
+    div.id = 'introduceStepImg';
+    
+
+    contentForStep.appendChild(span);
+    contentForStep.appendChild(div);
+}
+
+// 顏色鈕步驟
+function colorStep(){
+    var span = document.createElement('p');
+    span.textContent = '滑鼠移至按鈕上方，開啟顏色選擇框，如下圖，提供使用者能切換地圖的顏色。';
+    span.id = 'stepSpan';
+
+    var div = document.createElement('div');
+    div.id = 'colorStepImg';
+
+    contentForStep.appendChild(span);
+    contentForStep.appendChild(div);
+}
+
+// 級距鈕步驟
+function groupStep(){
+    var span = document.createElement('p');
+    span.textContent = '滑鼠移至按鈕上方，開啟級距選擇框，如下圖，提供使用者能選擇不同顏色等級，與輸入單位。';
+    span.id = 'stepSpan';
+
+    var div = document.createElement('div');
+    div.id = 'groupStepImg';
+
+    contentForStep.appendChild(span);
+    contentForStep.appendChild(div);
+}
+
+// 統計鈕步驟
+function statStep(){
+    var span = document.createElement('p');
+    span.textContent = '滑鼠移至按鈕上方，開啟摘要統計顯示框，如下圖，提供使用者查看相關統計資料。';
+    span.id = 'stepSpan';
+
+    var div = document.createElement('div');
+    div.id = 'statStepImg';
+
+    contentForStep.appendChild(span);
+    contentForStep.appendChild(div);
+}
+
+// 方向鈕步驟
+function rightleftStep(){
+    var span = document.createElement('p');
+    span.textContent = '分別點擊按鈕，可以切換不同欄位名稱，提供使用者查看在不同欄位名稱下，地圖顏色與鄉鎮資料之變化。';
+    span.id = 'stepSpan';
+
+    var div = document.createElement('div');
+    div.id = 'dirImg';
+
+    contentForStep.appendChild(span);
+    contentForStep.appendChild(div);
+}
+
+// 預覽鈕步驟
+function previewStep(){
+    var span = document.createElement('p');
+    span.textContent = '點擊按鈕，即可查看單一圖表，如下圖。';
+    span.id = 'stepSpan';
+    span.style.position = 'relative';
+    span.style.left = 20 + '%';
+
+    var div = document.createElement('div');
+    div.id = 'previewStepImg';
+
+    contentForStep.appendChild(span);
+    contentForStep.appendChild(div);
+}
+
+// 返回鈕步驟
+function returnStep(){
+    var span = document.createElement('p');
+    span.textContent = '點擊按鈕，清除選擇地圖以外之所有操作，提供使用者重新選擇檔案上傳方式，進行 2. 上傳方式之步驟。';
+    span.id = 'stepSpan';
+
+    contentForStep.appendChild(span);
+}
+
+// 加總平均鈕步驟
+function sumavgStep(){
+    var span = document.createElement('p');
+    span.textContent = '此兩按鈕，點擊後會更換使用者所上傳之檔案資料，若檔案中有重複之鄉鎮名稱，點擊「加總鈕」，會將同一鄉鎮之資料相加；點擊「平均鈕」，則加以平均，並更新地圖。';
+    span.id = 'stepSpan';
+
+    var div = document.createElement('div');
+    div.id = 'sumavgImg';
+
+    contentForStep.appendChild(span);
+    contentForStep.appendChild(div);
+}
+
 
 
 var recordTheme = ""
@@ -470,13 +688,11 @@ var recordResource = "";
 function showDescription(){
     description.style.pointerEvents = 'none';  // 使敘述框按鈕失去功能
     divForDescripBoxBackDrop.style.visibility = 'visible'; // 顯示敘述框
-    //descripBox.style.visibility = 'visible'; // 顯示敘述框
 
     editBtn.style.display = 'none'; // 隱藏編輯按鈕
 
     if(divForFinish.textContent != "" || divForFinish.textContent == "請輸入敘述"){ // 如果在完成後的畫面點擊關閉按鈕
         editBtn.style.display = 'block'; // 顯示編輯按鈕
-        closeBTN.style.pointerEvents = 'visible'; // 關閉按鈕恢復功能
     }
     
      // 清除按鈕
@@ -498,25 +714,7 @@ function showDescription(){
         // 清掉原本的文字
         divForFinish.replaceChildren();
         divForinputResource.replaceChildren();
-        // divForDesAuthor.replaceChildren();
         divForDesTheme.replaceChildren();
-
-        // if(inputAuthor.value == ""){ // 如果沒輸入就完成
-        //     divForDesAuthor.style.display = 'block'; // 顯示敘述完成框
-        //     inputAuthor.style.display = 'none'; // 隱藏文字輸入框
-
-        //     var span = document.createElement('span'); // 建立錯誤訊息
-        //     span.textContent = '請輸入作者名稱';
-        //     span.style.color = 'red';
-        //     divForDesAuthor.appendChild(span);
-        // }else{
-        //     divForDesAuthor.style.display = 'block'; // 顯示敘述完成框
-        //     inputAuthor.style.display = 'none'; // 隱藏文字輸入框
-
-        //     var descripSpan = document.createElement('span'); // 將文字加到敘述完成框
-        //     descripSpan.textContent = inputAuthor.value;
-        //     divForDesAuthor.appendChild(descripSpan);
-        // }
 
         if(inputTheme.value == ""){ // 如果沒輸入就完成
             divForDesTheme.style.display = 'block'; // 顯示敘述完成框
@@ -533,6 +731,7 @@ function showDescription(){
             var descripSpan = document.createElement('span'); // 將文字加到敘述完成框
             descripSpan.textContent = inputTheme.value;
             divForDesTheme.appendChild(descripSpan);
+            townName.textContent = inputTheme.value; // 標題
 
             recordTheme = descripSpan.textContent
         }
@@ -553,6 +752,9 @@ function showDescription(){
             descripSpan.id = 'descripSpan';
             descripSpan.textContent = textarea.value;
             divForFinish.appendChild(descripSpan);
+            divForFinish.style.overflowY = 'auto' // 設定滾輪
+
+            showDES.getElementsByTagName('span')[0].textContent = textarea.value;
 
             recordDescript = descripSpan.textContent
 
@@ -577,6 +779,8 @@ function showDescription(){
             divForinputResource.appendChild(descripSpan1);
             divForinputResource.style.overflowY = 'auto' // 設定滾輪
 
+            showRES.getElementsByTagName('span')[0].textContent = inputResource.value;
+
             recordResource = descripSpan1.textContent
         }
     });
@@ -584,9 +788,6 @@ function showDescription(){
     // 編輯按鈕
     editBtn.addEventListener('click',function(){
         editBtn.style.display = 'none'; // 隱藏編輯按鈕
-
-        //divForDesAuthor.style.display = 'none'; // 隱藏作者名稱完成框
-        // inputAuthor.style.display = 'block'; // 顯示作者輸入框
 
         divForDesTheme.style.display = 'none'; // 隱藏主題名稱完成框
         inputTheme.style.display = 'block'; // 顯示主題輸入框
@@ -604,56 +805,92 @@ function showDescription(){
     // 關閉按鈕
     closeBTN.addEventListener('click',function(){
         divForDescripBoxBackDrop.style.visibility = 'hidden'; // 隱藏敘述框
-        //descripBox.style.visibility = 'hidden'; // 關閉敘述框
         description.style.pointerEvents = 'visible';  // 使敘述框按鈕恢復功能
         suBoxForButtons.style.visibility = 'hidden'; // 隱藏按鈕懸浮框
     });
 
 }
 
-
-
 remitBtn.addEventListener('click',remitScreen);
-
+var booldes = false; // 判斷敘述框是否輸入正確
 // 存檔
 function remitScreen(){
     
-    if(divForDesTheme.textContent == '請輸入主題名稱' ||
-       divForFinish.textContent == '請輸入敘述' ||
-       divForinputResource.textContent == '請輸入資料來源' ||
-       inputTheme.textContent == "" ||
-       textarea.textContent == "" ||
-       inputResource.textContent == ""){
-        divForDescripBoxBackDrop.style.visibility = 'visible';
+    if(divForDesTheme.style.display == 'block'){
+        console.log(1)
+        if(divForDesTheme.textContent == '請輸入主題名稱' ||
+           divForFinish.textContent == '請輸入敘述' ||
+           divForinputResource.textContent == '請輸入資料來源'){
+            booldes = true;
+        }
+    }
 
+    if(inputTheme.style.display == 'block'){
+        console.log(1)
+        if(inputTheme.value == "" ||
+            textarea.value == "" ||
+            inputResource.value == ""){
+            booldes = true;
+        }
+    }
+    console.log(divForDesTheme.style.display)
+    console.log(booldes)
+    if(booldes){
+        showDescription();
     }else{
         remitBackDropDiv.style.visibility = 'visible';
         setTimeout(function(){
             remitBackDropDiv.style.visibility = 'hidden';
-        },1500)
-    }
-    
+        },1500);
 
-    var JsonData = {
-                        "theme": recordTheme, // 目前作品名稱
-                        "descript": recordDescript, // 目前敘述
-                        "resource": recordResource, // 目前資料來源
-                        "svgMap": currentMap, // 目前縣市地圖
-                        "townName": recordTownName, // 目前縣市名稱
-                        "backGround": recordBackGround, // 目前選擇的背景(跟地圖一樣)
-                        "inputData": InputData, // 目前上傳的檔案(二維陣列)
-                        "rangeGroup": groupNum, // 目前選擇的顏色分組數
-                        "mapColor": currentColorID, // 目前選擇的顏色
-                        "fileName": recordFileName,
-                        "unitValue": recordUnit,
-                        "columnName": posForColumnDiv, // 目前選擇的欄位名稱(切換地圖)
-                        "selectColumn": selectedColumnIndices, // 目前被點擊的選擇欄位複選盒(陣列)
-                        "selectTown": selectedRows, // 目前被點擊的選擇鄉鎮複選盒(陣列)
-                        
-                   }
+        selectColumnBtn.style.visibility = 'hidden';
+        colorBtn.style.visibility = 'hidden';
+        forGroupBtn.style.visibility = 'hidden';
+        statBtn.style.visibility = 'hidden';
+        returnBtn.style.visibility = 'hidden';
+        sumFileBtn.style.visibility = 'hidden';
+        avgFileBtn.style.visibility = 'hidden';
+        changeBtnForRight.style.visibility = 'hidden';
+        changeBtnForLeft.style.visibility = 'hidden';
+        for(var i = 0; i < allChartsContainer.getElementsByTagName('button').length; i++){
+            allChartsContainer.getElementsByTagName('button')[i].style.visibility = 'hidden';
+        }
+        
 
-    console.log(JsonData);
-    
+        var JsonData = {
+            "theme": recordTheme, // 目前作品名稱
+            "descript": recordDescript, // 目前敘述
+            "resource": recordResource, // 目前資料來源
+            "svgMap": currentMap, // 目前縣市地圖
+            "townName": recordTownName, // 目前縣市名稱
+            "backGround": recordBackGround, // 目前選擇的背景(跟地圖一樣)
+            "inputData": InputData, // 目前上傳的檔案(二維陣列)
+            "rangeGroup": groupNum, // 目前選擇的顏色分組數
+            "mapColor": currentColorID, // 目前選擇的顏色
+            "fileName": recordFileName,
+            "unitValue": recordUnit,
+            "columnName": posForColumnDiv, // 目前選擇的欄位名稱(切換地圖)
+            "selectColumn": selectedColumnIndices, // 目前被點擊的選擇欄位複選盒(陣列)
+            "selectTown": selectedRows, // 目前被點擊的選擇鄉鎮複選盒(陣列)
+            "chartCount": selectedChartCount,
+            
+       }
+
+        console.log(JsonData);
+
+        selectColumnBtn.style.visibility = 'visible';
+        colorBtn.style.visibility = 'visible';
+        forGroupBtn.style.visibility = 'visible';
+        statBtn.style.visibility = 'visible';
+        returnBtn.style.visibility = 'visible';
+        sumFileBtn.style.visibility = 'visible';
+        avgFileBtn.style.visibility = 'visible';
+        changeBtnForRight.style.visibility = 'visible';
+        changeBtnForLeft.style.visibility = 'visible';
+        for(var i = 0; i < allChartsContainer.getElementsByTagName('button').length; i++){
+            allChartsContainer.getElementsByTagName('button')[i].style.visibility = 'visible';
+        }
+    }    
 }
 
 
@@ -699,13 +936,13 @@ function createButtonSuspendBox(d){
         suBoxForButtons.textContent = '級距';
     }else if(d.target.id == 'clearBtn'){
         suBoxForButtons.textContent = '清除'; // 敘述框區
-        suBoxForButtons.style.zIndex = 2;
+        suBoxForButtons.style.zIndex = 4;
     }else if(d.target.id == 'editBtn'){
         suBoxForButtons.textContent = '編輯';
         suBoxForButtons.style.zIndex = 2;
     }else if(d.target.id == 'finishBtn'){
         suBoxForButtons.textContent = '完成';
-        suBoxForButtons.style.zIndex = 2;
+        suBoxForButtons.style.zIndex = 4;
     }else if(d.target.id == 'closeBTN' || 
              d.target.id == 'statClose' ||
              d.target.id == 'closeStep'){
