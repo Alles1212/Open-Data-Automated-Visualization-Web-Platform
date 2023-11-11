@@ -7,40 +7,61 @@ window.onload = (function() {
     svgDiv.addEventListener('dblclick',backToTaiwan); // 滑鼠雙擊後觸發
     changeBackGround(0); // 預設背景顏色
     
-    // showDescription();
+    //showDescription();
     // showStep();
     //getBackEndData();
-    testFuction();
+    //testFuction();
 });
     function testFuction(){
         var str = '[{"地區":"臺中市","項目":"大坑風景區各登山步道遊客數(單位:人次)","欄位名稱":"1號步道","數值":1395,"資料時間日期":"2021-09-01T00:00:00","資料週期":"月","郵遞區號":"407610","機關代碼":"387000000A","電子郵件":"oddisp@t\
         aichung.gov.tw","行動電話":"0910289111","市話":"(04)22289111","縣市別代碼":"66000","行政區域代碼":"10019000"},{"地區":"臺中市","項目":"大坑風景區各登山步道遊客數(單位:人次)","欄位名稱":"10號步道","數值":"","資料時間日\
         期":"2021-09-01T00:00:00","資料週期":"月","郵遞區號":"407610","機關代碼":"387000000A","電子郵件":"oddisp@taichung.gov.tw","行動電話":"0910289111","市話":"(04)22289111","縣市別代碼":"66000","行政區域代碼":"10019000"}]'
 
-        console.log(JSON.parse(str));
-        var arr = JSON.parse(str);
-        console.log(arr[0])
-        var keysArr = Object.keys(arr[0]);
-        var rows = [];
-        for(var i = 0; i < arr.length; i++){
-            
-            
-            rows.push(Object.values(arr[i]))
-
+        var jsonArray = JSON.parse(str);
+        var twoDArray = [];
+        for (var i = 0; i < jsonArray.length; i++) {
+            var row = [];
+            for (var key in jsonArray[i]) {
+                row.push(jsonArray[i][key]);
+            }
+            twoDArray.push(row);
         }
-        console.log(rows)
-        
+        twoDArray.unshift(Object.keys(jsonArray[0]));
 
+
+        console.log(twoDArray);
+
+        InputData = twoDArray;
+        document.getElementById('chooseMethod').style.visibility = 'hidden';
+        divForDescripBoxBackDrop.style.visibility = 'hidden';
+        stepBoxBackDropDiv.style.visibility = 'hidden';
+
+        if(judgeBlankSpace(InputData)){
+			skipBlank(InputData); // 刪掉空白較多的行
+			showError(InputData); // 顯示空白區域
+			return;
+		}
+
+		InputData = analyze(InputData); // 資料清洗(在 analyzeData.js)
+
+        console.log(InputData)
+		
+		if(InputData.length == 0){ // 資料有空白(originArray)，不處理
+			return;
+		}else{ // 資料無空白，顯示圖表區
+			buttonVisible(); // 顯示各式按鈕
+			renderColumnSelect(); // 生成欄位下拉式清單
+			renderRowSelect();
+			renderColumnText(); // 生成欄位名稱區塊(地圖變換用)
+			Grouping(); // 分組
+		}
+        
     }
 
     var colorBtn = document.getElementById('colorBtn'); // 選擇顏色按鈕
-
     var suBox = document.getElementById("suBox"); // 懸浮區塊
     var Outlying_islands = document.getElementById("Outlying_islands"); // 離島邊框
-
     var townName = document.getElementById('townName'); // 鄉鎮名稱
-
-    var dataText = ""; // 存資料
     var boolTaiwan = false; // 記錄回到台灣地圖
     var recordBackGround = 0; // 記錄目前背景
     
@@ -57,8 +78,8 @@ window.onload = (function() {
 
             svgDiv.replaceChildren(); // 點擊其他選項時刪除原本svg
             
-            townName.textContent = "臺灣地圖";
-            recordTownName = townName.textContent;
+            // townName.textContent = "臺灣地圖";
+            // recordTownName = townName.textContent;
 
             currentMap = 0; // 還原
             recordBackGround = 0; // 記錄目前背景value
@@ -93,20 +114,21 @@ window.onload = (function() {
         currentData.style.display = 'flex';
         currentData.style.justifyContent = 'center';
         currentData.textContent = '無資料'; // 預設無資料
-        //dataText = currentData.textContent; // 鄉鎮資料文字
         
         for(var i = 0; i < townArray.length; i++){
             if(townArray[i] == (idName)){ // 找到對應的鄉鎮
                 currentData.textContent = columnNameArray[0] + '：' + colArray[i]; // 顯示數值
-                //dataText = currentData.textContent; // 鄉鎮資料文字
             }
         }
         if(title.textContent == "" || title.textContent == "svgDiv"){ // 滑鼠超出地圖範圍時,不顯示懸浮框
             suBox.style.visibility = 'hidden'; // 隱藏懸浮框
         }
+
         suBox.appendChild(title);
         suBox.appendChild(document.createElement('br')) // 換行
         suBox.appendChild(currentData);
+
+        
     }
     
     // 選擇縣市名稱顯示鄉鎮地圖
@@ -137,10 +159,11 @@ window.onload = (function() {
         }
         if(currentID != ""){ // 滑鼠非點擊非地圖之svg區塊
             Outlying_islands.style.visibility = 'hidden'; // 隱藏離島邊框
-        }else{
-            townName.textContent = CityName[currentMap];
-            recordTownName = townName.textContent;
         }
+        // else{
+        //     townName.textContent = CityName[currentMap];
+        //     recordTownName = townName.textContent;
+        // }
         
     }
 
@@ -191,15 +214,15 @@ window.onload = (function() {
             currentMap = 0; // 還原
         }
 
-        if(currentMap == 0){ // 台灣地圖
-            townName.textContent = currentId; // 顯示縣市名稱
-            recordTownName = townName.textContent
-        }
+        // if(currentMap == 0){ // 台灣地圖
+        //     townName.textContent = currentId; // 顯示縣市名稱
+        //     recordTownName = townName.textContent
+        // }
 
-        if(currentMap in CityName & currentMap != 0){ // 縣市地圖
-            townName.textContent = CityName[currentMap]; // 顯示資料
-            recordTownName = townName.textContent
-        }
+        // if(currentMap in CityName & currentMap != 0){ // 縣市地圖
+        //     townName.textContent = CityName[currentMap]; // 顯示資料
+        //     recordTownName = townName.textContent
+        // }
 
         boolTaiwan = false; // 還原
     }
