@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h1>作品呈現</h1>
+    <table border="1" width = "40%" cellspacing="0" cellpadding="0" align="left">
+    <tr>
+        <th>作品名</th>
+        <th>作者</th>
+        <th>作品描述</th>
+        <th>作品生成時間</th>
+    </tr>
+    {% for todo in body %}
+    <tr align="center">
+        <td>{{ todo.name }}</td>
+        <td>{{ todo.creater }}</td>
+        <td>{{ todo.description }}</td>
+        <td>{{ todo.date_created }}</td>
+    </tr>
+
+    {% endfor %}
+    
+</table>
+
+{% block script %}
+<script src="C:\Users\USER\專題\project\py-flaskMongodb\application\static\js\main.js"></script>
+<script>
+    alert("UUUUU")
+    console.log("I'm running")
+    
+</script>
+{% endblock %}
+</body>
+</html>

@@ -1,0 +1,19 @@
+{% extends "layout.html" %}
+{% block content %}
+<div class="card m-5"></div> <!-- 隔出更多z-index -->
+<form method="POST" action="{{ url_for('upload_wtf') }}" enctype="multipart/form-data">
+    <div>
+        {{ form.hidden_tag() }}
+        {{ form.btn_uploads}}
+        {# error message #}
+        {% for error in form.btn_uploads.errors %}
+        <span>{{ error }}</span>
+        {% endfor %}
+        {{ form.submit }}
+    </div>
+    <div>
+        {% if file_url %}
+        <img src="{{ file_url }}" alt="">
+        {% endif %}
+    </div>
+{% endblock %}

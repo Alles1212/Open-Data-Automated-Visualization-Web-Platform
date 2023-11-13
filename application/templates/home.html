@@ -1,0 +1,87 @@
+{% extends "base.html" %}
+
+{% block content %}
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+<header>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark navbar-static-top fixed-top">
+        <a class="navbar-brand d-flex align-items-center" href="{{ url_for('get_public') }}">
+            <img src="../static/image/OpendataUI.png" 
+            alt="" width="80" height="45" class="d-inline-block align-text-top flex-shrink-0">
+            臺灣開放資料資訊圖表應用平臺
+        </a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+      
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <ul class="navbar-nav mr-auto">
+            <li class="nav-item active">
+              <a class="nav-link" href="{{ url_for('get_public') }}">公開作品集</a>
+            </li>
+            <li class="nav-item active">
+              <a class="nav-link" href="{{ url_for('get_todos') }}">個人作品集</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{{ url_for('gen_graph') }}">產生圖表</a>
+            </li>
+
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                其他下拉功能選單
+              </a>
+              <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                <li><a class="dropdown-item" href="https://data.gov.tw/" target="_blank">政府資料開放平臺</a></li>
+                <li><a class="dropdown-item" href="#">Another action</a></li>
+                <li><hr class="dropdown-divider"></li>
+                <li><a class="dropdown-item" href="https://github.com/Alles1212/-projectIM" target="_blank">連絡我們</a></li>
+              </ul>
+          </li>
+          </ul>
+
+
+        </div>
+      </nav>
+</header>
+<div class="card-wrapper">
+
+    <div class="card">
+
+        <h1 class="center">
+            創建帳戶
+        </h1>
+        <form name="signup_form">
+            <label for="name">Name</label>
+            <input type="text" name="name" class="field" required>
+
+            <label for="email">Email</label>
+            <input type="email" name="email" class="field" required>
+
+            <label for="password">Password</label>
+            <input type="password" name="password" class="field" required>
+
+            <p class="error error--hidden"></p>
+
+            <input type="submit" value="註冊" class="btn">
+        </form>
+    </div>
+
+    <div class="card">
+
+        <h1 class="center">
+            登入
+        </h1>
+        <form name="login_form">
+            <label for="email">Email</label>
+            <input type="email" name="email" class="field" required>
+
+            <label for="password">Password</label>
+            <input type="password" name="password" class="field" required>
+
+            <p class="error error--hidden"></p>
+
+            <input type="submit" value="登入" class="btn">
+        </form>
+    </div>
+</div>
+{% endblock content%}

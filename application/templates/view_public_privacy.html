@@ -1,0 +1,47 @@
+{% extends "layout_privacy.html" %}
+{% block content %}
+    <div class="card m-5">
+    </div>
+    <div class="card m-5">
+        <a href="{{ url_for('gen_graph') }}" class="btn btn-outline-info btn-sm big" style="font-size: large;">+建立作品</a>
+    </div>
+    <div class="row px-10 pt-10">
+        {% for todo in todos %}
+        <div class="col-4 d-flex align-items-stretch">
+            <div class="card p-1 m-1">
+                <!-- {{ todo.fileName }} -->
+
+                <a href="{{ url_for('store' , id = todo._id) }}"><img src="../static/image/{{ todo.pic_name }}" style="aspect-ratio: 5/3;" class="card-img-top " alt=""></a>
+                <div class="card-body">
+                    <!-- 顯示出資料庫中的資料, CRUD -->
+                    {% if todo.completed == "True" %}
+                        <h5 class="card-title">{{ todo.name }}</h5>
+                    {% else %}
+                        <h5 class="card-title">{{ todo.name }}</h5>
+                    {% endif %}
+
+                    <p class="card-text text-muted">{{ todo.date_created }}</p>
+                    <!-- 字太多隱藏 -->
+                    <p class="card-text" style="overflow:hidden;
+                    white-space: nowrap;
+                    text-overflow: ellipsis;">{{ todo.description }}</p>
+                    <!-- <p class="card-text text-muted">{{ todo.file }}</p> -->
+                    <p class="card-text">創作者:{{ todo.creater }}</p>
+                    <a href="{{ url_for('new_html' , id = todo._id) }}"
+                    class = "btn btn-outline-secondary btn-sm">生成模板</a>
+
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    <footer class="text-center text-lg-start bg-white text-muted">
+        <small className="text-center mt-5 footer-copyright">
+            <!-- &copy; Alles, 2023. All rights reserved.
+          </small> -->
+        <div class="text-center p-4">
+            © 2023 Copyright:
+            <a class="text-reset fw-bold" href="https://github.com/Alles1212/-projectIM">Alles-Project</a>
+          </div>
+    </footer>
+{% endblock %}

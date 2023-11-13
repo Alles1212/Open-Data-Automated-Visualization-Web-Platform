@@ -1,0 +1,241 @@
+{% extends "layout.html" %}
+{% block content %}
+<link rel="stylesheet" href="../static/CSS/style.css" />
+<div id="all">
+    <p>{{ JSON_List }}</p>
+    <div id="gatherBtn"> </div> <!--下拉式按鈕(區塊)-->
+    <button id= "statBtn" ></button> <!--摘要統計按鈕-->
+    <button id= "seletColumnBtn" ></button> <!--顯示選擇欄位區塊的按鈕-->
+    <button id= "changeBtnForRight" ></button> <!--切換地圖按鈕-->
+    <button id= "changeBtnForLeft" ></button> <!--切換地圖按鈕-->
+    
+    <div id="gatherBtnDiv"> <!--下拉式區塊-->
+        <div id="t">
+            <button class="download" id="downloadAll"></button> <!--匯出按鈕-->
+            <button id = "remitBtn"></button> <!--返回按鈕-->
+            <button id = "returnBtn"></button> <!--返回按鈕-->
+            <button id = "step"></button> <!--步驟框按鈕-->
+            <button id = "description"></button> <!--敘述框按鈕-->
+        </div>
+    </div>
+    
+    
+    <!-- <button class="download" id="downloadCSV">下載csv</button> -->
+    <!-- <button class="download" id="downloadJPG">下載jpg</button> -->
+    <!-- <button class="download" id="downloadXLSX">下載xlsx</button> -->
+    <!-- <button class="download" id="downloadTest">下載xls</button> -->
+    
+    <div class="default"> <!--所有區塊-->
+
+        <!--地圖區塊-->
+        <div class = "chooseMap">
+
+            <div id="informationDiv"> <!--鄉鎮資訊區塊-->
+                <span id = "map_Selected">縣市名稱：</span><br>
+                <!-- <span id = "townName">鄉鎮名稱：</span><br>
+                <span id = "townData">鄉鎮資料：</span><br> -->
+            </div>
+
+            <div id="columnNameDiv">
+            </div>
+
+            <!--初始地圖與放svg的區塊-->
+            <div id="showSvg">
+
+                <div id="suBox"> <!--懸浮框-->
+                </div>
+
+                <button id = "colorBtn" class = "colorBtn"></button> <!--選擇顏色按鈕-->
+                <div id = "colorDiv"> <!--顏色選擇框-->
+                </div>
+
+                <div id="svgDiv"> <!--初始地圖-->
+                    <svg width = "600px" height = "550px" viewBox = "570 30 500 1450">
+                        <g style = cursor:pointer>
+                            <polygon id="新北市" class="TaiwanMap" points="668.5,178 716.5,198.5 716.9,230.6 694,248 708.6,289.9 736.8,290.9 757.9,354.7 811.2,330.1 815.4,307.1 881,253.5 896.1,257 939,230.8 968.9,223.9 968.5,202.1 944.9,202.3 932.2,177.3 899.5,170.4 846.4,154.6 805.1,102.4 783.8,100.9 730.8,138.8 726.4,159"/>
+                            <polygon id="台北市" class="TaiwanMap" points="790.1,139.2 813,162 820,201.4 831.13,211.1 811.9,217.2 813,238.9 779.9,222.4 765.8,223.3 771.1,187.3 753,181.3 762,154.6 779,154"/>
+                            <polygon id="基隆市" class="TaiwanMap" points="899.5,170.4 882,183 896,202 881,216.1 847.5,201.5 829.1,167.2 846.4,154.6"/>
+                            <polygon id="桃園市" class="TaiwanMap" points="668.5,178 716.5,198.5 716.9,230.6 694,248 708.6,289.9 736.8,290.9 757.9,354.7 747,401.1 691.4,360.2 697.2,325.7 681.2,309.7 636.1,299.1 599,256.9 568.9,249.9"/>
+                            <polygon id="新竹縣" class="TaiwanMap" points="527.1,345 655.5,408 683.5,458.1 713,440.4 747,401.1 691.4,360.2 697.2,325.7 681.2,309.7 636.1,299.1 599,256.9 568.9,249.9 541,288"/>
+                            <polygon id="新竹市" class="TaiwanMap" points="527.1,345 541,288 575,303.9 578.1,327.2 560,319"/>
+                            <polygon id="苗栗縣" class="TaiwanMap" points="527.1,345 655.5,408 683.5,458.1 600.3,512.5 542.8,504.1 520.9,485.6 484.2,502.2 429,469 481.1,379.2"/>
+                            <polygon id="台中市" class="TaiwanMap" points="713,440.4 723.2,467.8 755.3,465.8 722.7,515 732.8,562.2 673.1,563 652,537.7 520.8,590.6 498.8,630.8 433.9,619.9 382,561.2 429,469 484.2,502.2 520.9,485.6 542.8,504.1 600.3,512.5 683.5,458.1"/>
+                            <polygon id="彰化縣" class="TaiwanMap" points="433.9,619.9 434.4,697.6 466.2,708.8 465.5,726 295.9,709.1 382,561.2"/>
+                            <polygon id="雲林縣" class="TaiwanMap" points="454,725 451.9,782.9 490,783.2 490,800.1 410.1,802.1 392.1,781.9 361.5,782.5 273.5,845.5 245.4,839.6 247.7,779.7 295.9,709.1"/>
+                            <polygon id="嘉義縣" class="TaiwanMap" points="490,783.2 490,800.1 410.1,802.1 392.1,781.9 361.5,782.5 273.5,845.5 245.4,839.6 245.1,924 277.1,936.2 336.9,875.1 382.4,872.1 420.3,903.2 409.9,914.9 427.1,955.1 447,942 466.6,946 575,849 558.7,847.7 529.1,817.1 533,797"/>
+                            <polygon id="嘉義市" class="TaiwanMap" points="382.4,872.1 393,858 402.2,866.2 413.4,854.4 396.8,836.8 365,843.1"/>
+                            <polygon id="台南市" class="TaiwanMap" points="285.9,1080.5 363.1,1087.5 371.9,1073 386,1078.3 386.8,1055.1 411.8,1041 411,1027.4 463.6,973.9 466.6,946 447,942 427.1,955.1 409.9,914.9 420.3,903.2 382.4,872.1 336.9,875.1 277.1,936.2 245.1,924 233.3,991.9 242.9,996.7 239.4,1029.6"/>
+                            <polygon id="高雄市" class="TaiwanMap" points="620,848 602.2,865 607.7,881 627,880 625,898.2 574.1,934.1 570,1016 549,1041 558,1074 531,1093 521,1078 503,1085.2 493,1074 449,1078 449,1095.5 397,1114 396.8,1196 407.5,1209 389.8,1249 323,1183 336.7,1172 285.9,1080.5 363.1,1087.5 371.9,1073 386,1078.3 386.8,1055.1 411.8,1041 411,1027.4 463.6,973.9 466.6,946 575,849"/>
+                            <polygon id="屏東縣" class="TaiwanMap" points="558,1074 531,1093 521,1078 503,1085.2 493,1074 449,1078 449,1095.5 397,1114 396.8,1196 407.5,1209 389.8,1249 425,1258 546,1382 538.2,1420 567,1464 575.2,1446 606,1470.5 611,1334 564,1317 570,1293 552.2,1293 529,1209 546.1,1155.3 590,1134 593,1104.4"/>
+                            <polygon id="台東縣" class="TaiwanMap" points="611,1334 564,1317 570,1293 552.2,1293 529,1209 546.1,1155.3 590,1134 593,1104.4 558,1074 549,1041 570,1016 574.1,934.1 625,898.2 747,956.9 773.4,840 815.2,825.3 786.3,956.3 801.2,969.2 744.3,1066 719.8,1066.2 718.2,1092.1 637.3,1190.2"/>
+                            <polygon id="花蓮縣" class="TaiwanMap" points="625,898.2 627,880 607.7,881 602.2,865 620,848 642.2,815.2 666.3,811 669,789 686.3,786.1 700.5,722.9 683,708.9 713.2,637.8 701,626.9 726.8,562.5 732.8,562.2 722.7,515 755.3,465.8 821.1,487.2 846.3,473.1 895.1,485.3 898.1,509 860.4,534 815.2,825.3 773.4,840 747,956.9"/>
+                            <polygon id="宜蘭縣" class="TaiwanMap" points="755.3,465.8 821.1,487.2 846.3,473.1 895.1,485.3 935.7,374.9 916.1,361 906.2,283.4 939,230.8 896.1,257 881,253.1 815.4,307.1 811.2,330.1 757.9,354.7 747,401.1 713,440.4 723.2,467.8"/>
+                            <polygon id="南投縣" class="TaiwanMap" points="642.2,815.2 666.3,811 669,789 686.3,786.1 700.5,722.9 683,708.9 713.2,637.8 701,626.9 726.8,562.5 673.1,563 651.4,537.3 520.8,590.6 498.8,630.8 433.9,619.9 434.4,697.6 466.2,708.8 465.5,726 454,725 451.9,782.9 490,783.2 533,797 529.1,817.1 558.7,847.7 620,848"/>
+                            <polygon id="澎湖縣" class="TaiwanMap" points="54,585 48,594 47,606 56,607 64,625 81,628 78,639 85,646 110,637 120,645 126,626 119,621 166,580 196,583 200,594 219,586 204,570 205,551 194,535 199,527 189,527 193,543 176,524 165,525 157,543 149,539 143,554 144,525 129,530 124,524 115,534 122,539 112,552 109,568 93,553 94,539 70,550 77,562 64,576 77,580 85,571 91,576 84,587 71,585 69,591 115,591 107,618 89,615 86,625 60,602"/>
+                            <polygon id="金門縣" class="TaiwanMap" points="166,301 132,352 114,348 88,323 66,340 81,371 55,385 92,413 120,379 158,380 174,400 203,370 188,319 176,317"/>
+                            <polygon id="連江縣" class="TaiwanMap" points="89,36 64,91 73,91 42,135 82,158 79,170 104,164 100,154 151,152 174,122 182,137 231,83 174,75 130,115 118,87 93,88 114,55"/>
+                            
+                        </g>
+                    </svg>
+                </div>
+                
+                <div id = "rangeDiv" > <!--顏色範圍框-->
+                </div>
+
+                <div id = "groupInputDiv"> <!--顏色分組下拉式清單-->
+                    <select id="selectForGroup"></select>
+                </div>
+
+                <div id="Outlying_islands"> <!--離島區塊框-->
+                </div>
+
+            </div>
+
+        </div>
+
+        <!--圖表區塊-->
+        <div class="container__up">
+            
+            <div id = "chooseMethod"> <!--選擇上傳模式-->
+                <button class="method" id="sentFile">傳送檔案</button>
+                <button class="method" id="sentAPI">傳送API</button>
+            </div>
+            
+            <div id="appearDiv"> <!--出現兩種上傳模式-->
+            </div>
+            
+            <div id="appearSelect"> <!--選擇欄位清單-->
+            </div>
+
+            <div> <!--圖表(長條圖、圓餅圖)-->
+                <nav>
+                    <div id="chartContainer"></div>
+                    <div id="piechartContainer"></div>
+                </nav>
+            </div>
+        </div>
+    </div>
+        <div id = 'stat' class="statistic"> <!--摘要統計區塊-->
+            <span id = "Max"></span><br>
+            <span id = "min"></span><br>
+            <span id = "avg"></span><br>
+            <span id = "stD"></span><br>
+            <span id = "sum"></span><br>
+            <span id = "num"></span>
+            <button id = "statClose">關閉</button> <!--關閉按鈕-->
+        </div>
+
+        <div id = 'descripBox'> <!--敘述框-->
+            <span style="font-size: 20px;">說明</span>
+            
+            <textarea id="textarea" placeholder="輸入文字敘述："></textarea>
+            <div id = 'divForFinish'></div>
+            
+            <div class = 'btnDiv'>
+                <button class = 'des' id = 'clearBtn'>清除</button>
+                <button class = 'des' id = 'editBtn'>編輯</button>
+                <button class = 'des' id = 'finishBtn'>完成</button>
+                <button class = 'des' id = 'closeBTN'>關閉</button>
+            </div>
+        </div>
+    
+    
+        <div id="BackGround"></div>
+
+        <div id="seletColumnDiv"> <!-- 欄位選擇區塊 -->
+
+            <div> <!-- 選擇行區塊 -->
+                <label for="checkbox_chooseColumn" class="labelForCheckbox">選擇行：</label><!-- a1 -->
+                <div class="data-container">
+                    <div id="selectColumnData" class="checkbox-container">
+                        
+                    </div>
+                </div>
+            </div>
+
+            <div> <!-- 選擇鄉鎮區塊 -->
+                <label for="checkbox_chooseTown" class="labelForCheckbox">資料名稱：</label>
+                <div class="data-container">
+                    <div id="selectTownData"  class="checkbox-container">
+                            
+                    </div>
+                </div> 
+            </div>
+
+            <div> <!-- 選擇圖表區塊 -->
+                <label for="chartTypeSelect"  class="labelForCheckbox">選擇圖表類型：</label>
+                <div id="chartTypeSelect" class="chartTypeSelectDiv">
+                    <laebl>
+                        <input type="checkbox" value="column" id="showColumnChart" class="chartsTitle">
+                            長條圖
+                        </input>
+                    </laebl>
+                    <laebl>
+                        <input type="checkbox" value="pie" id="showPieChart" class="chartsTitle">
+                             圓餅圖
+                        </input>
+                    </laebl>
+                </div>
+                
+            </div>
+        </div>
+        
+        
+        
+    
+</div>
+
+    <!-- <table id="exTable" border="2">
+        <thead class="lockedRecordsBg">
+            <tr bgcolor='#87AFC6' style='height: 75px; text-align: center; width: 250px'>
+                <th style="width:40px">S#</th>
+                <th>name</th>
+                <th>Email</th>
+                <th>Phone</th>
+                <th>Country</th>
+            </tr>
+        </thead>
+        <tr>
+            <th>4</th>
+            <td style="height: 150px">
+                <img id = 'td'
+                 src="https://avatars0.githubusercontent.com/u/4952560?s=460&v=4"
+                 height="85"
+                 width="100"
+                 alt="sample image"
+                />
+            </td>
+            <td style="font-weight:bold">test@gmail.com</td>
+            <td></td>
+            <td>USA</td>
+        </tr>
+    </table> -->
+    
+    <!--使用jQuery操作dom-->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+
+    <!--使用JS-XLSX操作xlsx-->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.8.2/xlsx.full.min.js"></script>
+
+    <!--使用FileSaver下載資料成為檔案-->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/1.3.3/FileSaver.min.js"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/dom-to-image/2.6.0/dom-to-image.min.js"></script>
+    <script src="https://www.gstatic.com/charts/loader.js"></script>
+    <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
+    <script defer src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/1.3.8/FileSaver.min.js"></script>
+    <script src="https://www.gstatic.com/charts/loader.js"></script>
+    <script src="https://d3js.org/d3.v6.min.js"></script>
+    <script src="https://unpkg.com/mathjs@7.0.1/dist/math.min.js"></script>
+
+
+    <script src = "../static/js/main.js"></script> <!--初始js-->
+    <script src = "../static/js/Charts.js"></script> <!--圖表js-->
+    <script src = "../static/js/analyzeData.js"></script> <!--資料清洗js-->
+    <script src = "../static/js/coordinate.js"></script> <!--座標點js-->
+    <script src = "../static/js/StatisAndColor.js"></script> <!--摘要統計與顏色js-->
+    <script src = "../static/js/svgMap.js"></script> <!--鄉鎮地圖js-->
+    <script src = "../static/js/download.js"></script> <!--匯出js-->  
+    
+    
+{% endblock content %}
