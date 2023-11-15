@@ -1046,7 +1046,6 @@ function createButtonSuspendBox(d){
        d.target.className == 'previewBtn_three'){
         suBoxForButtons.textContent = '預覽';
         suBoxForButtons.style.zIndex = 2;
-    
     }
 }
 
