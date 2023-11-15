@@ -53,6 +53,10 @@ window.onload = (function() {
 
     // 圖表返回鈕
     returnBtn.addEventListener('click',function(){
+        townArea(0);
+        changeBackGround(0);
+        Outlying_islands.style.visibility = 'visible';
+
         sentFile.style.visibility = 'visible'; // 隱藏按鈕
         sentAPI.style.visibility = 'visible'; // 隱藏按鈕
         sentSelfFile.style.visibility = 'visible'; // 隱藏按鈕
@@ -83,6 +87,12 @@ window.onload = (function() {
 
         selectedColumnIndices = [];
         selectedRows = [];
+        InputData = [];
+        blankArray = [];
+        skipAlreadyArr = []
+
+        curNumForPaging = 1;
+        curPos = 0;
 
         selectColumnData.replaceChildren();
         selectTownData.replaceChildren();
