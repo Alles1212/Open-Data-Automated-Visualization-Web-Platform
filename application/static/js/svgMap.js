@@ -6,9 +6,10 @@ window.onload = (function() {
     svgDiv.addEventListener('mousemove',suspendBox); // 滑鼠移動到開區域時觸發
     svgDiv.addEventListener('dblclick',backToTaiwan); // 滑鼠雙擊後觸發
     changeBackGround(0); // 預設背景顏色
-    // showDescription();
+    
+    //showDescription();
     // showStep();
-    getBackEndData();
+    //getBackEndData();
     //testFuction();
 });
     function testFuction(){
@@ -66,28 +67,33 @@ window.onload = (function() {
     
     recordTownName = "";
     function backToTaiwan(e){
-        if(e.target.id != ''){ // 不是點擊非地圖的svg區塊
-            Outlying_islands.style.visibility = 'visible'; // 顯示離島邊框
-            BackGround.style.backgroundImage = "url(../static/image/Taiwan_background.jpg)" // 台灣背景
-            columnNameDiv.style.visibility = 'hidden'; // 隱藏欄位名稱區塊
-            fileNameDiv.style.visibility = 'hidden'; // 隱藏檔案名稱區塊
-            sumFileBtn.style.visibility = 'hidden'; // 隱藏加總按鈕區塊
-            avgFileBtn.style.visibility = 'hidden'; // 隱藏平均按鈕區塊
-            forGroupBtn.style.visibility = 'hidden'; // 隱藏級距按鈕區塊
-
-            svgDiv.replaceChildren(); // 點擊其他選項時刪除原本svg
-            
-            // townName.textContent = "臺灣地圖";
-            // recordTownName = townName.textContent;
-
-            currentMap = 0; // 還原
-            recordBackGround = 0; // 記錄目前背景value
-
-            boolTaiwan = true; // 判斷是否有回到台灣地圖
-
-            townArea(0); // 回到台灣地圖
-            originColor(); // 重製顏色
-
+        if(InputData.length != 0 || blankDiv.style.visibility == 'visible'){
+            return false;
+        }else{
+            if(e.target.id != ''){ // 不是點擊非地圖的svg區塊
+                Outlying_islands.style.visibility = 'visible'; // 顯示離島邊框
+                BackGround.style.backgroundImage = "url(./image/Taiwan_background.jpg)" // 台灣背景
+                columnNameDiv.style.visibility = 'hidden'; // 隱藏欄位名稱區塊
+                fileNameDiv.style.visibility = 'hidden'; // 隱藏檔案名稱區塊
+                sumFileBtn.style.visibility = 'hidden'; // 隱藏加總按鈕區塊
+                avgFileBtn.style.visibility = 'hidden'; // 隱藏平均按鈕區塊
+                forGroupBtn.style.visibility = 'hidden'; // 隱藏級距按鈕區塊
+                
+    
+                svgDiv.replaceChildren(); // 點擊其他選項時刪除原本svg
+                
+                // townName.textContent = "臺灣地圖";
+                // recordTownName = townName.textContent;
+    
+                currentMap = 0; // 還原
+                recordBackGround = 0; // 記錄目前背景value
+    
+                boolTaiwan = true; // 判斷是否有回到台灣地圖
+    
+                townArea(0); // 回到台灣地圖
+                originColor(); // 重製顏色
+    
+            }
         }
         
     }
@@ -97,10 +103,9 @@ window.onload = (function() {
         suBox.replaceChildren(); // 當滑鼠移動時,刪除原本的文字(名稱)
 
         // 設定懸浮框位置
-        suBox.style.top = d.pageY - 120 + 'px';
-        suBox.style.left = d.pageX - 230 + 'px';
+        suBox.style.top = d.pageY - 20 + 'px';
+        suBox.style.left = d.pageX - 100 + 'px';
         suBox.style.visibility = 'visible'; // 顯示懸浮框
-        suBox.style.zIndex = 1;
         
         var title = document.createElement('span'); // 建立名稱,顯示在懸浮框
         title.style.display = 'flex';
@@ -135,42 +140,41 @@ window.onload = (function() {
     var currentMap = 0; // 當前地圖value
     
     function chooseMap(e){
-        
-        if(InputData.length != 0){ // 檔案上傳後
-            colorBtn.style.visibility = 'visible'; // 顯示選擇顏色按鈕
-            columnNameDiv.style.visibility = 'visible'; // 顯示欄位名稱區塊
-            fileNameDiv.style.visibility = 'visible'; // 顯示檔案名稱區塊
-            sumFileBtn.style.visibility = 'visible'; // 顯示加總按鈕區塊
-            avgFileBtn.style.visibility = 'visible'; // 顯示平均按鈕區塊
-            forGroupBtn.style.visibility = 'visible'; // 顯示級距按鈕區塊
-            
-        }
-
-        var currentID = e.target.id; // 當前的縣市
-        for(var attr in CityName){
-            if(currentID == CityName[attr]){
-                svgDiv.replaceChildren(); // 點擊其他縣市時刪除原本svg
-                townArea(attr);
-                changeBackGround(attr);
-                currentMap = attr; // 計錄當前的地圖位置(allMap用)
-                limitCityColor(); // 其他縣市不變色
+        if(blankDiv.style.visibility == 'visible'){
+            return false;
+        }else{
+            if(InputData.length != 0){ // 檔案上傳後
+                colorBtn.style.visibility = 'visible'; // 顯示選擇顏色按鈕
+                columnNameDiv.style.visibility = 'visible'; // 顯示欄位名稱區塊
+                fileNameDiv.style.visibility = 'visible'; // 顯示檔案名稱區塊
+                sumFileBtn.style.visibility = 'visible'; // 顯示加總按鈕區塊
+                avgFileBtn.style.visibility = 'visible'; // 顯示平均按鈕區塊
+                forGroupBtn.style.visibility = 'visible'; // 顯示級距按鈕區塊
+                
             }
-
+    
+            var currentID = e.target.id; // 當前的縣市
+            for(var attr in CityName){
+                if(currentID == CityName[attr]){
+                    svgDiv.replaceChildren(); // 點擊其他縣市時刪除原本svg
+                    townArea(attr);
+                    changeBackGround(attr);
+                    currentMap = attr; // 計錄當前的地圖位置(allMap用)
+                    limitCityColor(); // 其他縣市不變色
+                }
+    
+            }
+            if(currentID != ""){ // 滑鼠非點擊非地圖之svg區塊
+                Outlying_islands.style.visibility = 'hidden'; // 隱藏離島邊框
+            }
         }
-        if(currentID != ""){ // 滑鼠非點擊非地圖之svg區塊
-            Outlying_islands.style.visibility = 'hidden'; // 隱藏離島邊框
-        }
-        // else{
-        //     townName.textContent = CityName[currentMap];
-        //     recordTownName = townName.textContent;
-        // }
         
     }
 
     // 印出地圖
     function townArea(attr){
         svgDiv.replaceChildren(); // 點擊其他選項時刪除原本svg
-        var svg_SVG = createSvg('svg',{'xmlns':svgNS,'width':'700px','height':'750px'}); // svg圖片(背景)
+        var svg_SVG = createSvg('svg',{'xmlns':svgNS,'width':'600px','height':'600px'}); // svg圖片(背景)
         var svg_G = createSvg('g',{'cursor':'pointer'}); // 容器
         rangeDiv.style.visibility = 'visible'; // 顯示顏色範圍框
 
@@ -244,11 +248,8 @@ window.onload = (function() {
     
     var columnNameDiv = document.getElementById('columnNameDiv'); // 欄位名稱區塊
     var fileNameDiv = document.getElementById('fileNameDiv'); // 檔案名稱區塊
-    var changeBtnForRight = document.getElementById('changeBtnForRight'); 
-    var changeBtnForLeft = document.getElementById('changeBtnForLeft');
-    
     var spanForColumnNameDiv = document.getElementById('spanForColumnNameDiv'); // 選擇鄉鎮區塊文字
-    var posForColumnDiv = 0; // 記錄當前欄位名稱位置
+    var posForColumnDiv = 1; // 記錄當前欄位名稱位置
     var columnNameArray = []; // 儲存當前欄位名稱(懸浮框用)
     // 生成欄位名稱區塊(地圖變換用)
 	function renderColumnText(){
@@ -256,7 +257,7 @@ window.onload = (function() {
         Grouping(); // 進行顏色分組
         appearRange(); // 顯示範圍框
 
-        spanForColumnNameDiv.textContent = InputData[0][0]; // 初始值
+        spanForColumnNameDiv.textContent = InputData[0][1]; // 初始值
 
         if(spanForColumnNameDiv.textContent == InputData[0][0]){ // 當等於位置為0的欄位
             var svgPolygon = svgDiv.getElementsByTagName('polygon'); // 抓取每個polygon資料
@@ -278,7 +279,7 @@ window.onload = (function() {
         posForColumnDiv += 1; // 下一個文字
 
         if(posForColumnDiv > InputData[0].length-1){ // 該位置超過欄位數量
-            posForColumnDiv = 0; // 恢復第一個位置
+            posForColumnDiv = 1; // 恢復第一個位置
             spanForColumnNameDiv.textContent = InputData[0][posForColumnDiv]; // 文字顯示第一個欄位
         }
         
@@ -296,7 +297,7 @@ window.onload = (function() {
 
         posForColumnDiv -= 1; // 上一個文字
         
-        if(posForColumnDiv < 0){ // 位置小於欄位數量
+        if(posForColumnDiv < 1){ // 位置小於欄位數量
             posForColumnDiv = InputData[0].length-1; // 更改為陣列中最後一個欄位名稱
             spanForColumnNameDiv.textContent = InputData[0][posForColumnDiv]; // 文字顯示最後一個欄位
         }
@@ -308,165 +309,199 @@ window.onload = (function() {
         Grouping(); // 進行顏色分組
         appearRange(); // 顯示範圍框
     }
+        
 
 
 
     // 拿取後端資料
 	function getBackEndData(){
-    selectColumnDiv.style.visibility = 'hidden';
+        recordTheme = 1
+        recordDescript = 1
+        recordResource = 1
 
-    var themeCalled = document.getElementById("themeCalled").textContent;
-    var descriptCalled = document.getElementById("descriptCalled").textContent;
-    var resourceCalled = document.getElementById("resourceCalled").textContent;
-    var svgMapCalled = parseInt(document.getElementById("svgMapCalled").textContent);
-    var townNameCalled = (document.getElementById("townNameCalled").textContent);
-    var backGroundCalled = parseInt(document.getElementById("backGroundCalled").textContent);
-    var inputDataCalled = document.getElementById("inputDataCalled").textContent;
-    var rangeGroupCalled = parseInt(document.getElementById("rangeGroupCalled").textContent);
-    var mapColorCalled = parseInt(document.getElementById("mapColorCalled").textContent);
-    var columnNameCalled = (document.getElementById("columnNameCalled").textContent);
-    var selectColumnCalled = document.getElementById("selectColumnCalled").textContent;
-    var selectTownCalled = document.getElementById("selectTownCalled").textContent;
-    var fileNameCalled = document.getElementById("fileNameCalled").textContent;
-    var unitCalled = document.getElementById("unitCalled").textContent;
-    var checkWhichChartsCalled = document.getElementById("checkWhichChartsCalled").textContent;
+        inputTheme.style.display = 'none'; // 隱藏文字輸入框
+        divForDesTheme.style.display = 'block'; // 顯示主題完成框
+        divForDesTheme.textContent = recordTheme;
 
-    if(themeCalled != ""){
-        divForDescripBoxBackDrop.style.visibility = 'hidden';
-        stepBoxBackDropDiv.style.visibility = 'hidden';
-    }
-    
+        textarea.style.display = 'none'; // 隱藏文字輸入框
+        divForFinish.style.display = 'block'; // 顯示敘述完成框
+        divForFinish.textContent = recordDescript;
 
-    recordTheme = themeCalled
-    recordDescript = descriptCalled
-    recordResource = resourceCalled
+        inputResource.style.display = 'none'; // 隱藏資料來源輸入框
+        divForinputResource.style.display = 'block'; // 顯示資料來源完成框
+        divForinputResource.textContent = recordResource;
 
-    showDES.getElementsByTagName('span')[0].textContent = recordDescript
-    showRES.getElementsByTagName('span')[0].textContent = resourceCalled
+        recordFileName = '名稱';
+        fileNameDiv.textContent = recordFileName;
 
-    inputTheme.style.display = 'none'; // 隱藏文字輸入框
-    divForDesTheme.style.display = 'block'; // 顯示敘述完成框
-    divForDesTheme.textContent = recordTheme;
+        currentMap = 19;
+        townArea(currentMap);
+        recordBackGround = 19;
+        changeBackGround(recordBackGround);
 
-    textarea.style.display = 'none'; // 隱藏文字輸入框
-    divForFinish.style.display = 'block'; // 顯示敘述完成框
-    divForFinish.textContent = recordDescript;
+        document.getElementById('chooseMethod').style.visibility = 'hidden';
+        uploadedFileName = recordFileName;
 
-    inputResource.style.display = 'none'; // 隱藏資料來源輸入框
-    divForinputResource.style.display = 'block'; // 顯示資料來源完成框
-    divForinputResource.textContent = recordResource;
-
-    recordFileName = fileNameCalled;
-    fileNameDiv.textContent = recordFileName;
-
-    currentMap = svgMapCalled;
-    townArea(currentMap);
-    recordBackGround = backGroundCalled;
-    changeBackGround(recordBackGround);
-    
-    document.getElementById('chooseMethod').style.visibility = 'hidden';
-    uploadedFileName = recordFileName;
-
-    groupNum = rangeGroupCalled;
-    Grouping(); // 分組
-    selectForGroup.value = groupNum;
-    
-    var inputDataStr = inputDataCalled;
-    var JsonStringforInputData = inputDataStr.replace(/'/g, '"');
-    InputData = JSON.parse(JsonStringforInputData)
-    buttonVisible();
-    currentColorID = mapColorCalled;
-    currentColorDiv = allColor[currentColorID];
-    
-
-    townName.textContent = recordTheme // 只顯示縣市名稱
-
-    posForColumnDiv = columnNameCalled;
-    renderColumnText(); // 生成欄位名稱區塊(地圖變換用)
-    columnNameDiv.textContent = InputData[0][posForColumnDiv];
-    columnNameArray.unshift(columnNameDiv.textContent);
-    townArea(currentMap);
-
-    recordUnit = unitCalled;
-    unit.value = recordUnit;
-    appearRange()
-    
-    var inputselectedColumn = selectColumnCalled;
-    var JsonStringforColumn = inputselectedColumn.replace(/'/g, '"');
-    selectedColumnIndices = JSON.parse(JsonStringforColumn)
-    console.log(selectedColumnIndices)
-    
-    var inputselectedRows = selectTownCalled;
-    console.log(inputselectedRows)
-    var JsonStringforRows = inputselectedRows.replace(/'/g, '"');
-    selectedRows = JSON.parse(JsonStringforRows)
-    console.log(selectedRows)
-
-    renderColumnSelect(); // 生成欄位下拉式清單
-    
-    var ColumnIndices = selectColumnData.getElementsByTagName('input');
-    for(var i = 0; i < ColumnIndices.length; i++){
-        if(selectedColumnIndices.indexOf(parseInt(ColumnIndices[i].value)) != -1){
-            ColumnIndices[i].checked = true;
-        }
-    }
-
-    renderRowSelect();
-    var Rows = selectTownData.getElementsByTagName('input');
-    for(var i = 0; i < Rows.length; i++){
-        if(selectedRows.indexOf(Rows[i].value) != -1){
-            Rows[i].checked = true;
-        }
-    }
-
-    // var inputcheckWhichCharts = checkWhichChartsCalled;
-    // var JsonStringforcheckWhichCharts = inputcheckWhichCharts.replace(/'/g, '"');
-    // checkWhichCharts = JSON.parse(JsonStringforcheckWhichCharts)
-    // console.log(checkWhichCharts)
-
-    // var newArr = [];
-    
-    // for(var i = 0; i < checkWhichCharts.length; i++){
-    //     if(checkWhichCharts[i] == 'chartContainer'){ // 點擊柱狀圖的預覽
-    //         newArr.push('column')
-    //     }else if(checkWhichCharts[i] == 'piechartContainer'){ // 點擊圓餅圖的預覽
-    //         newArr.push('pie')
-    //     }else if(checkWhichCharts[i] == 'linechartContainer'){ // 點擊折線圖的預覽
-    //         newArr.push('line')
-    //     }else if(checkWhichCharts[i] == 'areachartContainer'){ // 點擊區域圖的預覽
-    //         newArr.push('area')
-    //     }else if(checkWhichCharts[i] == 'barchartContainer'){ // 點擊長條圖的預覽
-    //         newArr.push('Bar')
-    //     }else if(checkWhichCharts[i] == 'bubblechartContainer'){ // 點擊組合圖的預覽
-    //         newArr.push('bubble')
-    //     }else if(checkWhichCharts[i] == 'stackchartContainer'){ // 點擊推疊梯狀圖的預覽
-    //         newArr.push('stack')
-    //     }else if(checkWhichCharts[i] == 'pieholeContainer'){ // 點擊推疊梯狀圖的預覽
-    //         newArr.push('piehole')
-    //     }else if(checkWhichCharts[i] == 'histogramContainer'){ // 點擊推疊梯狀圖的預覽
-    //         newArr.push('histogram')
-    //     }else if(checkWhichCharts[i] == 'scatterchartContainer'){ // 點擊散佈圖的預覽
-    //         newArr.push('scatter')
-    //     }
+        groupNum = 2;
+        Grouping(); // 分組
+        selectForGroup.value = groupNum;
         
-    // }
-
-    // for(var i = 0; i < newArr.length; i++){
-    //     selectedRows.push(newArr[i])
-    // }
-    // console.log(selectedRows)
-    // console.log(checkWhichCharts)
+        var inputDataStr = "[['單位', 'A1件數', 'A1死亡', 'A1受傷', 'A2件數', 'A2受傷', 'A3件數', '總計件數', '總計死亡', '總計受傷'],['南投市', 9, 9, 1, 1683, 2158, 1685, 3377, 9, 2159],['仁愛鄉', 3, 3, 24, 222, 319, 758, 983, 3, 343]]"
+        var JsonStringforInputData = inputDataStr.replace(/'/g, '"');
+        InputData = JSON.parse(JsonStringforInputData)
+        buttonVisible();
+        currentColorID = 2;
+        currentColorDiv = allColor[currentColorID];
+        
+        recordTownName = '南投縣'
+        townName.textContent = recordTownName; // 只顯示縣市名稱
     
-    var chartType = chartTypeSelect.getElementsByTagName('input');
-    console.log(chartType);
-    for(var i = 0; i < chartType.length; i++){
-        if(selectedRows.indexOf(chartType[i].value) != -1){
-            chartType[i].checked = true;
+        posForColumnDiv = 2;
+        renderColumnText(); // 生成欄位名稱區塊(地圖變換用)
+        spanForColumnNameDiv.textContent = InputData[0][posForColumnDiv];
+        columnNameArray.unshift(spanForColumnNameDiv.textContent);
+        townArea(currentMap);
+
+        recordUnit = '顆'
+        unit.value = recordUnit;
+        appearRange()
+
+        var inputselectedColumn = "['1','仁愛鄉']";
+        var JsonStringforColumn = inputselectedColumn.replace(/'/g, '"');
+        selectedColumnIndices = JSON.parse(JsonStringforColumn)
+
+        var inputselectedRows = "['1','仁愛鄉','column','piehole']";
+        var JsonStringforRows = inputselectedRows.replace(/'/g, '"');
+        selectedRows = JSON.parse(JsonStringforRows)
+        
+        renderColumnSelect(); // 生成欄位下拉式清單
+        var ColumnIndices = selectColumnData.getElementsByTagName('input');
+        for(var i = 0; i < ColumnIndices.length; i++){
+            if(selectedColumnIndices.indexOf(ColumnIndices[i].value) != -1){
+                ColumnIndices[i].checked = true;
+            }
         }
-    }
+        
+        renderRowSelect();
+        var Rows = selectTownData.getElementsByTagName('input');
+        for(var i = 0; i < Rows.length; i++){
+            if(selectedRows.indexOf(Rows[i].value) != -1){
+                Rows[i].checked = true;
+            }
+        }
+
+        var chartType = chartTypeSelect.getElementsByTagName('input');
+        for(var i = 0; i < chartType.length; i++){
+            if(selectedRows.indexOf(chartType[i].value) != -1){
+                chartType[i].checked = true;
+            }
+        }
+        console.log(selectedRows)
+        
+        updateChartDisplay();
+       
+
+        
+
+    // var themeCalled = document.getElementById("themeCalled").textContent;
+    // var descriptCalled = document.getElementById("descriptCalled").textContent;
+    // var resourceCalled = document.getElementById("resourceCalled").textContent;
+    // var svgMapCalled = parseInt(document.getElementById("svgMapCalled").textContent);
+    // var townNameCalled = (document.getElementById("townNameCalled").textContent);
+    // var backGroundCalled = parseInt(document.getElementById("backGroundCalled").textContent);
+    // var inputDataCalled = document.getElementById("inputDataCalled").textContent;
+    // var rangeGroupCalled = parseInt(document.getElementById("rangeGroupCalled").textContent);
+    // var mapColorCalled = parseInt(document.getElementById("mapColorCalled").textContent);
+    // var columnNameCalled = (document.getElementById("columnNameCalled").textContent);
+    // var selectColumnCalled = document.getElementById("selectColumnCalled").textContent;
+    // var selectTownCalled = document.getElementById("selectTownCalled").textContent;
+    // var fileNameCalled = document.getElementById("fileNameCalled").textContent;
+    // var unitCalled = document.getElementById("unitCalled").textContent;
+
+    // recordTheme = themeCalled
+    // recordDescript = descriptCalled
+    // recordResource = resourceCalled
+
+    // inputTheme.style.display = 'none'; // 隱藏文字輸入框
+    // divForDesTheme.style.display = 'block'; // 顯示敘述完成框
+    // divForDesTheme.textContent = recordTheme;
+
+    // textarea.style.display = 'none'; // 隱藏文字輸入框
+    // divForFinish.style.display = 'block'; // 顯示敘述完成框
+    // divForFinish.textContent = recordDescript;
+
+    // inputResource.style.display = 'none'; // 隱藏資料來源輸入框
+    // divForinputResource.style.display = 'block'; // 顯示資料來源完成框
+    // divForinputResource.textContent = recordResource;
+
+    // recordFileName = fileNameCalled;
+    // fileNameDiv.textContent = recordFileName;
+
+    // currentMap = svgMapCalled;
+    // townArea(currentMap);
+    // recordBackGround = backGroundCalled;
+    // changeBackGround(recordBackGround);
     
-    updateChartDisplay();
-}
+    // document.getElementById('chooseMethod').style.visibility = 'hidden';
+    // uploadedFileName = recordFileName;
+
+    // groupNum = rangeGroupCalled;
+    // Grouping(); // 分組
+    // selectForGroup.value = groupNum;
+    
+    // var inputDataStr = inputDataCalled;
+    // var JsonStringforInputData = inputDataStr.replace(/'/g, '"');
+    // InputData = JSON.parse(JsonStringforInputData)
+    // buttonVisible();
+    // currentColorID = mapColorCalled;
+    // currentColorDiv = allColor[currentColorID];
+    
+
+    // townName.textContent = townNameCalled // 只顯示縣市名稱
+
+    // posForColumnDiv = columnNameCalled;
+    // renderColumnText(); // 生成欄位名稱區塊(地圖變換用)
+    // columnNameDiv.textContent = InputData[0][posForColumnDiv];
+    // columnNameArray.unshift(columnNameDiv.textContent);
+    // townArea(currentMap);
+
+    // recordUnit = unitCalled;
+    // unit.value = recordUnit;
+    
+    // var inputselectedColumn = selectColumnCalled;
+    // var JsonStringforColumn = inputselectedColumn.replace(/'/g, '"');
+    // selectedColumnIndices = JSON.parse(JsonStringforColumn)
+    
+    // var inputselectedRows = selectTownCalled;
+    // var JsonStringforRows = inputselectedRows.replace(/'/g, '"');
+    // selectedRows = JSON.parse(JsonStringforRows)
+
+    // renderColumnSelect(); // 生成欄位下拉式清單
+    // var ColumnIndices = selectColumnData.getElementsByTagName('input');
+    // for(var i = 0; i < ColumnIndices.length; i++){
+    //     if(selectedColumnIndices.indexOf(ColumnIndices[i].value) != -1){
+    //         ColumnIndices[i].checked = true;
+    //     }
+    // }
+    
+    // renderRowSelect();
+    // var Rows = selectTownData.getElementsByTagName('input');
+    // for(var i = 0; i < Rows.length; i++){
+    //     if(selectedRows.indexOf(Rows[i].value) != -1){
+    //         Rows[i].checked = true;
+    //     }
+    // }
+
+    // var chartType = chartTypeSelect.getElementsByTagName('input');
+    // for(var i = 0; i < chartType.length; i++){
+    //     if(selectedRows.indexOf(chartType[i].value) != -1){
+    //         chartType[i].checked = true;
+    //     }
+    // }
+
+    // // updateChartDisplay();
+    }
 
     
+
 
