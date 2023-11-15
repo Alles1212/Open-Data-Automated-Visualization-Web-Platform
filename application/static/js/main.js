@@ -946,10 +946,13 @@ function createButtonSuspendBox(d){
 
     if(d.target.id == 'sentFile'){ // 檔案區
         suBoxForButtons.textContent = '上傳檔案';
+        suBoxForButtons.style.zIndex = 3;
     }else if(d.target.id == 'sentAPI'){
         suBoxForButtons.textContent = '上傳API';
+        suBoxForButtons.style.zIndex = 3;
     }else if(d.target.id == 'sentSelfFile'){
         suBoxForButtons.textContent = '自製表單';
+        suBoxForButtons.style.zIndex = 3;
     }else if(d.target.id == 'maxFileBtn'){
         suBoxForButtons.textContent = '最大值';
     }else if(d.target.id == 'minFileBtn'){
@@ -986,28 +989,25 @@ function createButtonSuspendBox(d){
              d.target.id == 'submit' ||
              d.target.id == 'submitAPI'){
         suBoxForButtons.textContent = '上傳';
-        suBoxForButtons.style.zIndex = 2;
+        suBoxForButtons.style.zIndex = 3;
     }else if(d.target.id == 'clearButtonForselfFile'){
         suBoxForButtons.textContent = '全部清除';
-        suBoxForButtons.style.zIndex = 2;
+        suBoxForButtons.style.zIndex = 3;
     }else if(d.target.id == 'returnButtonForselfFile'){
         suBoxForButtons.textContent = '返回';
-        suBoxForButtons.style.zIndex = 2;
+        suBoxForButtons.style.zIndex = 3;
     }else if(d.target.id == 'closeButtonForselfFile'){
         suBoxForButtons.textContent = '關閉表格';
-        suBoxForButtons.style.zIndex = 2;
+        suBoxForButtons.style.zIndex = 3;
     }else if(d.target.id == 'addButton_Row'){
         suBoxForButtons.textContent = '新增列';
-        suBoxForButtons.style.zIndex = 2;
+        suBoxForButtons.style.zIndex = 3;
     }else if(d.target.id == 'addButton_Col'){
         suBoxForButtons.textContent = '新增欄';
-        suBoxForButtons.style.zIndex = 2;
-    }else if(d.target.id == 'minusButton_Row'){
-        suBoxForButtons.textContent = '刪除列';
-        suBoxForButtons.style.zIndex = 2;
-    }else if(d.target.id == 'minusButton_Col'){
-        suBoxForButtons.textContent = '刪除欄';
-        suBoxForButtons.style.zIndex = 2;
+        suBoxForButtons.style.zIndex = 3;
+    }else if(d.target.id == 'minusAllBtn'){
+        suBoxForButtons.textContent = '刪除';
+        suBoxForButtons.style.zIndex = 3;
     }else if(d.target.id == 'selfFileDesBtn'){
         suBoxForButtons.textContent = '說明';
         suBoxForButtons.style.zIndex = 2;
@@ -1026,7 +1026,11 @@ function createButtonSuspendBox(d){
        d.target.id == 'changeBtnForLeft' ||
        d.target.id == 'changeBtnForRight' ||
        d.target.id == 'sumFileBtn' ||
-       d.target.id ==  'avgFileBtn'){ // 顏色選擇鈕跟左右鈕不用出現懸浮框
+       d.target.id ==  'avgFileBtn' ||
+       d.target.id ==  'forGroupBtn' ||
+       d.target.id ==  'statBtn' ||
+       d.target.id ==  'introBtn' ||
+       d.target.id ==  'closeDetailDesBox'){ // 顏色選擇鈕跟左右鈕不用出現懸浮框
         suBoxForButtons.style.visibility = 'hidden';
     }
 
@@ -1042,6 +1046,7 @@ function createButtonSuspendBox(d){
        d.target.className == 'previewBtn_three'){
         suBoxForButtons.textContent = '預覽';
         suBoxForButtons.style.zIndex = 2;
+    
     }
 }
 
