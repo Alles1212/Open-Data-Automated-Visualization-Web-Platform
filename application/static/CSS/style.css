@@ -934,6 +934,27 @@
     cursor: pointer;
 }
 
+#showOriginalBtn{
+    background-image: url("../image/showData.png");
+    background-color: transparent;
+    background-repeat: no-repeat;
+    background-size: cover;
+    border: none;
+
+    width: 40px;
+    height: 40px;
+
+    position: relative;
+    left: -12.5%;
+    top: 80px;
+    visibility: hidden;
+
+    z-index: 1;
+}#showOriginalBtn:hover{
+  transform: scale(1.1); /* 放大 */
+    cursor: pointer;
+}
+
   /* 顏色選擇框 */
   #colorDiv{
     position: relative;
