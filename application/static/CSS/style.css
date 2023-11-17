@@ -2663,4 +2663,53 @@
     border: none;
 }
 
+  #showOriginalBackDrop{
+    width: 100%;
+    height: 750px;
+    background-color: rgba(21, 18, 18, 0.9);
+    
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    position: relative;
+    top: -6800px;
+    z-index: 2;
+
+    visibility: hidden;
+}
+
+  #showOriginalBox{
+    width: 1000px;
+    height: 500px;
+
+    position: absolute;
+    margin-left: 100px;
+    margin-top: -70px;
+    background-color: #F2FFF2;
+    overflow: scroll;
+}
+
+  #closeShowOriginalBox{
+    background-image: url("../image/closeButtonForselfFile.png");
+    background-repeat: no-repeat;
+    background-color: transparent;
+    border: none;
+    background-size: cover;
+    background-position: -4px;
+
+    width: 43px;
+    height: 43px;
+
+
+    position: relative;
+    left: 545px;
+    top: -275px;
+
+    z-index: 2;
+}#closeShowOriginalBox:hover{
+  transform: scale(1.2);
+  cursor: pointer;
+}
+
 
