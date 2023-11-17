@@ -41,6 +41,10 @@ window.onload = (function() {
     var minusAllBtn = document.getElementById('minusAllBtn'); // 自製表單刪除按鈕
     var closePreview = document.getElementById('closePreview'); // 關閉預覽框按鈕
     var selfFileDesBtn = document.getElementById('selfFileDesBtn'); // 自製表單說明按鈕
+    var showOriginalBtn = document.getElementById('showOriginalBtn'); // 顯示原始檔案按鈕
+    var showOriginalBackDrop = document.getElementById('showOriginalBackDrop'); // 顯示原始檔案區塊背景
+    var showOriginalBox = document.getElementById('showOriginalBox'); // 顯示原始檔案區塊
+    var closeShowOriginalBox = document.getElementById('closeShowOriginalBox'); // 關閉原始檔案按鈕
     
 	submitButtonForselfFile.addEventListener('click',handleSelfFile); // 上傳鈕
 	clearButtonForselfFile.addEventListener('click',clearSelfFile); // 清除鈕
@@ -49,6 +53,34 @@ window.onload = (function() {
     addButton_Col.addEventListener('click',addColForSelfFile); // 新增欄鈕
     returnButtonForselfFile.addEventListener('click',returnMinus); // 返回鈕
     minusAllBtn.addEventListener('click',minusAll); // 刪除按鈕
+    showOriginalBtn.addEventListener('click',showData);
+
+
+    closeShowOriginalBox.addEventListener('click',function(){
+        showOriginalBackDrop.style.visibility = 'hidden'; // 隱藏原始檔案
+    })
+    // 顯示原始檔
+    function showData(){
+        showOriginalBackDrop.style.visibility = 'visible'; // 顯示原始檔案
+        showOriginalBox.replaceChildren();
+        var table = document.createElement('table'); // 建立表格
+        for(var i = 0; i < forBlankData.length; i++){
+            var tr = document.createElement('tr'); // 建立列
+            for(var j = 0; j < forBlankData[0].length; j++){
+                var td = document.createElement('td'); // 建立欄
+                td.textContent = forBlankData[i][j];
+                td.style.width = 150 + 'px';
+                td.style.height = 50 + 'px';
+                td.style.fontSize = 20 + 'px';
+                td.style.textAlign = 'center';
+                
+
+                tr.appendChild(td);
+            }
+            table.appendChild(tr);
+        }
+        showOriginalBox.appendChild(table);
+    }
     
 
     // 圖表返回鈕
@@ -84,6 +116,7 @@ window.onload = (function() {
         fileNameDiv.style.visibility = 'hidden'; // 隱藏檔案名稱框
         columnNameDiv.style.visibility = 'hidden'; // 隱藏欄位名稱框
         forGroupBtn.style.visibility = 'hidden'; // 隱藏單位分組按鈕
+        showOriginalBtn.style.visibility = 'hidden'; // 顯示原始檔按鈕
 
         selectedColumnIndices = [];
         selectedRows = [];
