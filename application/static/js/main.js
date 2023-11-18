@@ -483,6 +483,7 @@ function thirdColumnStep(){
 }
 
 // 按鈕操作步驟
+// 按鈕操作步驟
 function btnStep(){
     contentForStep.replaceChildren();
     gobackDiv.style.visibility = 'hidden'; // 隱藏返回區塊
@@ -493,11 +494,11 @@ function btnStep(){
     span.style.height = 70 + 'px';
 
     var btnNameArr = ['欄位鈕','說明鈕','顏色切換鈕',
-                      '級距鈕','統計鈕','欄位切換鈕',
-                      '預覽鈕','重製鈕','資料切換紐']
+                      '等級鈕','統計鈕','欄位切換鈕',
+                      '預覽鈕','重製鈕','資料切換鈕','原始資料顯示鈕']
     var btnNameArrPos = 0; // 記錄位置
 
-    for(var i = 0; i < 3; i++){
+    for(var i = 0; i < 4; i++){
         var btnStepDiv = document.createElement('div'); // 建立三個區塊
         for(var j = 0; j < 3; j++){
             var individualBtn = document.createElement('button'); // 建立按鈕
@@ -513,6 +514,11 @@ function btnStep(){
 
             btnStepDiv.appendChild(individualBtn);
             btnStepDiv.appendChild(btnspan);
+
+            if(i == 3 & j == 0){
+                btnspan.style.left = 80 + 'px';
+                break;
+            }
         }
         btnStepDiv.style.display = 'flex';
         btnStepDiv.style.justifyContent = 'space-around';
@@ -554,6 +560,8 @@ function changeBtnStep(e){
         returnStep();
     }else if(e.target.id == 'individualBtn22'){
         sumavgStep();
+    }else if(e.target.id == 'individualBtn30'){
+        originalDataStep();
     }
 }
 
@@ -674,6 +682,19 @@ function sumavgStep(){
 
     var div = document.createElement('div');
     div.id = 'sumavgImg';
+
+    contentForStep.appendChild(span);
+    contentForStep.appendChild(div);
+}
+
+// 原始資料顯示鈕步驟
+function originalDataStep(){
+    var span = document.createElement('p');
+    span.textContent = '點擊此按鈕，可以提供使用者查看所上傳的原始檔案資料，如下圖所示。';
+    span.id = 'stepSpan';
+
+    var div = document.createElement('div');
+    div.id = 'originalDataImg';
 
     contentForStep.appendChild(span);
     contentForStep.appendChild(div);
