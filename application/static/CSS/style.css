@@ -2683,6 +2683,20 @@
     background-color: transparent;
     border: none;
 }
+  #originalDataImg{
+    height: 230px;
+    width: 450px;
+
+    position: relative;
+    top: -40px;
+    left: 20px;
+
+    background-image: url('../image/originalDataStep.png');
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-color: transparent;
+    border: none;
+}
 
   #showOriginalBackDrop{
     width: 100%;
