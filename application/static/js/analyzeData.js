@@ -913,6 +913,10 @@ function renderMap(forBlankData){
             maxTownCount = Object.values(newCountTownArr)[i];
             maxTown = Object.keys(newCountTownArr)[i]
         }
+        if(Object.values(newCountTownArr)[i] == Object.values(newCountTownArr)[i+1]){
+            maxTownCount = Object.values(newCountTownArr)[i+1];
+            maxTown = Object.keys(newCountTownArr)[i+1];
+        }
     }
     console.log(maxTown)
 
