@@ -801,5 +801,127 @@ function minFile(){
 }
     
 
+function renderMap(forBlankData){
+    console.log(forBlankData)
+    var tArray = [];
+    for(var i = 0; i < forBlankData[0].length; i++){
+        var rowArray = [];
+        for(var j = 1; j < forBlankData.length; j++){
+            rowArray.push(forBlankData[j][i]);
+        }
+        tArray.push(rowArray)
+    }
 
+    console.log(tArray)
+    console.log(Object.keys(allMap).length)
+    console.log(allMap[0].length)
+    var allRowArray = [];
+    for(var i = 0; i < tArray.length; i++){
+        var rowData = [];
+        for(var j = 0; j < tArray[0].length; j++){
+            for(var w = 0; w < Object.keys(allMap).length; w++){
+                for(var k = 0; k < allMap[w].length; k++){
+                    var currentID = allMap[w][k]['id'].slice(0,-1);
+                    if(tArray[i][j].indexOf(currentID) != -1){
+                        rowData.push(allMap[w][k]['id']);
+                    }
+                }
+            }
+        }
+        allRowArray.push(rowData)
+    }
+    console.log(allRowArray)
+    var countArr = [];
+    for(var i = 0; i < allRowArray.length; i++){
+        countArr.push(allRowArray[i].length)
+    }
+
+    var maxRow = 0;
+    var indexRow = 0;
+    for(var i = 0; i < countArr.length; i++){
+        if(countArr[i] > maxRow){
+            maxRow = countArr[i];
+            indexRow = i;
+        }
+    }
+
+    console.log(indexRow)
+    console.log(tArray[indexRow])
+
+    var correctArr = [];
+    for(var i = 0; i < tArray[indexRow].length; i++){
+        var eachTownArr = [];
+        for(var w = 0; w < Object.keys(allMap).length; w++){
+            for(var k = 0; k < allMap[w].length; k++){
+                var currentID = allMap[w][k]['id'].slice(0,-1);
+                if(tArray[indexRow][i].indexOf(currentID) != -1){
+                    eachTownArr.push(allMap[w][k]['id']);
+                }
+            }
+        }
+        eachTownArr = Array.from(new Set(eachTownArr));
+        correctArr.push(eachTownArr)
+    }
+    console.log(correctArr)
+
+    for(var i = correctArr.length-1; i >= 0; i--){
+        for(var j = correctArr[0].length-1; j >= 0; j--){
+            if(correctArr[i].length > 1){
+                if(correctArr[i][j] == '南區' ||
+                    correctArr[i][j] == '北區' ||
+                    correctArr[i][j] == '東區' ||
+                    correctArr[i][j] == '西區' ||
+                    correctArr[i][j] == '中區' ){
+                    correctArr[i].splice(j,1);
+                }
+            }
+            
+        }
+    }
+    console.log(correctArr)
+
+    var countTownArray = [];
+    for(var i = 0; i < correctArr.length; i++){
+        for(var j = 0; j < correctArr[i].length; j++){
+            for(var w = 0; w < Object.keys(allMap).length; w++){
+                for(var k = 0; k < allMap[w].length; k++){
+                    var currentID = allMap[w][k]['id'];
+                    if(correctArr[i][j].indexOf(currentID) != -1){
+                        console.log(1)
+                        countTownArray.push(CityName[w]);
+                    }
+                }
+            }
+        }
+    }
+    console.log(countTownArray)
+    var newCountTownArr = countTownArray.reduce((obj, item) => { // 計算出現次數
+        if(item in obj){
+            obj[item]++; // obj中的values
+        }else{
+            obj[item] = 1; // obj中的values
+        }
+        return obj;
+    },{})
+
+    console.log(newCountTownArr)
+
+    var maxTownCount = 0;
+    var maxTown = '';
+    for(var i = 0; i < Object.values(newCountTownArr).length; i++){
+        if(Object.values(newCountTownArr)[i] > maxTownCount){
+            maxTownCount = Object.values(newCountTownArr)[i];
+            maxTown = Object.keys(newCountTownArr)[i]
+        }
+    }
+    console.log(maxTown)
+
+    for(var i = 0; i < Object.keys(CityName).length; i++){
+        if(Object.values(CityName)[i] == maxTown){
+            currentMap = Object.keys(CityName)[i];
+            townArea(currentMap);
+            changeBackGround(currentMap)
+        }
+    }
+}
 
