@@ -1,4 +1,3 @@
-from flask import Flask
 from application import app
 from application.user.models import User
 

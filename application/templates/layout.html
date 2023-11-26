@@ -45,13 +45,35 @@
                 </li>
 
                 <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                      其他下拉功能選單
-                    </a>
-                    <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                      <li><a class="dropdown-item" href="https://data.gov.tw/" target="_blank">政府資料開放平臺</a></li>
-                      <li><a class="dropdown-item" href="#">Another action</a></li>
-                      <li><hr class="dropdown-divider"></li>
+                  <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    縣市資料平臺選單
+                  </a>
+                <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                  <li><a class="dropdown-item" href="https://data.gov.tw/" target="_blank">政府資料開放平臺</a></li>
+                    <li><hr class="dropdown-divider"></li>
+                    <li><a class="dropdown-item" href="https://data.taipei/" target="_blank">臺北資料開放平臺</a></li>
+                    <li><a class="dropdown-item" href="https://data.ntpc.gov.tw/" target="_blank">新北資料開放平臺</a></li>
+                    <li><a class="dropdown-item" href="https://www.klcg.gov.tw/tw/klcg1/3259-110276.html" target="_blank">基隆資料開放平臺</a></li>
+                    <li><a class="dropdown-item" href="https://data.tycg.gov.tw/" target="_blank">桃園資料開放平臺</a></li> 
+                    <li><a class="dropdown-item" href="https://www.hsinchu.gov.tw/OpenDataIndex.aspx?n=902&sms=0" target="_blank">新竹資料開放平臺</a></li>
+                    <li><a class="dropdown-item" href="https://www.miaoli.gov.tw/cp.aspx?n=7687" target="_blank">苗栗資料開放平臺</a></li>
+                    <li><hr class="dropdown-divider"></li>
+                    <li><a class="dropdown-item" href="https://data.nantou.gov.tw/" target="_blank">南投資料開放平臺</a></li>
+                    <li><a class="dropdown-item" href="https://opendata.taichung.gov.tw/" target="_blank">臺中資料開放平臺</a></li>
+                    <li><a class="dropdown-item" href="https://www.chcg.gov.tw/ch/copyright.asp" target="_blank">彰化資料開放平臺</a></li>
+                    <li><a class="dropdown-item" href="https://opendata.yunlin.gov.tw/" target="_blank">雲林資料開放平臺</a></li>
+                    <li><hr class="dropdown-divider"></li>
+                    <li><a class="dropdown-item" href="https://data.kcg.gov.tw/" target="_blank">高雄資料開放平臺</a></li>
+                    <li><a class="dropdown-item" href="https://data.tainan.gov.tw/" target="_blank">臺南資料開放平臺</a></li>
+                    <li><a class="dropdown-item" href="https://data.chiayi.gov.tw/opendata/" target="_blank">嘉義資料開放平臺</a></li>
+                    <li><a class="dropdown-item" href="https://www.pthg.gov.tw/Cus_OpenData_Default1.aspx?n=481C53E05C1D2D97&sms=354B0B57F2762613" target="_blank">屏東資料開放平臺</a></li>
+
+                    <li><hr class="dropdown-divider"></li>
+                    <li><a class="dropdown-item" href="https://opendata.e-land.gov.tw/" target="_blank">宜蘭資料開放平臺</a></li>
+                    <li><a class="dropdown-item" href="https://www.hl.gov.tw/cp.aspx?n=32789" target="_blank">花蓮資料開放平臺</a></li>
+                    <li><a class="dropdown-item" href="https://www.taitung.gov.tw/cp.aspx?n=13429" target="_blank">臺東資料開放平臺</a></li>
+
+                    <li><hr class="dropdown-divider"></li>
                       <li><a class="dropdown-item" href="https://github.com/Alles1212/-projectIM" target="_blank">連絡我們</a></li>
                     </ul>
                 </li>
@@ -59,12 +81,12 @@
                 <input class="form-control me-2" name = "search" id="innerSearch"  type="text" placeholder="輸入欲查詢作品" aria-label="Search">
                 <button class="btn btn-outline-success" type="submit" style="width: 100px;" >查詢</button>
               </form>
-              {% if session == null %}
-                <li class="nav-item navbar-right">
-                  <a class="nav-link" href="/user/signout">登出</a>
-                </li>
-              {% else %}
-              {% endif %}
+              {% if session.get("user") != None %}
+              <li class="nav-item navbar-right">
+                <a class="nav-link" href="/user/signout">目前使用者:{{ session.get("user")["name"] }}登出</a>
+              </li>
+            {% else %}
+            {% endif %}
 
               </ul>
 

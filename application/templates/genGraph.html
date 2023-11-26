@@ -38,26 +38,55 @@
 
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                      其他下拉功能選單
-                    </a>
-                    <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                    <li><a class="dropdown-item" href="https://data.gov.tw/" target="_blank">政府資料開放平臺</a></li>
-                      <li><a class="dropdown-item" href="#">Another action</a></li>
-                      <li><hr class="dropdown-divider"></li>
-                      <li><a class="dropdown-item" href="https://github.com/Alles1212/-projectIM" target="_blank">連絡我們</a></li>
-                    </ul>
-                </li>
+                    縣市資料平臺選單
+                </a>
+                <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                <li><a class="dropdown-item" href="https://data.gov.tw/" target="_blank">政府資料開放平臺</a></li>
+                    <li><hr class="dropdown-divider"></li>
+                    <li><a class="dropdown-item" href="https://data.taipei/" target="_blank">臺北資料開放平臺</a></li>
+                    <li><a class="dropdown-item" href="https://data.ntpc.gov.tw/" target="_blank">新北資料開放平臺</a></li>
+                    <li><a class="dropdown-item" href="https://www.klcg.gov.tw/tw/klcg1/3259-110276.html" target="_blank">基隆資料開放平臺</a></li>
+                    <li><a class="dropdown-item" href="https://data.tycg.gov.tw/" target="_blank">桃園資料開放平臺</a></li> 
+                    <li><a class="dropdown-item" href="https://www.hsinchu.gov.tw/OpenDataIndex.aspx?n=902&sms=0" target="_blank">新竹資料開放平臺</a></li>
+                    <li><a class="dropdown-item" href="https://www.miaoli.gov.tw/cp.aspx?n=7687" target="_blank">苗栗資料開放平臺</a></li>
+                    <li><hr class="dropdown-divider"></li>
+                    <li><a class="dropdown-item" href="https://data.nantou.gov.tw/" target="_blank">南投資料開放平臺</a></li>
+                    <li><a class="dropdown-item" href="https://opendata.taichung.gov.tw/" target="_blank">臺中資料開放平臺</a></li>
+                    <li><a class="dropdown-item" href="https://www.chcg.gov.tw/ch/copyright.asp" target="_blank">彰化資料開放平臺</a></li>
+                    <li><a class="dropdown-item" href="https://opendata.yunlin.gov.tw/" target="_blank">雲林資料開放平臺</a></li>
+                    <li><hr class="dropdown-divider"></li>
+                    <li><a class="dropdown-item" href="https://data.kcg.gov.tw/" target="_blank">高雄資料開放平臺</a></li>
+                    <li><a class="dropdown-item" href="https://data.tainan.gov.tw/" target="_blank">臺南資料開放平臺</a></li>
+                    <li><a class="dropdown-item" href="https://data.chiayi.gov.tw/opendata/" target="_blank">嘉義資料開放平臺</a></li>
+                    <li><a class="dropdown-item" href="https://www.pthg.gov.tw/Cus_OpenData_Default1.aspx?n=481C53E05C1D2D97&sms=354B0B57F2762613" target="_blank">屏東資料開放平臺</a></li>
 
-                <li class="nav-item navbar-right">
-                    <a class="nav-link" href="/user/signout">登出</a>
-                </li>
+                    <li><hr class="dropdown-divider"></li>
+                    <li><a class="dropdown-item" href="https://opendata.e-land.gov.tw/" target="_blank">宜蘭資料開放平臺</a></li>
+                    <li><a class="dropdown-item" href="https://www.hl.gov.tw/cp.aspx?n=32789" target="_blank">花蓮資料開放平臺</a></li>
+                    <li><a class="dropdown-item" href="https://www.taitung.gov.tw/cp.aspx?n=13429" target="_blank">臺東資料開放平臺</a></li>
+
+                    <li><hr class="dropdown-divider"></li>
+                    <li><a class="dropdown-item" href="https://github.com/Alles1212/-projectIM" target="_blank">連絡我們</a></li>
+                </ul>
+
+                {% if session.get("user") != None %}
+                    <li class="nav-item navbar-right">
+                        <a class="nav-link" href="/user/signout">目前使用者:{{ session.get("user")["name"] }}登出</a>
+                    </li>
+                {% else %}
+                {% endif %}
                 </ul>
             </div>
             </nav>
             </header>
-            
+            <!-- onclick="fetchData()" -->
 
+            <div style = 'display: none;'>
+                <input class="form-control me-2" name = "api_url" id = "apiUrl" type="text" placeholder="search API URL" aria-label="Search">
+                <button class="btn btn-outline-success me-2" id = "fetchData"  type="submit" style="width: 100px;">查詢</button>
+            </div>
 
+            <div id="apiResponse" style = 'display: none;'></div>
 
 
 
@@ -80,15 +109,13 @@
                 <p id="selectTownCalled">{{ todo.file['selectTown'] }}</p>
                 <p id="chartCountCalled">{{ todo.file['chartCount'] }}</p>
                 <p id="checkWhichChartsCalled">{{ todo.file['checkWhichCharts'] }}</p>
+                <p id="completedCalled">{{ todo['completed'] }}</p>
+                <p id="DataCalled">{{ todo.file['Data'] }}</p>
             </div>
             {% endfor %}
-                <p id = 'apiCalled'>{{ response }}</p>
-                    <div>
-                <p id="apiStr">{{ res_list }}</p>
-                    </div>
     <body>
                         <div id="all">
-                            <div class="main"> <!--畫面最上面-->
+                            <div class="main" id="main"> <!--畫面最上面-->
                                 
                                 <button id= "selectColumnBtn" ></button> <!--顯示選擇欄位區塊的按鈕-->
                                 
@@ -126,7 +153,9 @@
                     
                                     <div id="columnNameDiv"> <!--欄位名稱區塊-->
                                         <button id= "changeBtnForLeft"></button> <!--切換地圖按鈕--> 
-                                        <span id="spanForColumnNameDiv"></span>
+                                        <div id = 'divspanForColumnNameDiv'>
+                                            <span id="spanForColumnNameDiv"></span>
+                                        </div>
                                         <button id= "changeBtnForRight"></button> <!--切換地圖按鈕-->
                                     </div>
                     
@@ -138,6 +167,7 @@
                     
                                         <button id = "colorBtn"></button> <!--選擇顏色按鈕-->
                                         <button id = "forGroupBtn"></button>
+                                        <button id = "showOriginalBtn"></button>
                     
                                         <div id = "colorDiv"> <!--顏色選擇框-->
                                         </div>
@@ -290,16 +320,16 @@
                                 <div style="position: relative; top:-70px"> <!-- 選擇圖表區塊 -->
                                     <label for="chartTypeSelect"  class="labelForCheckbox">選擇圖表類型：</label>
                                     <div id="chartTypeSelect" class="chartTypeSelectDiv">
-                                        <laebl for="showPieChart"><input type="checkbox" value="pie" id="showPieChart">圓餅圖</input></laebl>
+                                        <label for="showPieChart"><input type="checkbox" value="pie" id="showPieChart">圓餅圖</input></label>
                                         <label for="showPieholeChart"><input type="checkbox" value="piehole" id="showPieholeChart">圓環圖</label>
-                                        <laebl for="showColumnChart"><input type="checkbox" value="column" id="showColumnChart">柱狀圖</laebl>
-                                        <laebl for="showBarChart"><input type="checkbox" value="Bar" id="showBarChart">長條圖</laebl>
-                                        <laebl for="showHistogramChart"><input type="checkbox" value="histogram" id="showHistogramChart">直方圖</laebl>
-                                        <laebl for="showStackChart"><input type="checkbox" value="stack" id="showStackChart">堆疊階梯狀圖</laebl>
-                                        <laebl for="showLineChart"><input type="checkbox" value="line" id="showLineChart">折線圖</laebl>
-                                        <laebl for="showAreaChart"><input type="checkbox" value="area" id="showAreaChart">區域圖</laebl>
-                                        <laebl for="showScatterChart"><input type="checkbox" value="scatter" id="showScatterChart">散佈圖</laebl>
-                                        <laebl for="showBubbleChart"><input type="checkbox" value=" bubble" id="showBubbleChart">泡泡圖</laebl>
+                                        <label for="showColumnChart"><input type="checkbox" value="column" id="showColumnChart">柱狀圖</label>
+                                        <label for="showBarChart"><input type="checkbox" value="Bar" id="showBarChart">長條圖</label>
+                                        <label for="showHistogramChart"><input type="checkbox" value="histogram" id="showHistogramChart">直方圖</label>
+                                        <label for="showStackChart"><input type="checkbox" value="stack" id="showStackChart">堆疊階梯狀圖</label>
+                                        <label for="showLineChart"><input type="checkbox" value="line" id="showLineChart">折線圖</label>
+                                        <label for="showAreaChart"><input type="checkbox" value="area" id="showAreaChart">區域圖</label>
+                                        <label for="showScatterChart"><input type="checkbox" value="scatter" id="showScatterChart">散佈圖</label>
+                                        <label for="showBubbleChart"><input type="checkbox" value=" bubble" id="showBubbleChart">泡泡圖</label>
                                     </div>
                                 </div>
                             </div>
@@ -389,6 +419,12 @@
                                 <button id="gobackBtn"></button>
                                 <span>返回</span>
                             </div>
+
+                            <div id = 'showOriginalBackDrop'>
+                                <div id = 'showOriginalBox'>
+                                </div>
+                                <button id = 'closeShowOriginalBox'></button>
+                            </div>
                                 
                             
                             
@@ -409,7 +445,14 @@
                     <script src="https://www.gstatic.com/charts/loader.js"></script>
                     <script src="https://d3js.org/d3.v6.min.js"></script>
                     <script src="https://unpkg.com/mathjs@7.0.1/dist/math.min.js"></script>
-                
+
+                    
+                    <!-- 引入 Bootstrap 的 JavaScript 文件，包括 jQuery 和 Popper.js -->
+                    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+                    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+                    <!-- <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script> -->
+                    <!-- <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js" integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p" crossorigin="anonymous"></script> -->
+                    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js" integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF" crossorigin="anonymous"></script>
             
                     <script src = "../static/js/main.js"></script> <!--初始js-->
                     <script src = "../static/js/Charts.js"></script> <!--圖表js-->
@@ -417,18 +460,58 @@
                     <script src = "../static/js/coordinate.js"></script> <!--座標點js-->
                     <script src = "../static/js/StatisAndColor.js"></script> <!--摘要統計與顏色js-->
                     <script src = "../static/js/svgMap.js"></script> <!--鄉鎮地圖js-->
-            <!-- {% for todo in history %}
-            <div>
-            <p>Theme:{{ todo.name }}</p>
-            <p>Description:{{ todo.description }}</p>
-            <p>{{ todo.file }}</p>
-            <p id="svgMapCalled">svgMap:{{ todo.file['svgMap'] }}</p>
-            </div>
-            {% endfor %} -->
-            <!-- <script>townArea(parseInt(document.getElementById("svgMapCalled")))</script>             -->
-
                     <script src = "../static/js/download.js"></script> <!--匯出js-->  
                     
                     
+    <script>
+document.getElementById('fetchData').addEventListener('click', function() {
+    // obtain API URL
+    var apiUrl = document.getElementById('apiUrl').value;
+
+    // Ajax request
+    var xhr = new XMLHttpRequest();
+    xhr.open('POST', '/handleApi', true);
+    xhr.setRequestHeader('Content-Type', 'application/json');
+    xhr.onreadystatechange = function() {
+    if (xhr.readyState == 4 && xhr.status == 200) {//status 200 OK
+        var response = JSON.parse(xhr.responseText);//JSON.parse
+        //console.log(response)
+        document.getElementById('apiResponse').innerHTML = response.data;//.data
+        //   displayData(response.data);
+        }
+    };
+
+      // let API URL send to backend
+    var data = { api_url: apiUrl };
+    xhr.send(JSON.stringify(data));
+    });
+
+    // function displayData(data) {
+    //   var table = '<table border="1"><thead><tr>';
+
+    //   // 创建表头
+    //   for (var i = 0; i < data[0].length; i++) {
+    //     table += '<th>' + data[0][i] + '</th>';
+    //   }
+
+    //   table += '</tr></thead><tbody>';
+
+    //   // 创建表格数据
+    //   for (var i = 1; i < data.length; i++) {
+    //     table += '<tr>';
+    //     for (var j = 0; j < data[i].length; j++) {
+    //       table += '<td>' + data[i][j] + '</td>';
+    //     }
+    //     table += '</tr>';
+    //   }
+
+    //   table += '</tbody></table>';
+    //    console.log(response)
+    //    console.log(response.data)
+      // 使用 innerHTML 将表格插入到 csvData 元素中
+    //   document.getElementById('apiResponse').innerHTML = response.data;
+    // }
+
+    </script>
                 </body>
 </html>

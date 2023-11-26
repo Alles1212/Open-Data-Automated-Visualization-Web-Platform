@@ -14,7 +14,6 @@
                 <!-- <img id="curGraph"> -->
                 <!-- src="../static/area-streamgraph.png" -->
                 <!-- {% for image_name in image_names %}{{ image_name.image_name }}{% endfor %} -->
-                <!-- 搞超久== -->
                 <a href="{{ url_for('store' , id = todo._id) }}"><img src="../static/image/{{ todo.pic_name }}" style="aspect-ratio: 5/3;" class="card-img-top " alt=""></a>
                 
                 <div class="card-body">
@@ -33,17 +32,17 @@
                     white-space: nowrap;
                     text-overflow: ellipsis;">{{ todo.description }}</p>
                     <!-- <p class="card-text text-muted">{{ todo.file }}</p> -->
-                    {% if session['user']['name'] == todo['creater'] %}
-                    <a href = "{{ url_for('update_todo', id = todo._id) }}" 
-                    class = "btn btn-outline-info btn-sm">更新</a>
-                    <a href="{{ url_for('delete_todo', id = todo._id) }}"
-                    class = "btn btn-outline-danger btn-sm">刪除</a>
-                    <a href="{{ url_for('download_todo' , id = todo._id) }}"
-                    class = "btn btn-outline-secondary btn-sm">下載</a>
-                    <a href="{{ url_for('new_html' , id = todo._id) }}"
-                    class = "btn btn-outline-secondary btn-sm">生成</a>
-                    <a href="{{ url_for('store' , id = todo._id) }}"
-                    class = "btn btn-outline-secondary btn-sm">歷史</a> 
+                    {% if session.get("user")["name"] == todo["creater"] %}
+                        <a href = "{{ url_for('update_todo', id = todo._id) }}" 
+                        class = "btn btn-outline-info btn-sm">更新|公開</a>
+                        <a href="{{ url_for('delete_todo', id = todo._id) }}"
+                        class = "btn btn-outline-danger btn-sm">刪除</a>
+                        <!-- <a href="{{ url_for('download_todo' , id = todo._id) }}"
+                        class = "btn btn-outline-secondary btn-sm">下載</a>
+                        <a href="{{ url_for('new_html' , id = todo._id) }}"
+                        class = "btn btn-outline-secondary btn-sm">生成</a> -->
+                        <a href="{{ url_for('store' , id = todo._id) }}"
+                        class = "btn btn-outline-secondary btn-sm">歷史</a> 
                     {% endif %}
                 </div>
             </div>

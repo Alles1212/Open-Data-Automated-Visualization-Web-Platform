@@ -27,8 +27,21 @@
                     text-overflow: ellipsis;">{{ todo.description }}</p>
                     <!-- <p class="card-text text-muted">{{ todo.file }}</p> -->
                     <p class="card-text">創作者:{{ todo.creater }}</p>
+                {% if session.get("user")["name"] == todo["creater"] %}
+                    <a href = "{{ url_for('update_todo', id = todo._id) }}" 
+                    class = "btn btn-outline-info btn-sm">更新|公開</a>
+                    <a href="{{ url_for('delete_todo', id = todo._id) }}"
+                    class = "btn btn-outline-danger btn-sm">刪除</a>
+                    <!-- <a href="{{ url_for('download_todo' , id = todo._id) }}"
+                    class = "btn btn-outline-secondary btn-sm">下載</a>
                     <a href="{{ url_for('new_html' , id = todo._id) }}"
-                    class = "btn btn-outline-secondary btn-sm">生成模板</a>
+                    class = "btn btn-outline-secondary btn-sm">生成</a> -->
+                    <a href="{{ url_for('store' , id = todo._id) }}"
+                    class = "btn btn-outline-secondary btn-sm">歷史</a>
+                {% else %}
+                {% endif %}
+                    <!-- <a href="{{ url_for('new_html' , id = todo._id) }}"
+                    class = "btn btn-outline-secondary btn-sm">生成模板</a> -->
 
                 </div>
             </div>

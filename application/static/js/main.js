@@ -346,7 +346,8 @@ function APIMethod(){
 
     var apiInputDivSpan = document.createElement('span'); // 建立輸入API文字區塊
     apiInputDivSpan.id = 'apiInputDivSpan';
-    apiInputDivSpan.textContent = '輸入從政府開放平台獲取的API'
+    apiInputDivSpan.textContent = '輸入從各縣市政府開放平台獲取的API'
+    apiInputDivSpan.style.lineHeight = 40 + 'px';
 
     var submitDivForFile = document.createElement('div'); // 建立確認上傳說明區塊
     submitDivForFile.id = 'submitDivForFile';
@@ -493,8 +494,8 @@ function btnStep(){
     span.style.height = 70 + 'px';
 
     var btnNameArr = ['欄位鈕','說明鈕','顏色切換鈕',
-                      '級距鈕','統計鈕','欄位切換鈕',
-                      '預覽鈕','重製鈕','資料切換紐']
+                      '等級鈕','統計鈕','欄位切換鈕',
+                      '預覽鈕','重製鈕','原始資料鈕']
     var btnNameArrPos = 0; // 記錄位置
 
     for(var i = 0; i < 3; i++){
@@ -513,6 +514,11 @@ function btnStep(){
 
             btnStepDiv.appendChild(individualBtn);
             btnStepDiv.appendChild(btnspan);
+
+            // if(i == 3 & j == 0){
+            //     btnspan.style.left = 50 + 'px';
+            //     break;
+            // }
         }
         btnStepDiv.style.display = 'flex';
         btnStepDiv.style.justifyContent = 'space-around';
@@ -553,6 +559,8 @@ function changeBtnStep(e){
     }else if(e.target.id == 'individualBtn21'){
         returnStep();
     }else if(e.target.id == 'individualBtn22'){
+        originalDataStep();
+    }else if(e.target.id == 'individualBtn30'){
         sumavgStep();
     }
 }
@@ -679,6 +687,19 @@ function sumavgStep(){
     contentForStep.appendChild(div);
 }
 
+// 原始資料顯示鈕步驟
+function originalDataStep(){
+    var span = document.createElement('p');
+    span.textContent = '點擊此按鈕，可以提供使用者查看所上傳的原始檔案資料，如下圖所示。';
+    span.id = 'stepSpan';
+
+    var div = document.createElement('div');
+    div.id = 'originalDataImg';
+
+    contentForStep.appendChild(span);
+    contentForStep.appendChild(div);
+}
+
 
 
 var recordTheme = ""
@@ -686,11 +707,11 @@ var recordDescript = "";
 var recordResource = "";
 // 顯示敘述框
 function showDescription(){
-    description.style.pointerEvents = 'none';  // 使敘述框按鈕失去功能
+    //description.style.pointerEvents = 'none';  // 使敘述框按鈕失去功能
     divForDescripBoxBackDrop.style.visibility = 'visible'; // 顯示敘述框
 
-    editBtn.style.display = 'none'; // 隱藏編輯按鈕
-
+    // editBtn.style.display = 'none'; // 隱藏編輯按鈕
+    
     if(divForFinish.textContent != "" || divForFinish.textContent == "請輸入敘述"){ // 如果在完成後的畫面點擊關閉按鈕
         editBtn.style.display = 'block'; // 顯示編輯按鈕
     }
@@ -710,6 +731,7 @@ function showDescription(){
         clearBtn.style.display = 'none'; // 隱藏清除按鈕
         finishBtn.style.display = 'none'; // 隱藏完成按鈕
         editBtn.style.display = 'block'; // 顯示完成按鈕
+
 
         // 清掉原本的文字
         divForFinish.replaceChildren();
@@ -732,7 +754,8 @@ function showDescription(){
             descripSpan.textContent = inputTheme.value;
             divForDesTheme.appendChild(descripSpan);
             townName.textContent = inputTheme.value; // 標題
-
+            divForDesTheme.style.overflow = 'hidden' // 設定滾輪
+            townName.style.overflow = 'hidden' // 設定滾輪
             recordTheme = descripSpan.textContent
         }
 
@@ -777,7 +800,7 @@ function showDescription(){
             descripSpan1.textContent = inputResource.value;
             
             divForinputResource.appendChild(descripSpan1);
-            divForinputResource.style.overflowY = 'auto' // 設定滾輪
+            divForinputResource.style.overflowX = 'auto' // 設定滾輪
 
             showRES.getElementsByTagName('span')[0].textContent = inputResource.value;
 
@@ -815,6 +838,7 @@ remitBtn.addEventListener('click',remitScreen);
 var booldes = false; // 判斷敘述框是否輸入正確
 // 存檔
 function remitScreen(){
+    console.log(forBlankData)
     if(selectedRows.length > InputData.length-1){
         selectedRows.shift();
     }
@@ -832,19 +856,19 @@ function remitScreen(){
         }
     }
 
-    if(inputTheme.style.display == 'block'){
-        console.log(1)
-        if(inputTheme.value == "" ||
-            textarea.value == "" ||
-            inputResource.value == ""){
-            booldes = true;
-        }
-    }
-    console.log(divForDesTheme.style.display)
-    console.log(booldes)
-    if(booldes){
-        showDescription();
-    }else{
+    // if(inputTheme.style.display == 'block'){
+    //     console.log(1)
+    //     if(inputTheme.value == "" ||
+    //         textarea.value == "" ||
+    //         inputResource.value == ""){
+    //         booldes = true;
+    //     }
+    // }
+    // console.log(divForDesTheme.style.display)
+    // console.log(booldes)
+    // if(booldes){
+    //     showDescription();
+    // }else{
         remitBackDropDiv.style.visibility = 'visible';
         setTimeout(function(){
             remitBackDropDiv.style.visibility = 'hidden';
@@ -857,13 +881,15 @@ function remitScreen(){
         returnBtn.style.visibility = 'hidden';
         sumFileBtn.style.visibility = 'hidden';
         avgFileBtn.style.visibility = 'hidden';
-        changeBtnForRight.style.visibility = 'hidden';
-        changeBtnForLeft.style.visibility = 'hidden';
+        
+        
+        // changeBtnForRight.style.visibility = 'hidden';
+        // changeBtnForLeft.style.visibility = 'hidden';
         for(var i = 0; i < allChartsContainer.getElementsByTagName('button').length; i++){
             allChartsContainer.getElementsByTagName('button')[i].style.visibility = 'hidden';
         }
         
-
+        
         var JsonData = {
             "theme": recordTheme, // 目前作品名稱
             "descript": recordDescript, // 目前敘述
@@ -880,18 +906,21 @@ function remitScreen(){
             "selectColumn": selectedColumnIndices, // 目前被點擊的選擇欄位複選盒(陣列)
             "selectTown": selectedRows, // 目前被點擊的選擇鄉鎮複選盒(陣列)
             "chartCount": selectedChartCount,
-            "checkWhichCharts":checkWhichCharts
+            "checkWhichCharts":checkWhichCharts,
+            "Data":forBlankData,
             
        }
+       console.log(JsonData)
         selectColumnBtn.style.visibility = 'visible';
         colorBtn.style.visibility = 'visible';
         forGroupBtn.style.visibility = 'visible';
         statBtn.style.visibility = 'visible';
         returnBtn.style.visibility = 'visible';
-        sumFileBtn.style.visibility = 'visible';
-        avgFileBtn.style.visibility = 'visible';
+        // sumFileBtn.style.visibility = 'visible';
+        // avgFileBtn.style.visibility = 'visible';
         changeBtnForRight.style.visibility = 'visible';
         changeBtnForLeft.style.visibility = 'visible';
+        statBtn.style.visibility = 'visible';
         for(var i = 0; i < allChartsContainer.getElementsByTagName('button').length; i++){
             allChartsContainer.getElementsByTagName('button')[i].style.visibility = 'visible';
         }
@@ -900,8 +929,9 @@ function remitScreen(){
                 // function(){
 
                 //    <strong>// Get the reciever endpoint from Python using fetch</strong>:
-                fetch("http://127.0.0.1:5000/add_todo", 
+                fetch("/add_todo", //127.0.0.1 public_ip port:8080
                 {
+                
                 method: 'POST',
                 headers: {
                     'Content-type': 'application/json',
@@ -910,6 +940,7 @@ function remitScreen(){
                 //    <strong>// Strigify the payload into JSON</strong>:
                 body:JSON.stringify(JsonData)}).then(res=>{
                     if(res.ok){
+                        console.log("res.ok correct")
                         return res.json()
                     }else{
                         alert("something is wrong")
@@ -924,7 +955,7 @@ function remitScreen(){
         console.log(JsonData);
 
         
-    }    
+    
 }
 
 
@@ -946,10 +977,13 @@ function createButtonSuspendBox(d){
 
     if(d.target.id == 'sentFile'){ // 檔案區
         suBoxForButtons.textContent = '上傳檔案';
+        suBoxForButtons.style.zIndex = 3;
     }else if(d.target.id == 'sentAPI'){
         suBoxForButtons.textContent = '上傳API';
+        suBoxForButtons.style.zIndex = 3;
     }else if(d.target.id == 'sentSelfFile'){
         suBoxForButtons.textContent = '自製表單';
+        suBoxForButtons.style.zIndex = 3;
     }else if(d.target.id == 'maxFileBtn'){
         suBoxForButtons.textContent = '最大值';
     }else if(d.target.id == 'minFileBtn'){
@@ -973,41 +1007,41 @@ function createButtonSuspendBox(d){
         suBoxForButtons.style.zIndex = 4;
     }else if(d.target.id == 'editBtn'){
         suBoxForButtons.textContent = '編輯';
-        suBoxForButtons.style.zIndex = 2;
+        suBoxForButtons.style.zIndex = 4;
     }else if(d.target.id == 'finishBtn'){
         suBoxForButtons.textContent = '完成';
         suBoxForButtons.style.zIndex = 4;
     }else if(d.target.id == 'closeBTN' || 
              d.target.id == 'statClose' ||
              d.target.id == 'closeStep'){
-        suBoxForButtons.textContent = '關閉';
-        suBoxForButtons.style.zIndex = 2;
+        suBoxForButtons.style.visibility = 'hidden';
     }else if(d.target.id == 'submitButtonForselfFile' ||
              d.target.id == 'submit' ||
              d.target.id == 'submitAPI'){
         suBoxForButtons.textContent = '上傳';
-        suBoxForButtons.style.zIndex = 2;
+        suBoxForButtons.style.zIndex = 3;
     }else if(d.target.id == 'clearButtonForselfFile'){
         suBoxForButtons.textContent = '全部清除';
-        suBoxForButtons.style.zIndex = 2;
+        suBoxForButtons.style.zIndex = 3;
+    }
+    else if(d.target.id == 'showOriginalBtn'){
+        suBoxForButtons.textContent = '原始資料';
+        suBoxForButtons.style.zIndex = 3;
     }else if(d.target.id == 'returnButtonForselfFile'){
         suBoxForButtons.textContent = '返回';
-        suBoxForButtons.style.zIndex = 2;
+        suBoxForButtons.style.zIndex = 3;
     }else if(d.target.id == 'closeButtonForselfFile'){
         suBoxForButtons.textContent = '關閉表格';
-        suBoxForButtons.style.zIndex = 2;
+        suBoxForButtons.style.zIndex = 3;
     }else if(d.target.id == 'addButton_Row'){
         suBoxForButtons.textContent = '新增列';
-        suBoxForButtons.style.zIndex = 2;
+        suBoxForButtons.style.zIndex = 3;
     }else if(d.target.id == 'addButton_Col'){
         suBoxForButtons.textContent = '新增欄';
-        suBoxForButtons.style.zIndex = 2;
-    }else if(d.target.id == 'minusButton_Row'){
-        suBoxForButtons.textContent = '刪除列';
-        suBoxForButtons.style.zIndex = 2;
-    }else if(d.target.id == 'minusButton_Col'){
-        suBoxForButtons.textContent = '刪除欄';
-        suBoxForButtons.style.zIndex = 2;
+        suBoxForButtons.style.zIndex = 3;
+    }else if(d.target.id == 'minusAllBtn'){
+        suBoxForButtons.textContent = '刪除';
+        suBoxForButtons.style.zIndex = 3;
     }else if(d.target.id == 'selfFileDesBtn'){
         suBoxForButtons.textContent = '說明';
         suBoxForButtons.style.zIndex = 2;
@@ -1026,7 +1060,11 @@ function createButtonSuspendBox(d){
        d.target.id == 'changeBtnForLeft' ||
        d.target.id == 'changeBtnForRight' ||
        d.target.id == 'sumFileBtn' ||
-       d.target.id ==  'avgFileBtn'){ // 顏色選擇鈕跟左右鈕不用出現懸浮框
+       d.target.id ==  'avgFileBtn' ||
+       d.target.id ==  'forGroupBtn' ||
+       d.target.id ==  'statBtn' ||
+       d.target.id ==  'introBtn' ||
+       d.target.id ==  'closeDetailDesBox'){ // 顏色選擇鈕跟左右鈕不用出現懸浮框
         suBoxForButtons.style.visibility = 'hidden';
     }
 

@@ -8,7 +8,6 @@ avgFileBtn.addEventListener('click',avgFile)
 
 // 資料分析
 function analyze(InputData){
-    console.log(InputData)
     var firstCol = InputData[0]; // 記錄欄位名稱
     var tArray = []; // 存轉置後的矩陣
 
@@ -24,16 +23,13 @@ function analyze(InputData){
         }
         tArray.push(rowArray)
     }
-    console.log(tArray)
 
     if(isSelfFile == true){ // 從自製表單來的就不進入總和判斷
         tArray = tArray;
     }else{
         tArray = delTotal(tArray); // 刪除統計量
     }
-    
-    console.log(tArray)
-    
+
     var originArray = []; // 將清洗好的陣列還原
 
     if(judgeBlankSpace(InputData)){
@@ -75,16 +71,12 @@ function clearAccumulate(InputData){
     }else{ // 只有一個檔案
         newData = InputData;
     }
-
-    console.log(newData)
-
     return newData;
 }
 
 // 刪除特殊符號
 var data = []; // 存取修改後的陣列
 function dealMarks(InputData){
-    console.log(InputData)
     for(var i = 0; i < InputData.length; i++){
         var rowData = []; // 存取每一列
         for(var j = 0; j < InputData[0].length; j++){
@@ -92,17 +84,14 @@ function dealMarks(InputData){
         }
         data.push(rowData);
     }
-    console.log(data)
     return data;
 }
 
 // 刪除統計值
 function delTotal(tArray){
-    console.log(tArray)
     var lastpos = tArray[0].length - 1; // 每一列最後一個位置
     var lastCount = 0; // 計算最後一列總計量出現的次數
     var firstCount = 0; // 計算第一列總計量出現的次數
-    console.log(lastpos)
     for(var i = 1; i < tArray.length; i++){
         var lastsum = 0; // 計算總和(最後一列為總和值)
         for(var j = 0; j < tArray[0].length; j++){
@@ -135,8 +124,6 @@ function delTotal(tArray){
             tArray[i].shift(); // 刪掉總計值
         }
     }
-
-    console.log(tArray)
     return tArray;
 }
 
@@ -163,7 +150,6 @@ function judgeFile(tArray,firstCol){
         return tArray;
     }
     else{ // 數值檔
-        console.log(tArray)
         tArray = dealValueFile(tArray);
         return tArray;
     }
@@ -216,8 +202,6 @@ function recombineStr(tArray,firstCol){
 
  // 刪掉欄位中的縣市名
 function skipCityName(tArray,strArray,firstCol){ // 刪掉欄位中的縣市名
-    console.log(tArray)
-    console.log(strArray)
     var countArray = []; // 記錄鄉鎮行是否出現縣市
     var posArray = []; // 記錄縣市行位置
     for(var i = 0; i < strArray.length; i++){
@@ -229,7 +213,6 @@ function skipCityName(tArray,strArray,firstCol){ // 刪掉欄位中的縣市名
         }
         countArray.push(count); // 丟到陣列
     }
-    console.log(countArray)
 
     for(var i = 0; i < countArray.length; i++){
         if(countArray[i] >= tArray[0].length){
@@ -273,7 +256,6 @@ function changeRow(tArray,correctStrArray){
         for(var j = 0; j < tArray[0].length; j++){
             if(tArray[i][j].indexOf(CityName[currentMap]) != -1){
                 tArray[i][j] = tArray[i][j].replace(CityName[currentMap],"")
-                console.log(tArray[i][j])
             }
         }
     }
@@ -284,21 +266,34 @@ function changeRow(tArray,correctStrArray){
     var col = InputData[0][0]; // 存取第一欄位名稱
     InputData[0][0] = InputData[0][correctStrArray[0]];
     InputData[0][correctStrArray[0]] = col; // 將原始第一列擺到原鄉鎮列
+    console.log(tArray)
     changeTownName(tArray); // 更改鄉鎮名稱
 }
 
 
 // 更改鄉鎮名稱
 function changeTownName(tArray){
-    console.log(tArray)
     var arrForPos = []; // 存位置
     var arrForStr = []; // 存鄉鎮
-    for(var i = 0; i < tArray[0].length; i++){
-        for(var j = 0; j < allMap[currentMap].length; j++){
-            var currentID = allMap[currentMap][j]['id'].slice(0,-1); // 去掉最後一個字(鄉、鎮、市、區)
-            if(tArray[0][i].indexOf(currentID) != -1){
-                arrForPos.push(i); // 加入該位置到陣列
-                arrForStr.push(currentID); // 加入該鄉鎮到陣列
+    console.log(tArray)
+    if(currentMap == 0){
+        for(var i = 0; i < tArray[0].length; i++){
+            for(var j = 0; j < allMap[currentMap].length; j++){
+                var currentID = allMap[currentMap][j]['id']; // 去掉最後一個字(鄉、鎮、市、區)
+                if(tArray[0][i].indexOf(currentID) != -1){
+                    arrForPos.push(i); // 加入該位置到陣列
+                    arrForStr.push(currentID); // 加入該鄉鎮到陣列
+                }
+            }
+        }
+    }else{
+        for(var i = 0; i < tArray[0].length; i++){
+            for(var j = 0; j < allMap[currentMap].length; j++){
+                var currentID = allMap[currentMap][j]['id'].slice(0,-1); // 去掉最後一個字(鄉、鎮、市、區)
+                if(tArray[0][i].indexOf(currentID) != -1){
+                    arrForPos.push(i); // 加入該位置到陣列
+                    arrForStr.push(currentID); // 加入該鄉鎮到陣列
+                }
             }
         }
     }
@@ -321,6 +316,7 @@ function changeTownName(tArray){
             }
         }
     }
+    console.log(tArray)
 }
 
  // 刪除不符合的鄉鎮(例:中興分局)
@@ -357,7 +353,6 @@ function countRepeat(tArray){
 var dealingArray = []; // 多餘的資料已處理
 // 處理數值檔
 function dealValueFile(tArray){
-    console.log(tArray)
     var strArray = []; // 記錄找到的鄉鎮列
     var countArray = []; // 記錄每一列找到的鄉鎮欄位數量
 
@@ -381,15 +376,9 @@ function dealValueFile(tArray){
         }
     }
 
-    console.log(tArray)
-    console.log(strArray)
-
-
     changeRow(tArray,strArray); // 交換欄位並改變鄉鎮名稱
 
-
     dealingArray = tArray; // 記錄陣列
-    console.log(tArray)
 
     var countForValue = countRepeat(tArray); // 計算重複的鄉鎮資料
     var objectKeys = Object.keys(countForValue); // 矩陣,記錄鄉鎮名
@@ -406,10 +395,7 @@ function dealValueFile(tArray){
             sumArray.push(sum)
         }
     }
-    console.log(sumArray)
 
-
-    
     var newArray = []; // 新矩陣
     var len = tArray.length - 1; // 一組有len個資料
     newArray.push(objectKeys); // 先加入鄉鎮
@@ -476,6 +462,7 @@ function skipBlank(InputData){
     }
 
     skipAlreadyArr = Array.from(new Set(skipAlreadyArr)); // 刪除重複的值
+    console.log(skipAlreadyArr)
 
 }
 
@@ -489,16 +476,15 @@ function showError(InputData){
                 var oneBlankArr = []; // 記錄單一空白欄位
                 oneBlankArr.push(i); // 列欄位
                 oneBlankArr.push(j); // 行欄位
-                console.log(oneBlankArr)
                 blankArray.push(oneBlankArr);
             }
         }
     }
-
+    console.log(blankArray)
     // 找出正確的空白欄位位置
     for(var i = blankArray.length-1; i >= 0; i--){
         for(var j = 0; j < skipAlreadyArr.length; j++){
-            if((blankArray[i][1]+1) >= parseInt(skipAlreadyArr[j])){
+            if((blankArray[i][1]) >= parseInt(skipAlreadyArr[j])){
                 blankArray[i][1] += 1;
             }
         }
@@ -515,7 +501,6 @@ var curNumForPaging = 1; // 第幾頁
 var curPos = 0; // 目前欄位位置(在blankArray中)
 // 顯示錯誤訊息並分頁
 function paging(){
-    console.log(1)
     blankDiv.replaceChildren();
     var firSpan = document.createElement('span'); // 標頭
     var secSpan = document.createElement('span'); // 空白位置
@@ -559,13 +544,13 @@ function paging(){
     if(blankArray[curPos][0]-1 < 0){
         upColumn.textContent = "";
     }else{
-        upColumn.textContent = InputData[blankArray[curPos][0]-1][blankArray[curPos][1]];
+        upColumn.textContent = forBlankData[blankArray[curPos][0]-1][blankArray[curPos][1]];
     }
 
     if(blankArray[curPos][0]+1 > InputData.length-1){
         downColumn.textContent = "";
     }else{
-        downColumn.textContent = InputData[blankArray[curPos][0]+1][blankArray[curPos][1]];
+        downColumn.textContent = forBlankData[blankArray[curPos][0]+1][blankArray[curPos][1]];
     }
     
 
@@ -576,17 +561,21 @@ function paging(){
     divForPaging.appendChild(leftBtnForFraction);
     divForPaging.appendChild(fraction);
     divForPaging.appendChild(rightBtnForFraction);
-    console.log(divForPaging)
     blankDiv.appendChild(divForPaging);
-    console.log(blankDiv)
 
+    if(curNumForPaging == 1){
+        leftBtnForFraction.style.visibility = 'hidden';
+    }
+    if(blankArray.length == 1){
+        rightBtnForFraction.style.visibility = 'hidden';
+    }
+    
     rightBtnForFraction.addEventListener('click',changedown);
     leftBtnForFraction.addEventListener('click',changeup);
 }
 
 // 下一頁
 function changedown(){
-    
     leftBtnForFraction.style.visibility = 'visible'; // 顯示上一頁按鈕
     curNumForPaging += 1; // 位置加一
     curPos += 1; // 位置加一
@@ -596,22 +585,24 @@ function changedown(){
         curPos = blankArray.length-1;
         paging(); // 顯示錯誤訊息並分頁
         rightBtnForFraction.style.visibility = 'hidden'; // 隱藏下一頁按鈕
-    } 
+    }else{
+        paging();
+    }
 }
 
 // 上一頁
 function changeup(){
-    
     rightBtnForFraction.style.visibility = 'visible'; // 顯示下一頁按鈕
     curNumForPaging -= 1; // 位置減一
     curPos -= 1; // 位置加一
 
     if(curNumForPaging <= 1){ // 低於最小頁數
         curNumForPaging = 1;
-        curPos = blankArray.length-1;
+        curPos = 0;
         paging(); // 顯示錯誤訊息並分頁
         leftBtnForFraction.style.visibility = 'hidden'; // 隱藏上一頁按鈕
-
+    }else{
+        paging();
     }
 }
 
@@ -666,7 +657,6 @@ function clearAll(){
 
 // 檔案各鄉鎮取加總
 function sumFile(){
-    console.log(dealingArray);
     var firstCol = InputData[0]; // 記錄欄位名稱
     var countForValue = countRepeat(dealingArray); // 計算重複的鄉鎮資料
     var objectKeys = Object.keys(countForValue); // 矩陣,記錄鄉鎮名
@@ -815,4 +805,138 @@ function minFile(){
 }
     
 
+function renderMap(forBlankData){
+    console.log(forBlankData)
+    var tArray = [];
+    for(var i = 0; i < forBlankData[0].length; i++){
+        var rowArray = [];
+        for(var j = 1; j < forBlankData.length; j++){
+            rowArray.push(forBlankData[j][i]);
+        }
+        tArray.push(rowArray)
+    }
+
+    console.log(tArray)
+    console.log(Object.keys(allMap).length)
+    console.log(allMap[0].length)
+    var allRowArray = [];
+    for(var i = 0; i < tArray.length; i++){
+        var rowData = [];
+        for(var j = 0; j < tArray[0].length; j++){
+            for(var w = 0; w < Object.keys(allMap).length; w++){
+                for(var k = 0; k < allMap[w].length; k++){
+                    var currentID = allMap[w][k]['id'].slice(0,-1);
+                    if(tArray[i][j].indexOf(currentID) != -1){
+                        console.log(allMap[w][k]['id'])
+                        rowData.push(allMap[w][k]['id']);
+                        console.log(rowData)
+                    }
+                }
+            }
+        }
+        
+        allRowArray.push(rowData)
+    }
+    console.log(allRowArray)
+    var countArr = [];
+    for(var i = 0; i < allRowArray.length; i++){
+        countArr.push(allRowArray[i].length)
+    }
+
+    var maxRow = 0;
+    var indexRow = 0;
+    for(var i = 0; i < countArr.length; i++){
+        if(countArr[i] > maxRow){
+            maxRow = countArr[i];
+            indexRow = i;
+        }
+    }
+
+    console.log(indexRow)
+    console.log(tArray[indexRow])
+
+    var correctArr = [];
+    for(var i = 0; i < tArray[indexRow].length; i++){
+        var eachTownArr = [];
+        for(var w = 0; w < Object.keys(allMap).length; w++){
+            for(var k = 0; k < allMap[w].length; k++){
+                var currentID = allMap[w][k]['id'].slice(0,-1);
+                if(tArray[indexRow][i].indexOf(currentID) != -1){
+                    eachTownArr.push(allMap[w][k]['id']);
+                }
+            }
+        }
+        eachTownArr = Array.from(new Set(eachTownArr));
+        correctArr.push(eachTownArr)
+    }
+    console.log(correctArr)
+
+    for(var i = correctArr.length-1; i >= 0; i--){
+        for(var j = correctArr[0].length-1; j >= 0; j--){
+            if(correctArr[i].length > 1){
+                if(correctArr[i][j] == '南區' ||
+                    correctArr[i][j] == '北區' ||
+                    correctArr[i][j] == '東區' ||
+                    correctArr[i][j] == '西區' ||
+                    correctArr[i][j] == '中區' ){
+                    correctArr[i].splice(j,1);
+                }
+            }
+            
+        }
+    }
+    console.log(correctArr)
+
+    var countTownArray = [];
+    for(var i = 0; i < correctArr.length; i++){
+        for(var j = 0; j < correctArr[i].length; j++){
+            for(var w = 0; w < Object.keys(allMap).length; w++){
+                for(var k = 0; k < allMap[w].length; k++){
+                    var currentID = allMap[w][k]['id'];
+                    if(correctArr[i][j].indexOf(currentID) != -1){
+                        console.log(1)
+                        countTownArray.push(CityName[w]);
+                    }
+                }
+            }
+        }
+    }
+    console.log(countTownArray)
+    var newCountTownArr = countTownArray.reduce((obj, item) => { // 計算出現次數
+        if(item in obj){
+            obj[item]++; // obj中的values
+        }else{
+            obj[item] = 1; // obj中的values
+        }
+        return obj;
+    },{})
+
+    console.log(newCountTownArr)
+
+    var maxTownCount = 0;
+    var maxTown = '';
+    for(var i = 0; i < Object.values(newCountTownArr).length; i++){
+        if(Object.values(newCountTownArr)[i] > maxTownCount){
+            maxTownCount = Object.values(newCountTownArr)[i];
+            maxTown = Object.keys(newCountTownArr)[i];
+        }
+        
+    }
+    console.log(maxTown)
+    console.log(Object.keys(newCountTownArr)[1])
+    if(maxTown == '臺灣' & (Object.values(newCountTownArr)[0] == Object.values(newCountTownArr)[1])){
+        maxTown = Object.keys(newCountTownArr)[1];
+    }
+
+    for(var i = 0; i < Object.keys(CityName).length; i++){
+        if(Object.values(CityName)[i] == maxTown){
+            currentMap = Object.keys(CityName)[i];
+            townArea(currentMap);
+            changeBackGround(currentMap);
+            if(judgeBlankSpace){
+                originColor()
+            }
+        }
+    }
+}
 

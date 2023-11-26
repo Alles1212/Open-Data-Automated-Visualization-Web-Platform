@@ -1,70 +1,66 @@
-from application import app, db, db_graph, fs, path
-from flask import render_template, flash, request, url_for, redirect, send_from_directory, session, request, jsonify, Response
-from flask_cors import CORS
+from application import app, db
+from flask import render_template, flash, request, url_for, redirect, session, request, jsonify
 from functools import wraps
 from .forms import TodoForm
 from datetime import datetime
 import datetime
-from werkzeug.utils import redirect, secure_filename
+from werkzeug.utils import redirect
 from bson import ObjectId
-import gridfs
-import os
-from flask_wtf import FlaskForm
-from wtforms import SubmitField
-from flask_wtf.file import FileField, FileAllowed, FileRequired
 from application.user import routesUser
 import json
 import requests
 #generate html
 from jinja2 import Environment, FileSystemLoader
 import webbrowser
-import codecs
-# from application.static.js import Charts
-# from bs4 import BeautifulSoup
-# from application.connect import getColorId
-# from application.user.models import User #存User id
+import csv
+from io import StringIO
+
+
 
 @app.route("/receiver", methods=['POST'])
 def get_post():#取得前端的json資料
     if request.method == 'POST':
         data = request.get_json()
         return redirect(url_for("add_todo", data=data))
-    # data = jsonify(data)
-    # return render_template("add_todo.html", data=data)
-    return render_template("add_todo.html")#else
+    return render_template("add_todo.html")
 
 @app.route("/handleApi", methods=['GET', 'POST'])
-def handleCORS():
-    res_List = []
-    # global response# avoid error msg
-    # if request.method == "POST":
-    # print(request.form.get('api_url'))#有
-    api_json = request.get_json()
-    # api_url = str(request.form.get('api_url'))
-    print(api_json)#有
-    res = requests.get(api_json["api_url"])#"https://datacenter.taichung.gov.tw/swagger/OpenData/12ca948f-bff0-4f3a-8995-6a79478a3942"
-    response = (str)(res.text)#json.load(codecs.open(res.text, 'r', 'utf-8-sig'))
-    print(response)#有
-    print(type(response))
+def handleCORS():#headers problem
+    data = request.json#前端傳來的
+    print(data)#應該為網址
+    url = data.get("api_url")
+    print(url)
 
-    # word_dict = {}
-    # with open("res.text", "r") as fileHandle:
-    #     for line in fileHandle.readlines():
-    #         word_dict[line.split()[-1]] = line.split[0]
-    # print(word_dict)
-    # api_json.(response)#test
+    #GET request , request的data contain了BOM(指定emcode為'utf-8-sig'不行), headers={'Accept-Encoding': 'utf-8-sig'}
+    response = requests.get(url, headers={'Accept-Encoding': 'utf-8-sig'},verify=False)#
+    response.encoding = response.apparent_encoding#auto check encode
+    content = response.text#.decode('utf-8-sig')#use 'utf-8-sig' decode
+    # content = response.content.decode('utf-8-sig')
+    #print(content)
+    #將context轉類文件
+    csv_file = StringIO(content)
+    #解析csv data
+    csv_reader = csv.reader(csv_file)
+    for row in csv_reader:
+        print(row)#\uteff
+    csv_file.seek(0)
+    csv_data = list(csv_reader) #obtain csv data
+    print(csv_data)
+    # if content.startswith(b'\xef\xbb\xbf'):  # check whether header is UTF-8 BOM
+    #     content = content[3:]
 
-    res_List.append(response)
-    res_List.append(api_json["svgMap"])
-    print(res_List)
-    return redirect(url_for('fetch', res_list = res_List))
-    # return  res_List
-    # return response, api_json["svgMap"]
-    # return render_template("genGraph.html", res_List = res_List)
-
-@app.route('/fetch/<res_list>')
-def fetch(res_list):
-    return render_template('genGraph.html', res_list = res_list)
+    #check status
+    if response.status_code == 200:
+        try:
+            response.raise_for_status()
+            # return content
+            return jsonify({'data': csv_data})
+        except requests.exceptions.RequestException as e:
+            # handle exception
+            print(f"Error occur!:{e}")
+            return jsonify({'error': str(e)})
+    else:
+        return jsonify({'error': 'Failed to fetch data'})
 
 #Decorators要先有這個動作(登入)
 def login_required(f):
@@ -101,10 +97,6 @@ def get_todos():
             image_name = todo["pic_name"]
             todos.append(todo)
             image_names.append(image_name)
-            # print(todos)
-            # print(image_names)
-    # image_name=
-    # print("個人"+image_name)
     return render_template("view_todos.html", title = "Layout_page", todos = todos, image_names = image_names)#image_name = image_name
 
 @app.route("/get_todos_public_privacy")
@@ -119,9 +111,6 @@ def get_public_privacy():
             image_name = todo["pic_name"]
             todos_public.append(todo)
             image_names.append(image_name)
-            # print(todo)
-    # image_name = "{}.jpg".format(todo["pic_name"])
-    # print("個人公開"+image_name)
     return render_template("view_public_privacy.html", title = "Layout_page", todos = todos_public, image_names = image_names)
 
 @app.route("/get_todos_public")
@@ -132,48 +121,42 @@ def get_public():
         if todo["completed"] == "True":#顯示要放在公開作品集
             todo["_id"] = str(todo["_id"])
             todo["date_created"] = todo["date_created"].strftime("%b %d %Y %H:%M:%S")      
-            # todo["picname"] = str(todo["pic_name"])
             todo["pic_name"] = "{}.jpg".format(todo["pic_name"])#將pic_name改為XXX.jpg
             image_name = todo["pic_name"]     
             todos_public.append(todo)
             image_names.append(image_name)
-            # print(todos_public)
-    # image_name = "{}.jpg".format(todo["pic_name"])
-    # img_list.append(image_name)
-    # print("公開"+image_name)
-    #{{ url_for('static', filename='image/'+ image_name)}}
     return render_template("view_public.html", title = "Layout_page", todos = todos_public, image_names = image_names)
 
 @app.route("/add_todo", methods=["POST", "GET"])#新增
 # @login_required
 def add_todo():
-    # item = []
-    # pic_dir = "../static/image"
-    # items = os.listdir(pic_dir)
-    # pic_url = []
     
     data = request.get_json()#取得前端remitBtn觸發傳入JSON值
-    print(data)
-    print(data["theme"])
-    # data = jsonify(data)#轉成JSON格式flask套件
-    # print(data)
-    # item = json.dump(data)
-    # item.append(data)
-    # form = TodoForm()
-    # print(form)
+
     if request.method == "POST" :#判斷是否來自POST
         form = TodoForm(request.form)
-        # data = request.get_json()#取得前端json
-        # print(data)
-        if (data["theme"] and data["descript"] != ""):
+        if (data["theme"] or data["descript"] != ""):
             todo_name = data["theme"]
             todo_description = data["descript"]
         else:
             todo_name = form.name.data
             todo_description = form.description.data
         todo_file = data#放資料form.file.data
-        completed = form.completed.data
-
+        completed = form.completed.data#false
+        
+        print("store action trigger")
+        #二次存檔problem(same id)
+        # if db.member_flask.find_one({'_id': todo["_id"]}) == data["_id"]:#已經有這個作品id了並打算更改
+        #     print("已經有了")
+        #     db.member_flask.find_one_and_update({"_id": ObjectId(id)}, {"$set": {
+        #     "name": todo_name,
+        #     "description": todo_description,
+        #     "file": todo_file, #不去更動該作品file欄位儲存進度
+        #     # "completed": completed,
+        #     # "UserId": session['user']['_id'], #test 當前登入者的_id
+        #     "date_created": datetime.datetime.now(),
+        # }})
+        # else:
         db.member_flask.insert_one({
             "name": todo_name, #圖表主題
             "description": todo_description, #圖表主題描述
@@ -183,12 +166,7 @@ def add_todo():
             "date_created": datetime.datetime.now(),#datetime.datetime.now(datetime.timezone.utc), #建立或更改時間
             "creater": session['user']['name'], #test 當前登入者的名字
             "pic_name":todo_file["backGround"]#圖片是哪個
-            # "curJSONinfo": todo_file#紀錄有原先檔(原先Theme和descript)
         })
-
-        # for url in items:
-        #     filepath = os.path.join(pic_dir,url)
-        #     pic_url.append('image/{}'.format(url))
 
         flash("資料已加入", "success")
         return redirect("/get_todos")
@@ -204,7 +182,9 @@ def update_todo(id):
         form = TodoForm(request.form)
         todo_name = form.name.data
         todo_description = form.description.data
-        # todo_file = form.file.data #不能更動file欄位
+
+        # todo_file = request.get_json() #不能更動file欄位
+
         completed = form.completed.data
 
         db.member_flask.find_one_and_update({"_id": ObjectId(id)}, {"$set": {
@@ -225,7 +205,7 @@ def update_todo(id):
         todo = db.member_flask.find_one({"_id": ObjectId(id)}) #Collections.find_one_or_404
         form.name.data = todo.get("name", None)
         form.description.data = todo.get("description", None)
-        form.file.data = todo.get("file", None)
+        # form.file.data = todo.get("file", None)
         form.completed.data = todo.get("completed", None)
 
     return render_template("add_todo.html", form = form)
@@ -237,6 +217,7 @@ def delete_todo(id):
     flash("資料已刪除", "success")
     return redirect("/get_todos")
 
+#無使用
 @app.route('/graph')#存圖片
 def graph():
     file = r"C:\Users\USER\手機照片i11\其他\IMG_3012.jpg"
@@ -247,6 +228,7 @@ def graph():
     fs.put(contents, filename="file")
     return redirect("/get_todos")
 
+#無使用
 @app.route('/upload', methods=['GET', 'POST'])
 def upload():
     form = TodoForm()
@@ -258,32 +240,8 @@ def upload():
             json.dump(fileUpload, uploadFile)
         flash("資料成功上傳","success")
     return render_template('add_todo.html', form=form)
-# #還沒寫
 
-# @app.route('/upload_wtf/', methods=['GET', 'POST'])#flask_upload test
-# def upload_wtf():
-#     form = TodoForm()
-#     if form.validate_on_submit():
-#         file_name = state.save(form.file.data)#利用UploadSet.save取,不用request
-#         file_url = state.url(file_name)#利用UploadSet.url取得路徑
-#         print(file_name, file_url)
-#         return render_template('add_todo.html', form=form, file_url=file_url)
-#     else:
-#         file_url=None
-#     return render_template('add_todo.html', form=form, file_url = file_url)
-
-# @app.route('/restore_todo')#儲存處理後的資料
-# @login_required
-# def restore_todo():
-#     colorId = sp.select("title")#getColorId() ##ColorDiv title
-#     #如果要存的東西已存在...
-#     db.restoreArea.insert_one({
-#             "color": str(colorId),
-#             "date_created": datetime.datetime.now(datetime.timezone.utc)
-#         })
-#     flash("進度已儲存", "success")
-#     return redirect("/gen_graph")
-
+#無使用
 @app.route('/download_todo')#下載
 def download_todo():
     for cursor in fs.find():
@@ -306,9 +264,6 @@ def search_pri():
         print("有登入")
         print(session)
         print(session["user"]["name"])
-        # print(session['logged_in'])
-        # print(session.get("session_id"))#None
-        
         todos = []
         image_names = []
         print(request.form.get("search"))
@@ -316,8 +271,6 @@ def search_pri():
         #修改中 {name: {$regex : /searchStr/} {todo["name"]:/searchStr/}
         for todo in db.member_flask.find().sort("data_created", -1):#找出所有資料並以時間排序
             if ((searchStr in todo["name"])) and session["user"]["name"] == todo["creater"]:#test 查詢有對應到作品名 True or False, 個人作品
-                print("in and creater is true")
-                print(todo["creater"])
                 todo["_id"] = str(todo["_id"])
                 todo["date_created"] = todo["date_created"].strftime("%b %d %Y %H:%M:%S")
                 todo["pic_name"] = "{}.jpg".format(todo["pic_name"])#將pic_name改為XXX.jpg
@@ -358,7 +311,7 @@ def search():
         if todos == []:#False, 沒找到任何搜尋結果
             print("not in")
             print(todos)
-            flash("沒有找到符合的結果", "error")
+            flash("沒有找到符合的結果或輸入有錯誤", "error")
         return render_template("view_public.html", title = "Layout_page", todos = todos, image_names = image_names)#image_name = image_name
 
 
@@ -369,14 +322,12 @@ def store(id):
         todo["name"] = todo["name"]
         todo["description"] = todo["description"]
         todo["file"] = (todo["file"])
+        # todo["completed"] = todo["completed"]#增加的
         history.append(todo)
         print(history)
     return render_template("genGraph.html", history = history)
 
 #檔案命名Userid + getTime
-# work = db.member_flask.find_one({"_id": ObjectId(id)})
-# print(work)
-# Gen_html = 
 @app.route('/new_html/<id>')#新生成一個html檔
 # @login_required
 def new_html(id):
@@ -398,54 +349,3 @@ def new_html(id):
         f.write(html_content.encode("utf-8"))
     webbrowser.open_new_tab('{}.html'.format(todo["_id"]))
     return redirect("/get_todos")
-#     f = open('{}.html'.format(todo["_id"]),'w+')#若文件已存在, 從頭編輯
-#     name = str(todo["name"])
-#     author = str(todo["creater"])
-#     work_id = str(todo["_id"])
-#     content = str(todo["description"])
-#     buildT = str(todo["date_created"])
-
-#     message = """
-# <html>
-#     <head>firstTest</head>
-#     <body>
-#     <table>
-#     <tr>
-#         <th>作者</th>
-#         <th>作品名</th>
-#         <th>作品id</th>
-#         <th>作品描述</th>
-#         <th>作品生成時間</th>
-#     </tr>
-#     <tr>
-#         <td>%s</td>
-#         <td>%s</td>
-#         <td>%s</td>
-#         <td>%s</td>
-#         <td>%s</td>
-#     </tr>
-#     </table>
-#     <canvas id="canvas" width="300" height="300">
-#   抱歉，你的瀏覽器並不支援 canvas 元素</canvas
-# >
-#     </body></html>"""%(author,name, work_id, content,buildT)
-
-#     f.write(message)
-#     f.close()
-#     webbrowser.open_new_tab('{}.html'.format(todo["_id"]))
-#     return redirect("/get_todos")
-    # return redirect("/get_todos")#render_template("view_todos.html")
-    # body = []
-    # result = {'name':"專題", 'content':"做不出來", 'discription':1212, 'img_path':""}
-    # body.append(result)
-    # env = Environment(loader=FileSystemLoader('./'))
-    # template = env.get_template('output.html')
-    # with open("result.html", 'w+') as fout:
-    #     html_cont = template.render(
-    #                                 body=body)
-    #     fout.write(html_cont)
-
-# @app.route("/data")
-# def get_data():
-#     data = request.json
-#     return jsonify(data)

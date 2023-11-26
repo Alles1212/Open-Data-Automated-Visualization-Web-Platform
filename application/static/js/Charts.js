@@ -41,6 +41,10 @@ window.onload = (function() {
     var minusAllBtn = document.getElementById('minusAllBtn'); // 自製表單刪除按鈕
     var closePreview = document.getElementById('closePreview'); // 關閉預覽框按鈕
     var selfFileDesBtn = document.getElementById('selfFileDesBtn'); // 自製表單說明按鈕
+    var showOriginalBtn = document.getElementById('showOriginalBtn'); // 顯示原始檔案按鈕
+    var showOriginalBackDrop = document.getElementById('showOriginalBackDrop'); // 顯示原始檔案區塊背景
+    var showOriginalBox = document.getElementById('showOriginalBox'); // 顯示原始檔案區塊
+    var closeShowOriginalBox = document.getElementById('closeShowOriginalBox'); // 關閉原始檔案按鈕
     
 	submitButtonForselfFile.addEventListener('click',handleSelfFile); // 上傳鈕
 	clearButtonForselfFile.addEventListener('click',clearSelfFile); // 清除鈕
@@ -49,10 +53,42 @@ window.onload = (function() {
     addButton_Col.addEventListener('click',addColForSelfFile); // 新增欄鈕
     returnButtonForselfFile.addEventListener('click',returnMinus); // 返回鈕
     minusAllBtn.addEventListener('click',minusAll); // 刪除按鈕
+    showOriginalBtn.addEventListener('click',showData);
+
+
+    closeShowOriginalBox.addEventListener('click',function(){
+        showOriginalBackDrop.style.visibility = 'hidden'; // 隱藏原始檔案
+    })
+    // 顯示原始檔
+    function showData(){
+        showOriginalBackDrop.style.visibility = 'visible'; // 顯示原始檔案
+        showOriginalBox.replaceChildren();
+        var table = document.createElement('table'); // 建立表格
+        for(var i = 0; i < forBlankData.length; i++){
+            var tr = document.createElement('tr'); // 建立列
+            for(var j = 0; j < forBlankData[0].length; j++){
+                var td = document.createElement('td'); // 建立欄
+                td.textContent = forBlankData[i][j];
+                td.style.width = 150 + 'px';
+                td.style.height = 50 + 'px';
+                td.style.fontSize = 20 + 'px';
+                td.style.textAlign = 'center';
+                
+
+                tr.appendChild(td);
+            }
+            table.appendChild(tr);
+        }
+        showOriginalBox.appendChild(table);
+    }
     
 
     // 圖表返回鈕
     returnBtn.addEventListener('click',function(){
+        townArea(0);
+        changeBackGround(0);
+        Outlying_islands.style.visibility = 'visible';
+
         sentFile.style.visibility = 'visible'; // 隱藏按鈕
         sentAPI.style.visibility = 'visible'; // 隱藏按鈕
         sentSelfFile.style.visibility = 'visible'; // 隱藏按鈕
@@ -63,7 +99,7 @@ window.onload = (function() {
         var statSpan = stat.getElementsByTagName('span'); // 獲取所有摘要統計的span
         originColor(); // 還原顏色
 
-        for(var i = 0; i < statSpan.length; i++){ // 清除摘要統計
+        for(var i = 1; i < statSpan.length; i++){ // 清除摘要統計
             statSpan[i].replaceChildren();
         }
 
@@ -80,9 +116,19 @@ window.onload = (function() {
         fileNameDiv.style.visibility = 'hidden'; // 隱藏檔案名稱框
         columnNameDiv.style.visibility = 'hidden'; // 隱藏欄位名稱框
         forGroupBtn.style.visibility = 'hidden'; // 隱藏單位分組按鈕
+        showOriginalBtn.style.visibility = 'hidden'; // 顯示原始檔按鈕
+        changeBtnForLeft.style.visibility = 'hidden';
+        changeBtnForRight.style.visibility = 'hidden';
 
         selectedColumnIndices = [];
         selectedRows = [];
+        InputData = [];
+        blankArray = [];
+        skipAlreadyArr = [];
+        groupNum = 0;
+        Grouping()
+        curNumForPaging = 1;
+        curPos = 0;
 
         selectColumnData.replaceChildren();
         selectTownData.replaceChildren();
@@ -100,9 +146,46 @@ window.onload = (function() {
 
         //清除選擇圖表類型數量
         selectedChartCount = 0;
+        currentMap=0
+        showDescription();
+        inputTheme.value = "";
+        textarea.value = "";
+        inputResource.value = "";
+
+
+        document.getElementsByClassName('showDESpan')[0].textContent= ""
+        document.getElementsByClassName('showDESpan')[1].textContent= ""
+        inputTheme.style.display = 'block';
+        textarea.style.display = 'block';
+        inputResource.style.display = 'block';
+
+        clearBtn.style.display = 'block'; // 隱藏清除按鈕
+        finishBtn.style.display = 'block'; // 隱藏完成按鈕
+        editBtn.style.display = 'none'; // 顯示完成按鈕
+
+        divForDesTheme.style.display = 'none';
+        divForinputResource.style.display = 'none';
+        divForFinish.style.display = 'none';
+
+        townName.textContent = '主題'
+
+        selectForGroup.value = 0;
+        unit.value = ''
+
+        currentColorDiv = redDiv;
+        columnNameDiv.style.backgroundColor = currentColorDiv[5];
+        fileNameDiv.style.backgroundColor = currentColorDiv[5];
+        sumFileBtn.style.backgroundColor = currentColorDiv[7];
+        avgFileBtn.style.backgroundColor = currentColorDiv[7];
+        groupInputDiv.style.backgroundColor = currentColorDiv[6];
+        stat.style.backgroundColor = currentColorDiv[8];
+        suBox.style.backgroundColor = currentColorDiv[8];
+        
+
         townArray = []; // 清空鄉鎮陣列
         updateChartTypeStyle();
     });
+
 
      // 返回刪除鈕
     function returnMinus(){
@@ -476,11 +559,15 @@ window.onload = (function() {
 	// 處理自製表單
 	function handleSelfFile(e){
         allChartsContainer.replaceChildren();
+        document.getElementById('chooseMethod').style.visibility = 'hidden'; // 隱藏按鈕區塊
+        sentAPI.style.visibility = 'hidden';
+        sentFile.style.visibility = 'hidden';
+        sentSelfFile.style.visibility = 'hidden';
         allChartsContainer.style.backgroundColor = 'transparent'
         returnBtn.style.visibility = 'visible'; // 顯示返回鈕
-        sumFileBtn.style.visibility = 'visible'; // 顯示加總鈕
-        avgFileBtn.style.visibility = 'visible'; // 顯示平均鈕
-        statBtn.style.visibility = 'visible'; // 顯示摘要統計鈕
+        showOriginalBtn.style.visibility = 'visible'; // 顯示原始檔案
+        // sumFileBtn.style.visibility = 'visible'; // 顯示加總鈕
+        // avgFileBtn.style.visibility = 'visible'; // 顯示平均鈕
 
         isSelfFile = true;
 		e.preventDefault(); // 防止上傳鍵自動點擊
@@ -490,7 +577,7 @@ window.onload = (function() {
 		var colNum = recordColNum; // 輸入欄
 
 		InputData = []; // 重製輸入的陣列
-
+        forBlankData = [];
 		for(var j = 0; j < rowNum; j++){
 			var rowData = [];
 			for(var k = 0; k < colNum; k++){
@@ -499,6 +586,7 @@ window.onload = (function() {
 				rowData.push(row);
 			}
 			InputData.push(rowData);
+            forBlankData.push(rowData);
 		}
         console.log(InputData)
 
@@ -516,12 +604,17 @@ window.onload = (function() {
 		if(InputData.length == 0){ // 資料有空白(originArray)，不處理
 			return;
 		}else{ // 資料無空白，顯示圖表區
-
+            fileNameDiv.textContent = '自製表單'
+            fileNameDiv.style.fontSize = 24 + 'px'
+            recordFileName = fileNameDiv.textContent
+            groupNum = 8;
+            
 			buttonVisible(); // 顯示各式按鈕
 			renderColumnSelect(); // 生成欄位下拉式清單
 			renderRowSelect();
 			renderColumnText(); // 生成欄位名稱區塊(地圖變換用)
 			Grouping(); // 分組
+            appearRange()
 		}
 
         
@@ -533,6 +626,12 @@ window.onload = (function() {
         forGroupBtn.style.visibility = 'visible'; // 顯示分組單位按鈕
 		colorBtn.style.visibility = 'visible'; // 顯示按鈕
 		selectColumnDiv.style.visibility = 'visible'; // 顯示選擇欄位區塊
+        returnBtn.style.visibility = 'visible'; // 顯示選擇欄位區塊
+        // sumFileBtn.style.visibility = 'visible';
+        // avgFileBtn.style.visibility = 'visible';
+        changeBtnForRight.style.visibility = 'visible';
+        changeBtnForLeft.style.visibility = 'visible';
+        statBtn.style.visibility = 'visible';
 	}
 	
 	selectColumnBtn.addEventListener('mousemove',function(){
@@ -571,7 +670,8 @@ window.onload = (function() {
 		test.id = 'test';
 		appearDiv.appendChild(test);
 
-		submit.addEventListener('click', handleAPI); // 上傳後
+		//submit.addEventListener('click', handleAPI); // 上傳後
+        submit.addEventListener('click', handleCorsAPI); // 上傳後
 
 		submit.addEventListener('mousemove',createButtonSuspendBox); // 滑鼠進入按鈕
 
@@ -579,6 +679,103 @@ window.onload = (function() {
     		suBoxForButtons.style.visibility = 'hidden';
 		})
 	}
+    function handleCorsAPI(){
+        document.getElementById('chooseMethod').style.visibility = 'hidden'; // 隱藏按鈕區塊
+        suBoxForButtons.style.visibility = 'hidden'; // 懸浮框隱藏
+        returnBtn.style.visibility = 'visible'; // 顯示返回鈕
+        // sumFileBtn.style.visibility = 'visible'; // 顯示加總鈕
+        // avgFileBtn.style.visibility = 'visible'; // 顯示平均鈕
+        showOriginalBtn.style.visibility = 'visible'; // 顯示原始檔案
+
+
+        // document.getElementById('fetchData').addEventListener('click', function() {
+            // obtain API URL
+        var apiUrl = document.getElementById('textAPI').value;
+    
+        // Ajax request
+        var xhr = new XMLHttpRequest();
+        xhr.open('POST', '/handleApi', true);
+        xhr.setRequestHeader('Content-Type', 'application/json');
+        xhr.onreadystatechange = function() {
+            if (xhr.readyState == 4 && xhr.status == 200) {
+                var response = JSON.parse(xhr.responseText);
+                console.log(response.data[0])
+                document.getElementById('apiResponse').innerHTML = response.data;
+                //   displayData(response.data);
+
+                InputData = [];
+                forBlankData = [];
+                var apiResponse = response.data;
+                
+                for(var i = 0; i < apiResponse.length; i++){
+                    InputData.push(apiResponse[i])
+                    forBlankData.push(apiResponse[i])
+                }
+                
+                // var rowData = apiResponse.split('\r\n');
+                // console.log(apiResponse)
+                // console.log(rowData)
+                // for(var i = 0; i < rowData.length; i++){
+                //     var colData = rowData[i].split(',');
+                //     InputData.push(colData);
+                //     forBlankData.push(colData);
+                // }
+                console.log(InputData)
+                // InputData.pop();
+                // forBlankData.pop();
+
+
+                // for(var i = 0; i < forBlankData.length; i++){
+                //     for(var j = 0; j < forBlankData[0].length; j++){
+                //         var newData = forBlankData[i][j].replace(/\s*/g, '');
+                //         forBlankData[i][j] = newData;
+                //         console.log(forBlankData[i][j])
+                //     }
+                // }
+                // console.log(forBlankData)
+                
+                console.log(InputData)
+                    
+                
+                var FileName = 'API檔案'; // 保存上傳的原始檔案名稱
+                uploadedFileName = FileName.replace(/\.[^/.]+$/, ''); // 去除副檔名部分
+                
+                renderMap(forBlankData)
+                if(judgeBlankSpace(InputData)){
+                    skipBlank(InputData); // 刪掉空白較多的行
+                    showError(InputData); // 顯示空白區域
+                    return;
+                }
+        
+                InputData = analyze(InputData); // 資料清洗(在 analyzeData.js)
+                
+                if(InputData.length == 0){ // 資料有空白(originArray)，不處理
+                    return;
+                }else{ // 資料無空白，顯示圖表區
+                    groupNum = 8;
+            
+                    buttonVisible(); // 顯示各式按鈕
+                    renderColumnSelect(); // 生成欄位下拉式清單
+                    renderRowSelect();
+                    renderColumnText(); // 生成欄位名稱區塊(地圖變換用)
+                    Grouping(); // 分組
+                    appearRange()
+                    fileNameDiv.textContent = 'API';
+                    fileNameDiv.style.fontSize = 24 + 'px'
+                    recordFileName = fileNameDiv.textContent
+                }
+            
+            }
+        };
+      
+        // 将 API URL 作为参数发送到后端
+        var data = { api_url: apiUrl };
+        xhr.send(JSON.stringify(data));
+        //});
+
+        appearDiv.replaceChildren();
+
+    }
 
 	//https://data.nantou.gov.tw/dataset/7ff9b37b-4067-45d8-aefb-6166e226190d/resource/c4126b32-a305-41d7-baa4-81d2516a511c/download/11203171446.csv
     // 讀取API,做資料清洗並生成圖表
@@ -586,15 +783,14 @@ window.onload = (function() {
         document.getElementById('chooseMethod').style.visibility = 'hidden'; // 隱藏按鈕區塊
         suBoxForButtons.style.visibility = 'hidden'; // 懸浮框隱藏
         returnBtn.style.visibility = 'visible'; // 顯示返回鈕
-        sumFileBtn.style.visibility = 'visible'; // 顯示加總鈕
-        avgFileBtn.style.visibility = 'visible'; // 顯示平均鈕
-        statBtn.style.visibility = 'visible'; // 顯示摘要統計鈕
+        // sumFileBtn.style.visibility = 'visible'; // 顯示加總鈕
+        // avgFileBtn.style.visibility = 'visible'; // 顯示平均鈕
         
         var textAPI = document.getElementById('textAPI').value;
         appearDiv.replaceChildren();
         
 		InputData = []; // 要傳出去製作圖表的陣列
-
+        forBlankData = [];
 		d3.csv(textAPI).then((data) => {
 			var JSON_List = []; // 空陣列,存資料用
 			colData = [] // 空陣列,存欄位名稱
@@ -613,12 +809,14 @@ window.onload = (function() {
 					newArray.push(JSON_List[i][j].toString());
 				}
 				InputData.push(newArray);
+                forBlankData.push(newArray);
 			}
 			InputData.splice(0,0,colData); // 在第一個位置加入欄位名稱陣列
-
+            forBlankData.splice(0,0,colData);
             var FileName = 'API檔案'; // 保存上傳的原始檔案名稱
             uploadedFileName = FileName.replace(/\.[^/.]+$/, ''); // 去除副檔名部分
 			
+            renderMap(forBlankData)
 			if(judgeBlankSpace(InputData)){
                 skipBlank(InputData); // 刪掉空白較多的行
                 showError(InputData); // 顯示空白區域
@@ -630,12 +828,17 @@ window.onload = (function() {
             if(InputData.length == 0){ // 資料有空白(originArray)，不處理
                 return;
             }else{ // 資料無空白，顯示圖表區
-    
+                groupNum = 8;
+           
                 buttonVisible(); // 顯示各式按鈕
                 renderColumnSelect(); // 生成欄位下拉式清單
                 renderRowSelect();
                 renderColumnText(); // 生成欄位名稱區塊(地圖變換用)
                 Grouping(); // 分組
+                appearRange()
+                fileNameDiv.textContent = 'API';
+                fileNameDiv.style.fontSize = 24 + 'px'
+                recordFileName = fileNameDiv.textContent
             }
 		});
 	}
@@ -701,9 +904,9 @@ window.onload = (function() {
         suBoxForButtons.style.visibility = 'hidden'; // 懸浮框隱藏
         returnBtn.style.visibility = 'visible'; // 顯示返回鈕
 		csvForm.style.visibility = 'hidden'; // 隱藏檔案上傳區
-        sumFileBtn.style.visibility = 'visible'; // 顯示加總鈕
-        avgFileBtn.style.visibility = 'visible'; // 顯示平均鈕
-        statBtn.style.visibility = 'visible'; // 顯示摘要統計鈕
+        // sumFileBtn.style.visibility = 'visible'; // 顯示加總鈕
+        // avgFileBtn.style.visibility = 'visible'; // 顯示平均鈕
+        showOriginalBtn.style.visibility = 'visible'; // 顯示原始檔案
 
 		event.preventDefault(); // 停止事件的默認動作
 		var fileName = csvFile.files[0]; // 獲取選擇的檔案
@@ -721,13 +924,16 @@ window.onload = (function() {
 
 	// 讀取csv
 	var InputData = []; // 用於儲存解析後的CSV數據
+    var forBlankData = [];
 	function handleFileLoad(event) {
 		var csvData = event.target.result;
 
 		InputData = parseCSV(csvData); // 回傳所有資料陣列
 
-        //renderMap(parseCSV(csvData));
+        forBlankData = parseCSV(csvData);
 
+
+        renderMap(forBlankData)
 		if(judgeBlankSpace(InputData)){
 			skipBlank(InputData); // 刪掉空白較多的行
 			showError(InputData); // 顯示空白區域
@@ -741,12 +947,14 @@ window.onload = (function() {
 		if(InputData.length == 0){ // 資料有空白(originArray)，不處理
 			return;
 		}else{ // 資料無空白，顯示圖表區
-
+            groupNum = 8;
+           
 			buttonVisible(); // 顯示各式按鈕
 			renderColumnSelect(); // 生成欄位下拉式清單
 			renderRowSelect();
 			renderColumnText(); // 生成欄位名稱區塊(地圖變換用)
 			Grouping(); // 分組
+            appearRange()
 		}
 	}
 

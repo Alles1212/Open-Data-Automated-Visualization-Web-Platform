@@ -1,4 +1,4 @@
-from flask import Flask, jsonify ,request, session, redirect
+from flask import jsonify ,request, session, redirect
 from passlib.hash import pbkdf2_sha256
 from application import db
 import uuid
@@ -20,8 +20,6 @@ class User:
             "email": request.form.get("email"),
             "password": request.form.get("password")
         }
-        
-        # self.UserId = tmp_id
         
         #Encrypt password
         user["password"] = pbkdf2_sha256.encrypt(user["password"])

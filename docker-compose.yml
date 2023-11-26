@@ -2,13 +2,13 @@
 version: '3.7'  
 services:   
   mongo:    
-    container_name: mongo
+    container_name: mongodb
     image: mongo:latest
     volumes:
       - C:\mongodb\db:/data/db
     environment:
-      - MONGO_INITDB_ROOT_USERNAME=alles
-      - MONGO_INITDB_ROOT_PASSWORD=1212
+      - MONGO_INITDB_ROOT_USERNAME=
+      - MONGO_INITDB_ROOT_PASSWORD=
     command: mongod --auth
     logging:
       driver: 'json-file'

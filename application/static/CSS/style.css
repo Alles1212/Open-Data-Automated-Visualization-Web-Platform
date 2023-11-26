@@ -654,8 +654,8 @@
     border: none;
 }
   .individualBtn{
-    width: 70px;
-    height: 70px;
+    width: 60px;
+    height: 60px;
     
     position: relative;
     left: 10px;
@@ -719,6 +719,16 @@
     background-size: cover;
 }
   #individualBtn22{
+    background-image: url("../image/showData.png");
+    background-repeat: no-repeat;
+    background-color: transparent;
+    border: none;
+    background-size: cover;
+
+    /* position: absolute;
+    left: 200px; */
+}  
+  #individualBtn30{
     background-image: url("../image/sum_avg.png");
     background-repeat: no-repeat;
     background-color: transparent;
@@ -728,7 +738,8 @@
 
   #individualBtn00:hover,#individualBtn01:hover,#individualBtn02:hover,
   #individualBtn10:hover,#individualBtn11:hover,#individualBtn12:hover,
-  #individualBtn20:hover,#individualBtn21:hover,#individualBtn22:hover{
+  #individualBtn20:hover,#individualBtn21:hover,#individualBtn22:hover,
+  #individualBtn30:hover{
     cursor: pointer;
     transform: scale(1.1);
   }
@@ -781,8 +792,9 @@
     width: 200px;
     height: 50px;
 
+
     position: relative;
-    left: 2%;
+    left: 4%;
     top: -380px;
 
     display: flex;
@@ -790,6 +802,7 @@
     align-items: center;
 
     visibility: hidden;
+    /* overflow: hidden; */
   }
 
   /* 欄位名稱區塊 */
@@ -802,13 +815,16 @@
 
     position: relative;
     top: -340px;
-    left: 4%;
+    left: 5.5%;
 
     display: flex;
     justify-content: space-around;
     align-items: center;
 
     visibility: hidden;
+}
+  #divspanForColumnNameDiv{
+    overflow: auto;
 }
   #changeBtnForRight{
     background-image: url("../image/change_right.png");
@@ -866,7 +882,7 @@
     z-index: 1;
 
     position: relative;
-    left: 5px;
+    left: 15px;
 
     width: 80px;
     height: 35px;
@@ -903,11 +919,13 @@
     border-radius: 10px; /* 4角落 */
 
     visibility: hidden;
-    width: 120px;
+    min-width: 120px;
+    width: fit-content;
     height: 90px;
     position: absolute;
     color: red;
-    background-image: linear-gradient(-20deg, #15dcff 10%, rgb(251, 252, 219) 110%);
+    z-index: 1;
+
     
 }
 
@@ -923,8 +941,8 @@
     height: 50px;
 
     position: relative;
-    left: -17.5%;
-    top: 80px;
+    left: -15.5%;
+    top: 160px;
     visibility: hidden;
 
     z-index: 1;
@@ -934,11 +952,32 @@
     cursor: pointer;
 }
 
+#showOriginalBtn{
+  background-image: url("../image/showData.png");
+  background-color: transparent;
+  background-repeat: no-repeat;
+  background-size: cover;
+  border: none;
+
+  width: 40px;
+  height: 40px;
+
+  position: relative;
+  left: -18.5%;
+  top: 80px;
+  visibility: hidden;
+
+  z-index: 1;
+}#showOriginalBtn:hover{
+transform: scale(1.1); /* 放大 */
+  cursor: pointer;
+}
+
   /* 顏色選擇框 */
   #colorDiv{
     position: relative;
-    top: 134px;
-    left: -17.5%;
+    top: 190px;
+    left: -18.5%;
 
     width: 70px;
     height: 50px;
@@ -971,8 +1010,8 @@
     height: 40px;
 
     position: absolute;
-    left: -17.5%;
-    top: 22%;
+    left: -15.5%;
+    top: 33%;
 
     visibility: hidden;
     z-index: 2;
@@ -984,12 +1023,13 @@
     border-radius: 20px;
     border: solid;
 
-    width: 230px;
+    min-width: 230px;
     height: 100px;
+    width: fit-content;
 
     position: relative;
-    left: -73%;
-    top: 200px;
+    left: -72%;
+    top: 260px;
 
     display: flex;
     flex-direction: column;
@@ -1025,17 +1065,17 @@
   #rangeDiv{
     width: 200px;
     height: 178px;
-
     position: relative;
 
     left: -1220px;
-    top: 400px;
+    top: 350px;
     
     /* visibility: hidden; */
     display: flex;
     flex-direction: column;
     line-height: 30px;
     text-align: center;
+    z-index: 1;
 }
 
   /* 離島區塊框 */
@@ -1237,8 +1277,8 @@
     height: 500px;
 
     position: relative;
-    top: -750px;
-    left: -100px;
+    top: -900px;
+    left: -50px;
 
     display: flex;
     flex-direction: column;
@@ -1357,10 +1397,23 @@
 
     position: relative;
     top: 30px;
+
+    overflow:auto;
 }
 /* 資料來源(完成) */
-  #divForDesTheme,
   #divForinputResource{
+    width: 200px;
+    height: 25px;
+    background-color: #FFFCEC;
+
+    display: none;
+
+    position: relative;
+    top: 30px;
+    overflow:hidden;
+}
+  #divForDesTheme{
+    overflow:auto;
     width: 200px;
     height: 25px;
     background-color: #FFFCEC;
@@ -1413,6 +1466,7 @@
 
     width: 50px;
     height: 50px;
+    display: none;
 }
   /* 完成 */
   #finishBtn{
@@ -1454,7 +1508,7 @@
     top: 0px;
 
     z-index: -2;
-    opacity: 0.5;
+    opacity: 0.8;
 
   }
   /* 背景透視框 */
@@ -1465,7 +1519,7 @@
     width: 94.5%;
     height: 87%;
 
-    background-color: rgba(255,255,240, 0.3);
+    background-color: rgba(255,255,240, 0.4);
 
     position: absolute;
     top: 10%;
@@ -1543,7 +1597,7 @@
     align-items: center;
 
     position: relative;
-    top: -7600px;
+    top: -8430px;
 
 
     z-index:2;
@@ -2137,7 +2191,7 @@
 
     position: relative;
     left: -2.3%;
-    top: 210px;
+    top: 300px;
 
     z-index: 1;
     
@@ -2661,6 +2715,69 @@
     background-size: cover;
     background-color: transparent;
     border: none;
+}
+#originalDataImg{
+  height: 230px;
+  width: 450px;
+
+  position: relative;
+  top: -30px;
+  left: 20px;
+
+  background-image: url('../image/originalDataStep.png');
+  background-repeat: no-repeat;
+  background-size: 450px;
+  background-color: transparent;
+  
+}
+
+#showOriginalBackDrop{
+  width: 100%;
+  height: 850px;
+  background-color: rgba(21, 18, 18, 0.9);
+  
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  position: relative;
+  top: -7590px;
+  z-index: 2;
+
+  visibility: hidden;
+}
+
+#showOriginalBox{
+  width: 1000px;
+  height: 650px;
+
+  position: absolute;
+  margin-left: 100px;
+  margin-top: -30px;
+  background-color: #F2FFF2;
+  overflow: scroll;
+}
+
+#closeShowOriginalBox{
+  background-image: url("../image/closeButtonForselfFile.png");
+  background-repeat: no-repeat;
+  background-color: transparent;
+  border: none;
+  background-size: cover;
+  background-position: -4px;
+
+  width: 43px;
+  height: 43px;
+
+
+  position: relative;
+  left: 545px;
+  top: -330px;
+
+  z-index: 2;
+}#closeShowOriginalBox:hover{
+transform: scale(1.2);
+cursor: pointer;
 }
 
 

@@ -25,6 +25,17 @@
   /* background-image: url("../image/Taiwan_background.jpg"); */
 }
 
+.baseBack{
+  background-image: url("../image/Taiwan_background.jpg");
+  background-size: cover;/* temp */
+  height: 900px;
+  width: 1950px;
+  opacity: 0.4;
+  z-index: -1;
+  position: relative;
+  top: -650px;
+}
+
 body {
   margin: 0;
   font-family: sans-serif;
@@ -32,8 +43,7 @@ body {
   line-height: 28px;
   color: var(--black);
   background: var(--grey-light);
-  background-image: url("../image/Taiwan_background.jpg");
-  background-size: cover;/* temp */
+  overflow: hidden;
 }
 
 /* Typography */

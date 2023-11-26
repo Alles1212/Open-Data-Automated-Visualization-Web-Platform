@@ -53,9 +53,17 @@ function chooseDownload(){
 // 匯出jpg
 function exportJpgFile(){
 	var originHeight = window.getComputedStyle(document.getElementById('all')).getPropertyValue('height');
-	document.getElementById('all').style.height = 700 + 'px';
+	console.log(originHeight)
+	document.getElementById('all').style.height = 835 + 'px';
+
+	document.getElementById('main').style.top = 0 + 'px';
+	document.getElementById('default').style.bottom = 40 + 'px';
+	document.getElementById('BackGround').style.top = 35 + 'px';
+	document.getElementById('BackGround').style.height = 110 + '%';
+	document.getElementById('default_BackGround').style.visibility = 'hidden'
 	suBoxForButtons.style.visibility = 'hidden';
 
+	introBtn.style.visibility = 'hidden';
 	selectColumnBtn.style.visibility = 'hidden';
 	colorBtn.style.visibility = 'hidden';
 	forGroupBtn.style.visibility = 'hidden';
@@ -65,6 +73,7 @@ function exportJpgFile(){
 	avgFileBtn.style.visibility = 'hidden';
 	changeBtnForRight.style.visibility = 'hidden';
 	changeBtnForLeft.style.visibility = 'hidden';
+	showOriginalBtn.style.visibility = 'hidden';
 	for(var i = 0; i < allChartsContainer.getElementsByTagName('button').length; i++){
 		allChartsContainer.getElementsByTagName('button')[i].style.visibility = 'hidden';
 	}
@@ -73,14 +82,22 @@ function exportJpgFile(){
 
 	document.getElementById('all').style.height = originHeight;
 	document.getElementById('downloadDivBackDrop').style.visibility = 'hidden';
+	document.getElementById('main').style.top = -25 + 'px';
+	document.getElementById('default').style.bottom = 85 + 'px';
+	document.getElementById('BackGround').style.top = 0 + 'px';
+	document.getElementById('BackGround').style.height = 100 + '%';
+	document.getElementById('default_BackGround').style.visibility = 'visible'
 
+	
+	introBtn.style.visibility = 'visible';
 	selectColumnBtn.style.visibility = 'visible';
 	colorBtn.style.visibility = 'visible';
 	forGroupBtn.style.visibility = 'visible';
 	statBtn.style.visibility = 'visible';
 	returnBtn.style.visibility = 'visible';
-	sumFileBtn.style.visibility = 'visible';
-	avgFileBtn.style.visibility = 'visible';
+	showOriginalBtn.style.visibility = 'visible';
+	// sumFileBtn.style.visibility = 'visible';
+	// avgFileBtn.style.visibility = 'visible';
 	changeBtnForRight.style.visibility = 'visible';
 	changeBtnForLeft.style.visibility = 'visible';
 	for(var i = 0; i < allChartsContainer.getElementsByTagName('button').length; i++){
@@ -104,7 +121,8 @@ function JpgFile(id){
 
 // 下載xlsx
 function exportXlsxFile() {
-	document.body.removeChild(downloadDivBackDrop); // 刪除下載區塊
+	document.getElementById('downloadDivBackDrop').style.visibility = 'hidden';
+	suBoxForButtons.style.visibility = 'hidden';
 	var mapArray = [townName.textContent];
 	var statArray = [showMax.textContent.slice(4,showMax.textContent.length),showmin.textContent.slice(4,showmin.textContent.length),
 						showAvg.textContent.slice(4,showAvg.textContent.length),showstD.textContent.slice(4,showstD.textContent.length),

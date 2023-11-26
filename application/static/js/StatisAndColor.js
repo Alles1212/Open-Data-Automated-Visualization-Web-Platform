@@ -103,7 +103,7 @@ function Grouping(){
         option.style.textAlign = 'center'; // 置中
         selectForGroup.appendChild(option);
     }
-
+    selectForGroup.value=8
     selectForGroup.addEventListener('change', function(d){
         rangeDiv.replaceChildren(); // 清除原本的所有元素
         groupNum = d.target.value; // 下拉式選單的值
@@ -140,7 +140,7 @@ function appearRange(){
             span.textContent = minValue + " ~ " + rangeArray[i]; // 最後一組顯示最小值
         }
         span.style.backgroundColor = currentColorDiv[inputColorPos] // 設定背景顏色
-        
+
         rangeDiv.appendChild(span);
 
         inputColorPos += 1; // 下一個位置
@@ -157,6 +157,7 @@ function appearRange(){
             unitSpan.textContent = "（單位）";
         }
         unitPos[i].appendChild(unitSpan)
+        //rangeDiv.insertBefore(unitSpan, rangeDiv.childNodes[i])
     }
     
     townArea(currentMap);
@@ -165,12 +166,10 @@ function appearRange(){
 // 單位輸入盒按enter後，改變單位
 unit.addEventListener('keydown', function(event){ // 按enter鍵
     if(event.key === 'Enter'){
-        recordUnit = unit.value
-        console.log(recordUnit)
         for(var i = 0; i < rangeDiv.getElementsByTagName('span').length; i++){
             if(i % 2 != 0){ // 奇數span才要改單位
                 rangeDiv.getElementsByTagName('span')[i].textContent = "  (" + unit.value + ")";
-                
+                recordUnit = unit.value;
             }
         }
     }
@@ -218,6 +217,7 @@ sumFileBtn.style.backgroundColor = currentColorDiv[7];
 avgFileBtn.style.backgroundColor = currentColorDiv[7];
 groupInputDiv.style.backgroundColor = currentColorDiv[6];
 stat.style.backgroundColor = currentColorDiv[8];
+suBox.style.backgroundColor = currentColorDiv[8];
 
 // 生成選擇顏色按鈕
 var btnColorArray = ['#FF0000','#FFA600','#FFFF00','#00FF00','#00FFFF','#9300FF']
@@ -265,6 +265,7 @@ function changeColor(e){
     avgFileBtn.style.backgroundColor = currentColorDiv[7];
     groupInputDiv.style.backgroundColor = currentColorDiv[6];
     stat.style.backgroundColor = currentColorDiv[8];
+    suBox.style.backgroundColor = currentColorDiv[8];
     townNameDiv.getElementsByTagName('span')[0].style.backgroundColor = currentColorDiv[8];
     townArea(currentMap); // 同時改變地圖顏色
     appearRange(); // 同時改變範圍框顏色
@@ -300,7 +301,20 @@ function originColor(){
     for(var i = 0; i < svgPolygon.length; i++){
         svgPolygon[i].style.fill = '#d0d0d0'; // 重製顏色
     }
-
+    statBtn.style.visibility = 'hidden';
     colorBtn.style.visibility = 'hidden'; // 隱藏選擇顏色按鈕
     rangeDiv.style.visibility= 'hidden'; // 隱藏顏色範圍框
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
