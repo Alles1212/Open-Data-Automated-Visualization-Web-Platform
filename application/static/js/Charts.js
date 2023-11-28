@@ -1,16 +1,12 @@
-function initJudgeBlank(){
-        for(var i = 0; i < InputData.length; i++){
-            for(var j = 0; j < InputData[0].length; j++){
-                var newData = InputData[i][j].replace(/\s/g,'');
-                InputData[i][j] = newData;
-                forBlankData[i][j] = newData;
-            }
-        }
-    }
+#fileNameDiv_child{
+    overflow-y: auto;
+    height: 30px;
+    width: 180px;
+    z-index: 1;
 
-<div id="fileNameDiv">
-                    <div id="fileNameDiv_child"></div>
-                </div>
+    display: flex;
+    justify-content: center;
+  }
 
 window.onload = (function() {
 	var sentFile = document.getElementById('sentFile') // 傳送檔案按鈕
