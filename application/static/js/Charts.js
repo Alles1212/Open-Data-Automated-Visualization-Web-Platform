@@ -1,11 +1,11 @@
-#fileNameDiv_child{
-    overflow-y: auto;
+#columnNameDiv div{
+    width: 80px;
     height: 30px;
-    width: 180px;
-    z-index: 1;
-
     display: flex;
     justify-content: center;
+    
+    overflow-y: auto;
+
   }
 
 window.onload = (function() {
