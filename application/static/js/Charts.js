@@ -1,3 +1,13 @@
+function initJudgeBlank(){
+        for(var i = 0; i < InputData.length; i++){
+            for(var j = 0; j < InputData[0].length; j++){
+                var newData = InputData[i][j].replace(/\s/g,'');
+                InputData[i][j] = newData;
+                forBlankData[i][j] = newData;
+            }
+        }
+    }
+
 window.onload = (function() {
 	var sentFile = document.getElementById('sentFile') // 傳送檔案按鈕
 	var sentAPI = document.getElementById('sentAPI') // 傳送API按鈕
