@@ -8,6 +8,10 @@ function initJudgeBlank(){
         }
     }
 
+<div id="fileNameDiv">
+                    <div id="fileNameDiv_child"></div>
+                </div>
+
 window.onload = (function() {
 	var sentFile = document.getElementById('sentFile') // 傳送檔案按鈕
 	var sentAPI = document.getElementById('sentAPI') // 傳送API按鈕
