@@ -1,11 +1,22 @@
-#columnNameDiv div{
-    width: 80px;
-    height: 30px;
-    display: flex;
-    justify-content: center;
-    
-    overflow-y: auto;
+#columnNameDiv div::-webkit-scrollbar,#fileNameDiv_child::-webkit-scrollbar{
+    width: 9px;
+    position: relative;
+        
+  }
+  #columnNameDiv div::-webkit-scrollbar-track,#fileNameDiv_child::-webkit-scrollbar-track {
+    background-color: #f1f1f1;
+    border-radius: 10px;
+  }
 
+  /* 滑块样式 */
+  #columnNameDiv div::-webkit-scrollbar-thumb,#fileNameDiv_child::-webkit-scrollbar-thumb {
+    background-color: #888;
+    border-radius: 10px;
+  }
+
+  /* 鼠标悬停时滑块样式 */
+  #columnNameDiv div::-webkit-scrollbar-thumb:hover,#fileNameDiv_child::-webkit-scrollbar-thumb:hover {
+    background-color: #555;
   }
 
 window.onload = (function() {
