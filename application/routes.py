@@ -13,7 +13,8 @@ import requests
 from jinja2 import Environment, FileSystemLoader
 import webbrowser
 import csv
-from io import StringIO
+from io import StringIO, BytesIO
+import chardet
 
 
 
@@ -32,9 +33,11 @@ def handleCORS():#headers problem
     print(url)
 
     #GET request , request的data contain了BOM(指定emcode為'utf-8-sig'不行), headers={'Accept-Encoding': 'utf-8-sig'}
-    response = requests.get(url, headers={'Accept-Encoding': 'utf-8-sig'},verify=False)#
+    response = requests.get(url)#,verify=False, headers={'Accept-Encoding': 'utf-8-sig'}
+    encoding = chardet.detect(response.content)['encoding']
     response.encoding = response.apparent_encoding#auto check encode
-    content = response.text#.decode('utf-8-sig')#use 'utf-8-sig' decode
+    content = response.content.decode(encoding)#.decode('utf-8-sig')#use 'utf-8-sig' decode
+    # content = response.text
     # content = response.content.decode('utf-8-sig')
     #print(content)
     #將context轉類文件
@@ -258,33 +261,44 @@ def gen_graph():
 
     return render_template("genGraph.html") #genGraph_2
 
-@app.route('/search/privacy', methods=['GET', 'POST'])#搜尋欄(作品名或作者) privacy, layout_privacy
+@app.route('/search/privacy', methods=['GET', 'POST'])#搜尋欄(作品名或作者) privacy, layout_privacy, 搜尋個人作品
 def search_pri():
     if request.method == 'POST' and session["user"]["name"] != "":
         print("有登入")
         print(session)
         print(session["user"]["name"])
-        todos = []
+        # todos = []
+        todos_pri= []
         image_names = []
         print(request.form.get("search"))
         searchStr = str(request.form.get("search"))
         #修改中 {name: {$regex : /searchStr/} {todo["name"]:/searchStr/}
         for todo in db.member_flask.find().sort("data_created", -1):#找出所有資料並以時間排序
-            if ((searchStr in todo["name"])) and session["user"]["name"] == todo["creater"]:#test 查詢有對應到作品名 True or False, 個人作品
+            if ((searchStr in todo["name"]) and (session["user"]["name"] == todo["creater"])):#test 查詢有對應到作品名及個人 True or False, 個人作品
                 todo["_id"] = str(todo["_id"])
                 todo["date_created"] = todo["date_created"].strftime("%b %d %Y %H:%M:%S")
                 todo["pic_name"] = "{}.jpg".format(todo["pic_name"])#將pic_name改為XXX.jpg
                 image_name = todo["pic_name"]
-                todos.append(todo)#增加該筆作品資料
+                todos_pri.append(todo)#增加該筆作品資料
                 image_names.append(image_name)
-                print(todos)
-        if todos == []:#False, 沒找到任何搜尋結果,或作者名不同所以沒加入todos
+                print(todos_pri)
+                # return render_template("view_todos.html", title = "Layout_page", todos = todos_pri, image_names = image_names)#image_name = image_name
+            # elif((searchStr in todo["name"]) and todo['completed'] == 'True'):#只有對應作品且公開
+            #     todo["_id"] = str(todo["_id"])
+            #     todo["date_created"] = todo["date_created"].strftime("%b %d %Y %H:%M:%S")
+            #     todo["pic_name"] = "{}.jpg".format(todo["pic_name"])#將pic_name改為XXX.jpg
+            #     image_name = todo["pic_name"]
+            #     todos.append(todo)#增加該筆作品資料
+            #     image_names.append(image_name)
+            #     print(todos)
+            #     return render_template("view_todos.html", title = "Layout_page", todos = todos, image_names = image_names)#image_name = image_name
+        if todos_pri == []:#False, 沒找到任何搜尋結果,或作者名不同所以沒加入todos
             print("not in")
-            print(todos)
+            print(todos_pri)
             flash("沒有找到符合的結果或不是自己的作品", "error")
-        return render_template("view_todos.html", title = "Layout_page", todos = todos, image_names = image_names)#image_name = image_name
+        return render_template("view_todos.html", title = "Layout_page", todos = todos_pri, image_names = image_names)#image_name = image_name
 
-@app.route('/search', methods=['GET', 'POST'])#搜尋欄(作品名或作者) public 
+@app.route('/search', methods=['GET', 'POST'])#搜尋欄(作品名或作者) public 搜尋公開作品
 def search():
     #session.get('user''name') != True
     if request.method == 'POST':#無登入,public
@@ -299,7 +313,7 @@ def search():
         searchStr = str(request.form.get("search"))
         #修改中 {name: {$regex : /searchStr/} {todo["name"]:/searchStr/}
         for todo in db.member_flask.find().sort("data_created", -1):#找出所有資料並以時間排序
-            if ((searchStr in todo["name"])):#test 查詢有對應到作品名 True or False
+            if ((searchStr in todo["name"]) and todo['completed'] == "True"):#test 查詢有對應到作品名且公開
                 print("in")
                 todo["_id"] = str(todo["_id"])
                 todo["date_created"] = todo["date_created"].strftime("%b %d %Y %H:%M:%S")

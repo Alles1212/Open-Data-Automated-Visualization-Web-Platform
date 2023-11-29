@@ -80,6 +80,7 @@ window.onload = (function() {
             table.appendChild(tr);
         }
         showOriginalBox.appendChild(table);
+        showOriginalBox.style.overflow = 'auto'
     }
     
 
@@ -604,9 +605,9 @@ window.onload = (function() {
 		if(InputData.length == 0){ // 資料有空白(originArray)，不處理
 			return;
 		}else{ // 資料無空白，顯示圖表區
-            fileNameDiv.textContent = '自製表單'
-            fileNameDiv.style.fontSize = 24 + 'px'
-            recordFileName = fileNameDiv.textContent
+            fileNameDiv_child.textContent = '自製表單'
+            fileNameDiv_child.style.fontSize = 24 + 'px'
+            recordFileName = fileNameDiv_child.textContent
             groupNum = 8;
             
 			buttonVisible(); // 顯示各式按鈕
@@ -739,7 +740,7 @@ window.onload = (function() {
                 
                 var FileName = 'API檔案'; // 保存上傳的原始檔案名稱
                 uploadedFileName = FileName.replace(/\.[^/.]+$/, ''); // 去除副檔名部分
-                
+                initJudgeBlank();
                 renderMap(forBlankData)
                 if(judgeBlankSpace(InputData)){
                     skipBlank(InputData); // 刪掉空白較多的行
@@ -760,9 +761,9 @@ window.onload = (function() {
                     renderColumnText(); // 生成欄位名稱區塊(地圖變換用)
                     Grouping(); // 分組
                     appearRange()
-                    fileNameDiv.textContent = 'API';
-                    fileNameDiv.style.fontSize = 24 + 'px'
-                    recordFileName = fileNameDiv.textContent
+                    fileNameDiv_child.textContent = 'API';
+                    fileNameDiv_child.style.fontSize = 24 + 'px'
+                    recordFileName = fileNameDiv_child.textContent
                 }
             
             }
@@ -836,9 +837,9 @@ window.onload = (function() {
                 renderColumnText(); // 生成欄位名稱區塊(地圖變換用)
                 Grouping(); // 分組
                 appearRange()
-                fileNameDiv.textContent = 'API';
-                fileNameDiv.style.fontSize = 24 + 'px'
-                recordFileName = fileNameDiv.textContent
+                fileNameDiv_child.textContent = 'API';
+                fileNameDiv_child.style.fontSize = 24 + 'px'
+                recordFileName = fileNameDiv_child.textContent
             }
 		});
 	}
@@ -914,8 +915,8 @@ window.onload = (function() {
 		reader.onload = handleFileLoad;
 		reader.readAsText(fileName); // 將文件讀取爲文本
 
-        fileNameDiv.textContent = fileName['name']; // 顯示檔案名稱
-        recordFileName = fileNameDiv.textContent;
+        fileNameDiv_child.textContent = fileName['name']; // 顯示檔案名稱
+        recordFileName = fileNameDiv_child.textContent;
 
         //標題的部分
         var FileNameforcharts = fileName.name;//保存上傳的原始檔案名稱
@@ -932,7 +933,7 @@ window.onload = (function() {
 
         forBlankData = parseCSV(csvData);
 
-
+        initJudgeBlank()
         renderMap(forBlankData)
 		if(judgeBlankSpace(InputData)){
 			skipBlank(InputData); // 刪掉空白較多的行
@@ -957,6 +958,15 @@ window.onload = (function() {
             appearRange()
 		}
 	}
+    function initJudgeBlank(){
+        for(var i = 0; i < InputData.length; i++){
+            for(var j = 0; j < InputData[0].length; j++){
+                var newData = InputData[i][j].replace(/\s/g,'');
+                InputData[i][j] = newData;
+                forBlankData[i][j] = newData;
+            }
+        }
+    }
 
 	// 分析csv裡面的資料，並且去除雙引號""
 	function parseCSV(csvData) {

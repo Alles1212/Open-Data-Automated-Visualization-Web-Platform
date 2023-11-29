@@ -381,8 +381,8 @@ window.onload = (function() {
     finishBtn.style.display = 'none'
     clearBtn.style.display = 'none'
     recordFileName = fileNameCalled;
-    fileNameDiv.textContent = recordFileName;
-    fileNameDiv.style.fontSize = 24 + 'px'
+    fileNameDiv_child.textContent = recordFileName;
+    fileNameDiv_child.style.fontSize = 24 + 'px'
     currentMap = svgMapCalled;
     townArea(currentMap);
     recordBackGround = backGroundCalled;

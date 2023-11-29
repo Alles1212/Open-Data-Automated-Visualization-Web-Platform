@@ -135,9 +135,9 @@ function exportXlsxFile() {
 
 	// 測試資料
 	var data = [
-		['縣市名稱：', mapArray], // 鄉鎮名稱
+		['主題名稱：', mapArray], // 鄉鎮名稱
 		[], // 換行
-		['檔案名稱：', fileNameDiv.textContent], // 檔案名稱
+		['檔案名稱：', fileNameDiv_child.textContent], // 檔案名稱
 		['欄位名稱：', columnNameDiv.textContent], // 檔案欄位名稱
 		townArray, // 鄉鎮名稱
 		colArray, // 鄉鎮資料
