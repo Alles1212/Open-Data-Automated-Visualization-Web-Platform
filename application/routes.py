@@ -33,7 +33,7 @@ def handleCORS():#headers problem
     print(url)
 
     #GET request , request的data contain了BOM(指定emcode為'utf-8-sig'不行), headers={'Accept-Encoding': 'utf-8-sig'}
-    response = requests.get(url)#,verify=False, headers={'Accept-Encoding': 'utf-8-sig'}
+    response = requests.get(url, timeout=5,verify=False)# headers={'Accept-Encoding': 'utf-8-sig'}
     encoding = chardet.detect(response.content)['encoding']
     response.encoding = response.apparent_encoding#auto check encode
     content = response.content.decode(encoding)#.decode('utf-8-sig')#use 'utf-8-sig' decode
