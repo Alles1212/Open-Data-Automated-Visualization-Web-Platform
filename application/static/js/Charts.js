@@ -1154,7 +1154,7 @@ window.onload = (function() {
             // 添加多個事件監聽器，每個處理不同的事件
             checkbox.addEventListener('change', function (event) {
                 handleCheckboxChange2(event);
-                updateSelectedRows();
+                // updateSelectedRows();
                 updateChartDisplay();
             });
             showPieChart.addEventListener('change', handleCheckboxChange2);

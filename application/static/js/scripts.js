@@ -44,7 +44,7 @@ $("form[name=login_form").submit(function(e) {
 });
 
 // 設定秒數
-var count = 7;
+var count = 15;
 function countDown(){
 	// 將秒數寫在指定元素中
 	document.getElementById("timeBox").innerHTML= count;
