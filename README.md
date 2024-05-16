@@ -10,8 +10,7 @@ python run.py
 ## 研究方法
 本研究主要使用網頁程式語言進行系統功能的開發與使用者介面上
 的設計，以Photoshop軟體繪製臺灣各鄉鎮縣市地圖，放入SVG檔案中，
-再與程式語言結合，使繪製的地圖呈現出顏色的變化，以下為此研究會
-使用到的工具：
+再與程式語言結合，使繪製的地圖呈現出顏色的變化，以下為此研究會使用到的工具：
 - HTML－建立網頁並藉由瀏覽器的讀取，轉換成視覺化的網頁
 - CSS－進行網頁的畫面排版與美化
 - JavaScript－與前端互動的程式語言，使系統功能多樣化
@@ -20,8 +19,7 @@ python run.py
 - SVG－縮放向量圖形的檔案格式
 - Docker－方便作業系統虛擬化，可迅速地部署MongoDB
 - Flask－網站微框架(microframework)，建置網站自由度高
-- MongoDB-非關聯式資料庫(NoSQL)，易於擴展且靈活度大，主要用來儲
-存生成圖表。
+- MongoDB-非關聯式資料庫(NoSQL)，易於擴展且靈活度大，主要用來儲存作品Info。
 ## UI介面
 ![image](https://github.com/Alles1212/-projectIM/assets/82037602/f66fcdfc-4e9b-4a18-8c5b-328a150725b8)
 ![image](https://github.com/Alles1212/-projectIM/assets/82037602/d911721c-3426-4414-919a-166aa7f9fa8f)
