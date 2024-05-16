@@ -1,7 +1,7 @@
 # 109資管專題
 透過[政府開放資料](https://data.gov.tw/)進行制縣地圖之開發，將資料清洗可視化，預期能透過圖表取得各層面成效。
 ## Usage
-> [TIP]
+> [!TIP]
 > 在Local端將MongoDB資料庫以Docker開啟
 ```
 python run.py
