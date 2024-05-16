@@ -1,5 +1,5 @@
 # 專題
-109資管專題
+- 109資管專題
 透過[政府開放資料](https://data.gov.tw/)進行制縣地圖之開發，將資料清洗可視化，預期能透過圖表取得各層面成效。
 ## Usage
 > [TIP]
@@ -31,4 +31,4 @@ python run.py
 ![image](https://github.com/Alles1212/-projectIM/assets/82037602/073bd30e-735b-4e04-86b8-4f5bb7aefa04)
 
 > [!NOTE]
-> Editting...
+> Editing...
