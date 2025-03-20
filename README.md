@@ -1,4 +1,4 @@
-# Open data Automated Visualization Web Platform
+# Open Data Automated Visualization Web Platform
 ## About
 An effective automative platform to visualize open data and further utilization.
 ## Abstract
