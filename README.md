@@ -2,12 +2,11 @@
 ## About
 An effective automative platform to visualize open data and further utilization.
 ## Abstract
-透過[政府開放資料](https://data.gov.tw/)進行制縣地圖之開發，將開放資料清洗，並實踐資料流程自動化（ELT)可視化圖表呈現，預期能透過圖表分析取得各層面成效。<br>
+透過[政府開放資料](https://data.gov.tw/)進行制縣地圖之開發，將開放資料清洗，並實踐資料流程自動化（ETL)可視化圖表呈現，預期能透過圖表分析取得各層面成效。<br>
 Through the development of county maps through [Open Government Information](https://data.gov.tw/), we will open data cleansing and implement data flow automation (ETL) visualization for graphical presentation, and expect to achieve various levels of effectiveness through graphical analysis.<br>
 > 109 NCNU IM graduate project
 ## Usage
-> [!TIP]
-> 在 Local 端將 MongoDB 資料庫以 Docker 開啟
+> 以 Docker 快速布建 MongoDB
 ```
 python run.py
 ```
