@@ -148,18 +148,6 @@ def add_todo():
         completed = form.completed.data#false
         
         print("store action trigger")
-        #二次存檔problem(same id)
-        # if db.member_flask.find_one({'_id': todo["_id"]}) == data["_id"]:#已經有這個作品id了並打算更改
-        #     print("已經有了")
-        #     db.member_flask.find_one_and_update({"_id": ObjectId(id)}, {"$set": {
-        #     "name": todo_name,
-        #     "description": todo_description,
-        #     "file": todo_file, #不去更動該作品file欄位儲存進度
-        #     # "completed": completed,
-        #     # "UserId": session['user']['_id'], #test 當前登入者的_id
-        #     "date_created": datetime.datetime.now(),
-        # }})
-        # else:
         db.member_flask.insert_one({
             "name": todo_name, #圖表主題
             "description": todo_description, #圖表主題描述
@@ -282,16 +270,7 @@ def search_pri():
                 todos_pri.append(todo)#增加該筆作品資料
                 image_names.append(image_name)
                 print(todos_pri)
-                # return render_template("view_todos.html", title = "Layout_page", todos = todos_pri, image_names = image_names)#image_name = image_name
-            # elif((searchStr in todo["name"]) and todo['completed'] == 'True'):#只有對應作品且公開
-            #     todo["_id"] = str(todo["_id"])
-            #     todo["date_created"] = todo["date_created"].strftime("%b %d %Y %H:%M:%S")
-            #     todo["pic_name"] = "{}.jpg".format(todo["pic_name"])#將pic_name改為XXX.jpg
-            #     image_name = todo["pic_name"]
-            #     todos.append(todo)#增加該筆作品資料
-            #     image_names.append(image_name)
-            #     print(todos)
-            #     return render_template("view_todos.html", title = "Layout_page", todos = todos, image_names = image_names)#image_name = image_name
+
         if todos_pri == []:#False, 沒找到任何搜尋結果,或作者名不同所以沒加入todos
             print("not in")
             print(todos_pri)

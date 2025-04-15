@@ -6,10 +6,10 @@ services:
     image: mongo:latest
     volumes:
       - C:\mongodb\db:/data/db
-    environment:
-      - MONGO_INITDB_ROOT_USERNAME=
-      - MONGO_INITDB_ROOT_PASSWORD=
-    command: mongod --auth
+    # environment:
+    #   - MONGO_INITDB_ROOT_USERNAME=
+    #   - MONGO_INITDB_ROOT_PASSWORD=
+    # command: mongod --auth
     logging:
       driver: 'json-file'
       options:
@@ -17,4 +17,19 @@ services:
         max-size: '1024m'
     ports:
       - "27017:27017"
+    restart: always
+
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: flask_app
+    environment:
+      # 將 MongoDB 連線字串指向 compose 裡的 service 名稱
+      - MONGO_URI=mongodb://mongo:27017/ #mongodb://localhost:27017/
+      - SECRET_KEY=186e46fe4c5618948cd2638d8ec0f1b42b38ccea
+    ports:
+      - "5000:5000"
+    depends_on:
+      - mongo
     restart: always
